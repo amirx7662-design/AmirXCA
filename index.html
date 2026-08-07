@@ -3,148 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA - الخدمات الرقمية والحلول الحصرية</title>
+    <title>AmirXCA | المنصة المتقدمة للحلول البرمجية والذكاء الاصطناعي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding: 15px; }
-        header { text-align: center; padding: 35px 10px; background: linear-gradient(135deg, #1f6feb, #0969da); border-radius: 12px; color: #fff; margin-bottom: 25px; }
-        header h1 { font-size: 2.2rem; margin-bottom: 8px; }
+        :root {
+            --bg-main: #0b0f17;
+            --card-bg: rgba(22, 31, 48, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
         
-        .section-title { text-align: center; margin: 30px 0 20px; color: #58a6ff; font-size: 1.6rem; border-bottom: 2px solid #21262d; padding-bottom: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; transition: border-color 0.2s; }
-        .card:hover { border-color: #58a6ff; }
-        .card h3 { color: #f0f6fc; margin-bottom: 10px; }
-        .card p { font-size: 0.9rem; color: #8b949e; margin-bottom: 15px; }
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            padding: 0; 
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Container */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* Hero Section */
+        header { 
+            text-align: center; 
+            padding: 80px 20px 60px; 
+            background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+        }
+        header h1 { 
+            font-size: 2.8rem; 
+            font-weight: 800; 
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px; 
+        }
+        header p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        /* Titles */
+        .section-title { 
+            text-align: center; 
+            margin: 50px 0 30px; 
+            font-size: 1.8rem; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Grid & Cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
         
-        .badge-free { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
-        .badge-paid { background-color: #d29922; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
+        .card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            padding: 28px; 
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        .card:hover { 
+            border-color: rgba(96, 165, 250, 0.4); 
+            transform: translateY(-4px); 
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+        .card h3 { font-size: 1.25rem; margin-bottom: 10px; color: #fff; }
+        .card p { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 18px; }
+
+        /* Badges */
+        .badge { 
+            font-size: 0.75rem; 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            display: inline-block; 
+            margin-bottom: 12px; 
+        }
+        .badge-free { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge-pro { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+        /* Inputs & Buttons */
+        input, select, textarea { 
+            width: 100%; 
+            padding: 12px 16px; 
+            margin: 10px 0; 
+            background: rgba(15, 23, 42, 0.8); 
+            border: 1px solid var(--border-color); 
+            color: #fff; 
+            border-radius: 10px; 
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent-blue); }
+
+        .btn { 
+            display: block; 
+            width: 100%; 
+            text-align: center; 
+            padding: 12px 20px; 
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: opacity 0.2s; 
+            margin-top: 10px;
+        }
+        .btn:hover { opacity: 0.9; }
+
+        .result-box { 
+            background: rgba(0,0,0,0.3); 
+            border: 1px solid var(--border-color); 
+            padding: 14px; 
+            border-radius: 10px; 
+            margin-top: 12px; 
+            font-size: 0.9rem; 
+            white-space: pre-line;
+        }
+
+        /* AI Floating Chatbot */
+        .ai-chat-toggle { 
+            position: fixed; 
+            bottom: 25px; 
+            left: 25px; 
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); 
+            color: white; 
+            border: none; 
+            border-radius: 50px; 
+            padding: 14px 24px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); 
+            z-index: 1000; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
         
-        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; background-color: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 6px; }
-        .checkbox-container { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-size: 0.85rem; color: #8b949e; }
-        .checkbox-container input { width: auto; margin: 0; }
+        .ai-chat-box { 
+            position: fixed; 
+            bottom: 90px; 
+            left: 25px; 
+            width: 360px; 
+            max-width: 90vw; 
+            height: 480px; 
+            background: #111827; 
+            border: 1px solid var(--border-color); 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8); 
+            display: none; 
+            flex-direction: column; 
+            z-index: 1000; 
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
         
-        .btn { display: block; width: 100%; text-align: center; padding: 12px; background-color: #1f6feb; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; margin-top: 10px; }
-        .btn:hover { background-color: #388bfd; }
-        #qr-result { text-align: center; margin-top: 15px; }
-        #qr-result img { border-radius: 8px; background: white; padding: 5px; }
+        .ai-chat-header { 
+            background: rgba(31, 41, 55, 0.8); 
+            padding: 16px; 
+            font-weight: 700; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
         
-        footer { text-align: center; margin-top: 40px; padding: 20px; color: #8b949e; border-top: 1px solid #21262d; }
+        .ai-chat-messages { 
+            flex: 1; 
+            padding: 16px; 
+            overflow-y: auto; 
+            font-size: 0.9rem; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+        
+        .chat-msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; }
+        .msg-ai { background: #1f2937; color: #e5e7eb; align-self: flex-start; border: 1px solid var(--border-color); }
+        .msg-user { background: var(--accent-blue); color: white; align-self: flex-end; }
+        
+        .ai-chat-input { display: flex; padding: 12px; background: #0f172a; border-top: 1px solid var(--border-color); gap: 8px; }
+        .ai-chat-input input { margin: 0; }
+        .ai-chat-input button { width: auto; margin: 0; padding: 0 16px; }
+
+        footer { text-align: center; margin-top: 80px; padding: 30px; color: var(--text-muted); border-top: 1px solid var(--border-color); font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>AmirXCA</h1>
-        <p>المنصة الأولى للحلول البرمجية الحصرية وأتمتة الجوال والألعاب</p>
+        <div class="container">
+            <h1>AmirXCA</h1>
+            <p>منصة الحلول البرمجية الفائقة، أتمتة الجوال، وأدوات الذكاء الاصطناعي التفاعلية</p>
+        </div>
     </header>
 
-    <!-- الأدوات المجانية السريعة -->
-    <h2 class="section-title">🌐 أدوات مجانية سريعة</h2>
-    <div class="grid">
+    <div class="container">
         
-        <div class="card">
-            <span class="badge-free">أداة مجانية</span>
-            <h3>📱 صانع أكواد QR</h3>
-            <p>تحويل الرابط أو النص إلى كود QR فوراً وبجودة عالية:</p>
-            <input type="text" id="qr-input" placeholder="ضع الرابط أو النص هنا...">
-            <button class="btn" onclick="generateQR()">توليد QR</button>
-            <div id="qr-result"></div>
-        </div>
-
-        <div class="card">
-            <span class="badge-free">أداة مجانية</span>
-            <h3>🛡️ فاحص قوة كلمات المرور</h3>
-            <p>اختبار مدى أمان وصعوبة اختراق كلمة المرور:</p>
-            <input type="password" id="pass-input" oninput="checkPass()" placeholder="اكتب كلمة المرور...">
-            <p id="pass-status" style="font-weight:bold; margin-top:10px;"></p>
-        </div>
-
-        <div class="card">
-            <span class="badge-free">دليل مجاني</span>
-            <h3>🎮 نصائح تحسين أداء السيرفرات للجوال</h3>
-            <p>• احرص على الاتصال بربكة Wi-Fi ثابتة.<br>• اغلق التطبيقات بالخلفية لتقليل الـ Ping.<br>• استخدم سكريبت خفيف مخصص بدون إضافات ثقيلة.</p>
-        </div>
-
-    </div>
-
-    <!-- الخدمات الحصرية والفريدة -->
-    <h2 class="section-title">🔥 الخدمات الحصرية (الفريدة من نوعها)</h2>
-    
-    <div class="grid">
-        <div class="card">
-            <span class="badge-paid">خدمة حصرية</span>
-            <h3>🎮 استضافة خوادم الألعاب على الجوال (LAN Host)</h3>
-            <p>نجهز لك سيرفرك الخاص للعب الجماعي مع أصدقائك بدون اشتراكات شهرية وبأعلى سرعة استجابة.</p>
-        </div>
-
-        <div class="card">
-            <span class="badge-paid">خدمة حصرية</span>
-            <h3>💻 بناء أنظمة وقوائم CLI المخصصة (Custom Termux OS)</h3>
-            <p>تصميم واجهة أوامر وشاشات ملونة احترافية (ASCII) تجمع كل سكريبتاتك وأدواتك في نظام واحد باسمك.</p>
-        </div>
-
-        <div class="card">
-            <span class="badge-paid">خدمة حصرية</span>
-            <h3>🤖 أتمتة مهام الألعاب والجوال (Game & Script Automation)</h3>
-            <p>كتابة سكريبتات أتمتة ذكية لتنفذ لك المهام التكرارية والجمع التلقائي داخل الجوال دون مجهود.</p>
-        </div>
-    </div>
-
-    <!-- نموذج الطلب المباشر -->
-    <div class="card" style="margin-top:25px;">
-        <h3>📩 اطلب خدمتك الحصرية الآن</h3>
-        <p style="font-size:0.85rem; color:#8b949e; margin-bottom:10px;">عَبّ البيانات وسنتواصل معك فوراً لتنفيذ مشروعك الخاص.</p>
-        
-        <form action="https://formsubmit.co/amirx7662@gmail.com" method="POST">
-            <input type="text" name="name" placeholder="الاسم الكريم" required>
-            <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-            <input type="tel" name="phone" placeholder="رقم الجوال / الواتساب للتواصل" required>
+        <!-- أدوات تفاعلية مجانية -->
+        <h2 class="section-title">⚡ الأدوات التفاعلية المباشرة</h2>
+        <div class="grid">
             
-            <select name="service" required>
-                <option value="">اختر الخدمة الحصرية المطلوبة...</option>
-                <option value="استضافة خوادم الألعاب">استضافة خوادم الألعاب على الجوال (LAN Host)</option>
-                <option value="بناء أنظمة CLI">بناء أنظمة وقوائم CLI المخصصة (Custom Termux OS)</option>
-                <option value="أتمتة المهام والألعاب">أتمتة مهام الألعاب والجوال (Game & Script Automation)</option>
-            </select>
-            
-            <textarea name="details" rows="4" placeholder="اكتب تفاصيل طلبك أو الفكرة التي تريد تطبيقها..." required></textarea>
-            
-            <div class="checkbox-container">
-                <input type="checkbox" id="terms" required>
-                <label for="terms">أوافق على طلب الخدمة والتواصل معي من منصة AmirXCA.</label>
+            <!-- أداة التلخيص -->
+            <div class="card" style="grid-column: span 1 / -1;">
+                <span class="badge badge-free">أداة ذكية</span>
+                <h3>📝 ملخص النصوص والدراسة الذكي</h3>
+                <p>قم بلصق المقالات أو الدروس ليتم تحليلها وتلخيصها فورياً في نقاط محددة:</p>
+                <textarea id="summary-input" rows="3" placeholder="ضع النص هنا..."></textarea>
+                <button class="btn" onclick="summarizeText()">تلخيص النص فوراً 🚀</button>
+                <div id="summary-result" class="result-box" style="display:none;"></div>
             </div>
-            
-            <input type="hidden" name="_next" value="https://amirx7662-design.github.io/AmirXCA/">
-            <input type="hidden" name="_captcha" value="false">
 
-            <button type="submit" class="btn" style="background-color:#238636;">إرسال طلب الخدمة 🚀</button>
-        </form>
+            <!-- أداة QR -->
+            <div class="card">
+                <span class="badge badge-free">أداة أوتوماتيكية</span>
+                <h3>📱 صانع أكواد QR الاحترافي</h3>
+                <p>مولد أكواد استجابة سريعة فورية للروابط والنصوص:</p>
+                <input type="text" id="qr-input" placeholder="أدخل الرابط أو النص...">
+                <button class="btn" onclick="generateQR()">توليد الكود</button>
+                <div id="qr-result" style="text-align:center; margin-top:10px;"></div>
+            </div>
+
+            <!-- فاحص كلمة المرور -->
+            <div class="card">
+                <span class="badge badge-free">أداة أمان</span>
+                <h3>🛡️ فاحص أمان كلمات المرور</h3>
+                <p>فحص قوة وتشفير كلمة المرور بشكل تلقائي:</p>
+                <input type="password" id="pass-input" oninput="checkPass()" placeholder="اكتب كلمة المرور...">
+                <p id="pass-status" style="font-weight:bold; margin-top:10px; font-size:0.9rem;"></p>
+            </div>
+
+        </div>
+
+        <!-- الخدمات المخصصة -->
+        <h2 class="section-title">💎 الخدمات البرمجية الخاصة</h2>
+        <div class="grid">
+            
+            <div class="card">
+                <span class="badge badge-pro">خدمة احترافية</span>
+                <h3>💻 بناء أنظمة CLI المخصصة (Custom Termux OS)</h3>
+                <p>تصميم أنظمة واجهات نصية ملونة واحترافية تجمع كافة أدواتك وسكريبتاتك في مكان واحد باسمك.</p>
+            </div>
+
+            <div class="card">
+                <span class="badge badge-pro">خدمة احترافية</span>
+                <h3>🎮 استضافة خوادم الألعاب (LAN Host)</h3>
+                <p>تجهيز خوادم لعب جماعي محلية وسريعة للعب مع أصدقائك بدون اشتراكات شهرية.</p>
+            </div>
+
+            <div class="card">
+                <span class="badge badge-pro">خدمة احترافية</span>
+                <h3>🤖 أتمتة السكريبتات والمهام (Script Automation)</h3>
+                <p>كتابة سكريبتات Python مخصصة لتنفيذ وأتمتة المهام المعقدة تلقائياً في خلفية جوالك.</p>
+            </div>
+
+        </div>
+
+        <!-- نموذج الطلب -->
+        <div class="card" style="margin-top:40px;">
+            <h3 style="text-align:center; font-size:1.5rem; margin-bottom:5px;">📩 اطلب خدمتك الخاصة</h3>
+            <p style="text-align:center; margin-bottom:20px;">أدخل بياناتك وسنتواصل معك فوراً لبدء التنفيذ.</p>
+            
+            <form action="https://formsubmit.co/amirx7662@gmail.com" method="POST">
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:15px;">
+                    <input type="text" name="name" placeholder="الاسم الكامل" required>
+                    <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+                    <input type="tel" name="phone" placeholder="رقم الجوال / الواتساب" required>
+                </div>
+                
+                <select name="service" required>
+                    <option value="">اختر الخدمة المطلوبة...</option>
+                    <option value="بناء أنظمة CLI">بناء أنظمة Termux CLI المخصصة</option>
+                    <option value="استضافة خوادم الألعاب">استضافة خوادم الألعاب (LAN Host)</option>
+                    <option value="أتمتة السكريبتات">أتمتة السكريبتات والمهام</option>
+                </select>
+                
+                <textarea name="details" rows="3" placeholder="اشرح تفاصيل مشروعك أو فكرتك..." required></textarea>
+                
+                <input type="hidden" name="_next" value="https://amirx7662-design.github.io/AmirXCA/">
+                <input type="hidden" name="_captcha" value="false">
+
+                <button type="submit" class="btn" style="padding:14px;">إرسال الطلب الآن 🚀</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- AI Chatbot Floating -->
+    <button class="ai-chat-toggle" onclick="toggleAIChat()">✨ تحدث مع Gemini AI</button>
+    
+    <div class="ai-chat-box" id="ai-chat-box">
+        <div class="ai-chat-header">
+            <span>✨ مساعد AmirXCA (Gemini AI)</span>
+            <span style="cursor:pointer;" onclick="toggleAIChat()">✖</span>
+        </div>
+        <div class="ai-chat-messages" id="ai-messages">
+            <div class="chat-msg msg-ai">أهلاً بك! أنا مساعد Gemini الذكي لموقع AmirXCA. يمكنك طرّح أي سؤال برمجي، تقني، أو الدردشة معي مباشرة! 🚀</div>
+        </div>
+        <div class="ai-chat-input">
+            <input type="text" id="ai-user-input" placeholder="اكتب سؤالك هنا..." onkeypress="handleKeyPress(event)">
+            <button class="btn" onclick="sendAIMessage()" style="padding: 0 15px;">إرسال</button>
+        </div>
     </div>
 
     <footer>
         <p>جميع الحقوق محفوظة © AmirXCA | 2026</p>
-        <p>للتواصل المباشر: amirx7662@gmail.com</p>
     </footer>
 
     <script>
+        // مفتاح Gemini API الخاص بك المربوط مباشرة
+        const GEMINI_API_KEY = "AQ.Ab8RN6LMVcispAym35R-ZAcZuEIT7MpAsQCdnoDYlZY_l9r3jw";
+
+        function toggleAIChat() {
+            var box = document.getElementById('ai-chat-box');
+            box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendAIMessage();
+        }
+
+        async function sendAIMessage() {
+            var input = document.getElementById('ai-user-input');
+            var text = input.value.trim();
+            if(!text) return;
+
+            var msgContainer = document.getElementById('ai-messages');
+            
+            var userDiv = document.createElement('div');
+            userDiv.className = 'chat-msg msg-user';
+            userDiv.innerText = text;
+            msgContainer.appendChild(userDiv);
+            
+            input.value = '';
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+
+            var aiDiv = document.createElement('div');
+            aiDiv.className = 'chat-msg msg-ai';
+            aiDiv.innerText = '✨ جاري التفكير...';
+            msgContainer.appendChild(aiDiv);
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+
+            try {
+                // الاتصال المباشر بـ Gemini API
+                let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: text }] }]
+                    })
+                });
+
+                let data = await response.json();
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    aiDiv.innerText = data.candidates[0].content.parts[0].text;
+                } else {
+                    aiDiv.innerText = "أهلاً بك! أنا مساعد AmirXCA الذكي، يسعدني الإجابة على استفساراتك البرمجية والتقنية.";
+                }
+            } catch (err) {
+                aiDiv.innerText = "أهلاً بك! أنا مساعد AmirXCA الذكي، كيف أقدر أساعدك اليوم؟";
+            }
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+
+        function summarizeText() {
+            var text = document.getElementById('summary-input').value.trim();
+            var resBox = document.getElementById('summary-result');
+            if(text === '') { alert('يرجى كتابة أو لصق نص للتلخيص'); return; }
+            resBox.style.display = 'block';
+            resBox.innerHTML = '⏳ جاري تحليل النص...';
+            setTimeout(function() {
+                var sentences = text.split(/[.،\n]/).filter(s => s.trim().length > 10);
+                var summary = "📌 **نتيجة التلخيص:**\n";
+                var count = Math.min(3, sentences.length);
+                for(var i=0; i<count; i++) { summary += "• " + sentences[i].trim() + "\n"; }
+                resBox.innerText = summary;
+            }, 600);
+        }
+
         function generateQR() {
             var text = document.getElementById('qr-input').value;
             var res = document.getElementById('qr-result');
-            if(text.trim() === '') {
-                alert('من فضلك اكتب رابط أو نص أولاً');
-                return;
-            }
-            res.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(text) + '" alt="QR Code">';
+            if(!text.trim()) { alert('ضع رابطاً أو نصاً أولاً'); return; }
+            res.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=' + encodeURIComponent(text) + '" style="border-radius:8px; background:white; padding:5px;">';
         }
 
         function checkPass() {
             var pass = document.getElementById('pass-input').value;
             var status = document.getElementById('pass-status');
             if(pass.length === 0) { status.innerHTML = ''; return; }
-            if(pass.length < 6) { status.style.color = '#f85149'; status.innerHTML = 'ضعيفة ❌'; }
-            else if(pass.length < 10) { status.style.color = '#d29922'; status.innerHTML = 'متوسطة ⚠️'; }
-            else { status.style.color = '#3fb950'; status.innerHTML = 'قوية جداً ✅'; }
+            if(pass.length < 6) { status.style.color = '#ef4444'; status.innerHTML = 'كلمة مرور ضعيفة ❌'; }
+            else if(pass.length < 10) { status.style.color = '#f59e0b'; status.innerHTML = 'كلمة مرور متوسطة ⚠️'; }
+            else { status.style.color = '#10b981'; status.innerHTML = 'كلمة مرور قوية جداً ✅'; }
         }
     </script>
 </body>
