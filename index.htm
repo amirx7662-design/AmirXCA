@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmirXCA - الأدوات والحلول البرمجية التفاعلية</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding: 15px; }
+        header { text-align: center; padding: 35px 10px; background: linear-gradient(135deg, #1f6feb, #0969da); border-radius: 12px; color: #fff; margin-bottom: 25px; }
+        header h1 { font-size: 2.2rem; margin-bottom: 8px; }
+        
+        .section-title { text-align: center; margin: 30px 0 20px; color: #58a6ff; font-size: 1.6rem; border-bottom: 2px solid #21262d; padding-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; transition: border-color 0.2s; }
+        .card:hover { border-color: #58a6ff; }
+        .card h3 { color: #f0f6fc; margin-bottom: 10px; }
+        .card p { font-size: 0.9rem; color: #8b949e; margin-bottom: 15px; }
+        
+        .badge-free { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
+        .badge-paid { background-color: #d29922; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
+        
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; background-color: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 6px; }
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-size: 0.85rem; color: #8b949e; }
+        .checkbox-container input { width: auto; margin: 0; }
+        
+        .btn { display: block; width: 100%; text-align: center; padding: 12px; background-color: #1f6feb; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; margin-top: 10px; }
+        .btn:hover { background-color: #388bfd; }
+        .result-box { background-color: #0d1117; border: 1px dashed #30363d; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 0.9rem; white-space: pre-line; }
+        #qr-result { text-align: center; margin-top: 15px; }
+        #qr-result img { border-radius: 8px; background: white; padding: 5px; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #8b949e; border-top: 1px solid #21262d; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>AmirXCA</h1>
+        <p>المنصة المباشرة للأدوات البرمجية الذكية وأتمتة الجوال</p>
+    </header>
+
+    <!-- الأدوات المجانية الأوتوماتيكية المباشرة -->
+    <h2 class="section-title">⚡ أدوات مجانية أوتوماتيكية (شغالة فوراً)</h2>
+    <div class="grid">
+        
+        <!-- أداة التلخيص المباشر -->
+        <div class="card" style="grid-column: span 1 / -1;">
+            <span class="badge-free">أداة أوتوماتيكية جديدة</span>
+            <h3>📝 المساعد والملخص الذكي للنصوص والدراسة</h3>
+            <p>ضع أي نص أو المقال أو الدرس هنا وسيتم تلخيصه واستخراج أهم النقاط منه فوراً تلقائياً:</p>
+            <textarea id="summary-input" rows="4" placeholder="الصق النص أو المقال هنا لتلخيصه..."></textarea>
+            <button class="btn" onclick="summarizeText()">تلخيص النص واستخراج النقاط 🚀</button>
+            <div id="summary-result" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- أداة QR -->
+        <div class="card">
+            <span class="badge-free">أداة أوتوماتيكية</span>
+            <h3>📱 صانع أكواد QR</h3>
+            <p>تحويل الرابط أو النص إلى كود QR فوراً وبجودة عالية:</p>
+            <input type="text" id="qr-input" placeholder="ضع الرابط أو النص هنا...">
+            <button class="btn" onclick="generateQR()">توليد QR</button>
+            <div id="qr-result"></div>
+        </div>
+
+        <!-- فاحص كلمة المرور -->
+        <div class="card">
+            <span class="badge-free">أداة أوتوماتيكية</span>
+            <h3>🛡️ فاحص قوة كلمات المرور</h3>
+            <p>اختبار مدى أمان وصعوبة اختراق كلمة المرور تلقائياً:</p>
+            <input type="password" id="pass-input" oninput="checkPass()" placeholder="اكتب كلمة المرور...">
+            <p id="pass-status" style="font-weight:bold; margin-top:10px;"></p>
+        </div>
+
+    </div>
+
+    <!-- الخدمات المدفوعة الحصرية (Termux والألعاب) -->
+    <h2 class="section-title">💎 الخدمات البرمجية الخاصة</h2>
+    
+    <div class="grid">
+        <div class="card">
+            <span class="badge-paid">خدمة مخصصة</span>
+            <h3>💻 بناء أنظمة وقوائم CLI المخصصة (Custom Termux OS)</h3>
+            <p>تصميم واجهة أوامر وشاشات ملونة احترافية تجمع كل أدواتك وسكريبتاتك في نظام واحد باسمك على Termux.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge-paid">خدمة مخصصة</span>
+            <h3>🎮 استضافة خوادم الألعاب على الجوال (LAN Host)</h3>
+            <p>تجهيز سيرفرك الخاص للعب الجماعي في ألعاب الجوال مع أصدقائك بدون اشتراكات وبأسرع استجابة.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge-paid">خدمة مخصصة</span>
+            <h3>🤖 أتمتة البرامج والسكريبتات (Script Automation)</h3>
+            <p>كتابة سكريبتات بايثون مخصصة لتنفذ لك المهام التكرارية المعقدة أوتوماتيكياً في خلفية جوالك.</p>
+        </div>
+    </div>
+
+    <!-- نموذج الطلب المباشر -->
+    <div class="card" style="margin-top:25px;">
+        <h3>📩 طلب خدمة برمجية مخصصة</h3>
+        <p style="font-size:0.85rem; color:#8b949e; margin-bottom:10px;">عَبّ البيانات وسنتواصل معك فوراً لتنفيذ مشروعك الخاص.</p>
+        
+        <form action="https://formsubmit.co/amirx7662@gmail.com" method="POST">
+            <input type="text" name="name" placeholder="الاسم الكريم" required>
+            <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+            <input type="tel" name="phone" placeholder="رقم الجوال / الواتساب للتواصل" required>
+            
+            <select name="service" required>
+                <option value="">اختر الخدمة الخاصة المطلوب تنفيذها...</option>
+                <option value="بناء أنظمة CLI">بناء أنظمة وقوائم CLI المخصصة (Custom Termux OS)</option>
+                <option value="استضافة خوادم الألعاب">استضافة خوادم الألعاب على الجوال (LAN Host)</option>
+                <option value="أتمتة السكريبتات">أتمتة البرامج والسكريبتات (Script Automation)</option>
+            </select>
+            
+            <textarea name="details" rows="3" placeholder="اكتب تفاصيل طلبك أو الفكرة التي تريد تطبيقها..." required></textarea>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">أوافق على طلب الخدمة والتواصل معي من منصة AmirXCA.</label>
+            </div>
+            
+            <input type="hidden" name="_next" value="https://amirx7662-design.github.io/AmirXCA/">
+            <input type="hidden" name="_captcha" value="false">
+
+            <button type="submit" class="btn" style="background-color:#238636;">إرسال طلب الخدمة 🚀</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة © AmirXCA | 2026</p>
+        <p>للتواصل المباشر: amirx7662@gmail.com</p>
+    </footer>
+
+    <script>
+        // أداة التلخيص المباشر بدون تدخل
+        function summarizeText() {
+            var text = document.getElementById('summary-input').value.trim();
+            var resBox = document.getElementById('summary-result');
+            
+            if(text === '') {
+                alert('من فضلك الصق نصاً أولاً لتلخيصه!');
+                return;
+            }
+
+            resBox.style.display = 'block';
+            resBox.innerHTML = '⏳ جاري تحليل النص وتلخيصه...';
+
+            setTimeout(function() {
+                var sentences = text.split(/[.،\n]/).filter(s => s.trim().length > 10);
+                var totalWords = text.split(/\s+/).length;
+                
+                var summary = "📌 **نتيجة التلخيص التلقائي:**\n\n";
+                summary += "• **عدد الكلمات الأصلية:** " + totalWords + " كلمة.\n";
+                summary += "• **أهم النقاط المستخرجة:**\n";
+
+                if(sentences.length > 0) {
+                    var count = Math.min(3, sentences.length);
+                    for(var i=0; i<count; i++) {
+                        summary += "  - " + sentences[i].trim() + ".\n";
+                    }
+                } else {
+                    summary += "  - " + text.substring(0, 100) + "...\n";
+                }
+
+                summary += "\n✅ تم التلخيص أوتوماتيكياً بواسطة منصة AmirXCA.";
+                resBox.innerText = summary;
+            }, 800);
+        }
+
+        function generateQR() {
+            var text = document.getElementById('qr-input').value;
+            var res = document.getElementById('qr-result');
+            if(text.trim() === '') {
+                alert('من فضلك اكتب رابط أو نص أولاً');
+                return;
+            }
+            res.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(text) + '" alt="QR Code">';
+        }
+
+        function checkPass() {
+            var pass = document.getElementById('pass-input').value;
+            var status = document.getElementById('pass-status');
+            if(pass.length === 0) { status.innerHTML = ''; return; }
+            if(pass.length < 6) { status.style.color = '#f85149'; status.innerHTML = 'ضعيفة ❌'; }
+            else if(pass.length < 10) { status.style.color = '#d29922'; status.innerHTML = 'متوسطة ⚠️'; }
+            else { status.style.color = '#3fb950'; status.innerHTML = 'قوية جداً ✅'; }
+        }
+    </script>
+</body>
+</html>
