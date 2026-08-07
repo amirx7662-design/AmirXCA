@@ -3,15 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA</title>
+    <title>AmirXCA - الحلول والخدمات الرقمية</title>
     <style>
-        body { font-family: system-ui, sans-serif; text-align: center; background: #0f172a; color: #ffffff; padding: 50px 20px; }
-        h1 { color: #38bdf8; font-size: 2.2rem; }
-        p { color: #94a3b8; font-size: 1.1rem; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 40px 10px;
+            background: linear-gradient(135deg, #1f6feb, #0969da);
+            border-radius: 12px;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .section-title {
+            text-align: center;
+            margin: 30px 0 20px;
+            color: #58a6ff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #21262d;
+            padding-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #58a6ff;
+        }
+        .card h3 {
+            color: #f0f6fc;
+            margin-bottom: 10px;
+        }
+        .card p {
+            font-size: 0.95rem;
+            color: #8b949e;
+            margin-bottom: 15px;
+        }
+        .badge-free {
+            background-color: #238636;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .badge-paid {
+            background-color: #d29922;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: #1f6feb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .btn:hover {
+            background-color: #388bfd;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #8b949e;
+            border-top: 1px solid #21262d;
+        }
     </style>
 </head>
 <body>
-    <h1>مرحباً بكم في AmirXCA</h1>
-    <p>مستقبل البرمجيات والمواقع الحسابية والحلول الرقمية.</p>
+
+    <header>
+        <h1>AmirXCA</h1>
+        <p>مستقبل البرمجيات والمواقع والحلول الرقمية والإلكترونية</p>
+    </header>
+
+    <!-- الخدمات المجانية -->
+    <h2 class="section-title">🌐 الخدمات والأدوات المجانية</h2>
+    <div class="grid">
+        <div class="card">
+            <span class="badge-free">مجاني</span>
+            <h3>📱 حلول وتوجيهات الجوال</h3>
+            <p>دليل إرشادي لتسريع الأجهزة، حل مشاكل البطارية، وفحص السلامة قبل شراء الأجهزة المستعملة.</p>
+        </div>
+        <div class="card">
+            <span class="badge-free">مجاني</span>
+            <h3>🛡️ الأمان والحماية الرقمية</h3>
+            <p>خطوات تأمين حساباتك بالتأكيد الثنائي (2FA) وإرشادات اكتشاف الروابط المزيفة وتفادي والاحتيال.</p>
+        </div>
+        <div class="card">
+            <span class="badge-free">مجاني</span>
+            <h3>🛠️ أدوات رقمية سريعة</h3>
+            <p>مجموعة أدوات خفيفة متوفرة عبر الموقع لقياس قوة كلمات المرور وتوليد أكواد QR آمنة.</p>
+        </div>
+    </div>
+
+    <!-- الخدمات المدفوعة -->
+    <h2 class="section-title">💎 الخدمات الاحترافية المدفوعة</h2>
+    <div class="grid">
+        <div class="card">
+            <span class="badge-paid">خدمة مدفوعة</span>
+            <h3>🔐 تأمين واستعادة الحسابات (VIP)</h3>
+            <p>دعم شخصي مباشر لتأمين حساباتك السوشيال ميديا بشكل حصري واستعادة الحسابات المتضررة.</p>
+            <a href="mailto:amirx7662@gmail.com?subject=طلب%20خدمة:%20تأمين%20واستعادة%20الحسابات&body=مرحباً%20AmirXCA،%0A%0Aأرغب%20في%20طلب%20خدمة%20تأمين%20واستعادة%20الحسابات.%0A%0Aتفاصيل%20الطلب:" class="btn">اطلب عبر البريد</a>
+        </div>
+        <div class="card">
+            <span class="badge-paid">خدمة مدفوعة</span>
+            <h3>📱 الدعم الفني والفحص عن بُعد</h3>
+            <p>جلسة استشارية وتنظيف شامل لنظام جوالك وتوجيهك لأفضل الخيارات التقنية حسب احتياجك.</p>
+            <a href="mailto:amirx7662@gmail.com?subject=طلب%20خدمة:%20الدعم%20الفني%20والفحص&body=مرحباً%20AmirXCA،%0A%0Aأرغب%20في%20طلب%20خدمة%20الدعم%20الفني%20وفحص%20الجوال.%0A%0Aتفاصيل%20المشكلة/الجوال:" class="btn">اطلب عبر البريد</a>
+        </div>
+        <div class="card">
+            <span class="badge-paid">خدمة مدفوعة</span>
+            <h3>📄 تصميم بطاقات QR وسير ذاتية</h3>
+            <p>تصميم بطاقات أعمال رقمية حديثة وكروت QR مخصصة وسير ذاتية احترافية متوافقة مع أنظمة التوظيف.</p>
+            <a href="mailto:amirx7662@gmail.com?subject=طلب%20خدمة:%20التصميم%20والسير%20الذاتية&body=مرحباً%20AmirXCA،%0A%0Aأرغب%20في%20طلب%20خدمة%20تصميم%20(سيرة%20ذاتية/بطاقة%20QR).%0A%0Aالتفاصيل:" class="btn">اطلب عبر البريد</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة © AmirXCA | 2026</p>
+        <p>للتواصل المباشر: amirx7662@gmail.com</p>
+    </footer>
+
 </body>
 </html>
+
