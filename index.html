@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA - الحلول والخدمات الرقمية</title>
+    <title>AmirXCA - الحلول والخدمات البرمجية والتقنية</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding: 15px; }
-        header { text-align: center; padding: 30px 10px; background: linear-gradient(135deg, #1f6feb, #0969da); border-radius: 12px; color: #fff; margin-bottom: 25px; }
+        header { text-align: center; padding: 35px 10px; background: linear-gradient(135deg, #1f6feb, #0969da); border-radius: 12px; color: #fff; margin-bottom: 25px; }
         header h1 { font-size: 2.2rem; margin-bottom: 8px; }
+        header p { font-size: 1rem; opacity: 0.9; }
+        
         .section-title { text-align: center; margin: 30px 0 20px; color: #58a6ff; font-size: 1.6rem; border-bottom: 2px solid #21262d; padding-bottom: 10px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; }
+        .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; transition: border-color 0.2s; }
+        .card:hover { border-color: #58a6ff; }
         .card h3 { color: #f0f6fc; margin-bottom: 10px; }
+        .card p { font-size: 0.9rem; color: #8b949e; margin-bottom: 15px; }
+        
         .badge-free { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
         .badge-paid { background-color: #d29922; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
         
@@ -32,88 +37,96 @@
 
     <header>
         <h1>AmirXCA</h1>
-        <p>مستقبل البرمجيات والمواقع والحلول الرقمية والإلكترونية</p>
+        <p>المنصة المتقدمة للحلول البرمجية، الأتمتة، ودعم الأنظمة</p>
     </header>
 
-    <!-- الأدوات المجانية -->
-    <h2 class="section-title">🌐 الأدوات والخدمات المجانية</h2>
+    <!-- الأدوات المجانية السريعة -->
+    <h2 class="section-title">🌐 أدوات برمجية مجانية</h2>
     <div class="grid">
         
         <div class="card">
-            <span class="badge-free">أداة تفاعلية</span>
+            <span class="badge-free">أداة مجانية</span>
             <h3>📱 صانع أكواد QR</h3>
-            <p>اكتب أي رابط أو نص لتحويله لكود QR فوراً:</p>
-            <input type="text" id="qr-input" placeholder="ضع الرابط هنا...">
-            <button class="btn" onclick="generateQR()">توليد كود QR</button>
+            <p>تحويل الرابط أو النص إلى كود QR فوراً وبجودة عالية:</p>
+            <input type="text" id="qr-input" placeholder="ضع الرابط أو النص هنا...">
+            <button class="btn" onclick="generateQR()">توليد QR</button>
             <div id="qr-result"></div>
         </div>
 
         <div class="card">
-            <span class="badge-free">أداة تفاعلية</span>
-            <h3>🛡️ فاحص قوة كلمة المرور</h3>
-            <p>اكتب كلمة المرور لاختبار مدى أمانها:</p>
+            <span class="badge-free">أداة مجانية</span>
+            <h3>🛡️ فاحص قوة كلمات المرور</h3>
+            <p>اختبار مدى أمان وصعوبة اختراق كلمة المرور:</p>
             <input type="password" id="pass-input" oninput="checkPass()" placeholder="اكتب كلمة المرور...">
             <p id="pass-status" style="font-weight:bold; margin-top:10px;"></p>
         </div>
 
         <div class="card">
             <span class="badge-free">دليل مجاني</span>
-            <h3>🛠️ نصائح أمان وجوال سريعة</h3>
-            <p>• فعّل التحقق بخطوتين (2FA) في حساباتك.<br>• لا تفتح أي رابط يصلك من جهة غير معروفة.<br>• امسح الكاش من متصفحك دورياً لتسريع الجهاز.</p>
+            <h3>⚡ أوامر Termux الأساسية</h3>
+            <p>• تحديث الحزم: <code>pkg update && pkg upgrade</code><br>• تثبيت بايثون: <code>pkg install python git</code><br>• الصلاحيات: <code>termux-setup-storage</code></p>
         </div>
 
     </div>
 
-    <!-- الخدمات المدفوعة -->
-    <h2 class="section-title">💎 الخدمات الاحترافية المدفوعة</h2>
+    <!-- الخدمات المدفوعة الشاملة -->
+    <h2 class="section-title">💎 الخدمات البرمجية والتقنية الاحترافية</h2>
     
     <div class="grid">
         <div class="card">
-            <span class="badge-paid">خدمة مدفوعة</span>
-            <h3>🔐 تأمين واستعادة الحسابات (VIP)</h3>
-            <p>جلسة توجيه ودعم شخصي آمن لتأمين الحسابات واستعادتها دون مشاركة كلمة السر.</p>
+            <span class="badge-paid">خدمة احترافية</span>
+            <h3>💻 تطوير وتصحيح الأكواد (Python/Web)</h3>
+            <p>كتابة سكريبتات أتمتة مخصصة، تصميم صفحات مواقع تعريفية، وحل أخطاء الأكواد البرمجية بالكامل.</p>
         </div>
+
         <div class="card">
-            <span class="badge-paid">خدمة مدفوعة</span>
-            <h3>📱 الدعم الفني والفحص عن بُعد</h3>
-            <p>جلسة استشارية وتنظيف نظام الجوال وتسريعه بأمان.</p>
+            <span class="badge-paid">خدمة احترافية</span>
+            <h3>🤖 برمجة وتجهيز البوتات (Bots)</h3>
+            <p>تصميم وبناء بوتات تليجرام ودسكورد مخصصة للرد التلقائي، الإدارة، ونشر المحتوى الذكي.</p>
         </div>
+
         <div class="card">
-            <span class="badge-paid">خدمة مدفوعة</span>
-            <h3>📄 تصميم بطاقات QR وسير ذاتية</h3>
-            <p>تصميم سير ذاتية احترافية وكروت أعمال رقمية مودرن.</p>
+            <span class="badge-paid">خدمة احترافية</span>
+            <h3>🛠️ تهيئة ودعم بيئات العمل (Termux/Linux)</h3>
+            <p>إعداد بيئة Termux بالكامل، حزم السكريبتات، حل مشاكل المكتبات وأخطاء Syntax عن بُعد.</p>
+        </div>
+
+        <div class="card">
+            <span class="badge-paid">خدمة احترافية</span>
+            <h3>🌐 تصميم وإنشاء المواقع (Landing Pages)</h3>
+            <p>إنشاء مواقع شخصية وتعريفية واستضافة الأكواد والمشاريع عبر GitHub Pages بأعلى كفاءة.</p>
         </div>
     </div>
 
-    <!-- نموذج الطلب الآمن والقانوني -->
+    <!-- نموذج الطلب المباشر -->
     <div class="card" style="margin-top:25px;">
-        <h3>📩 نموذج طلب خدمة احترافية</h3>
-        <p style="font-size:0.85rem; color:#8b949e; margin-bottom:10px;">يرجى تعبئة النموذج لتواصل معكم وترتيب جلسة الدعم الفني.</p>
+        <h3>📩 طلب خدمة أو استشارة برمجية</h3>
+        <p style="font-size:0.85rem; color:#8b949e; margin-bottom:10px;">عَبّ البيانات وسنتواصل معك فوراً لتنفيذ مشروعك أو حل مشكلتك التقنية.</p>
         
         <form action="https://formsubmit.co/amirx7662@gmail.com" method="POST">
-            <input type="text" name="name" placeholder="اسمك الكريم" required>
-            <input type="email" name="email" placeholder="بريدك الإلكتروني" required>
+            <input type="text" name="name" placeholder="الاسم الكريم" required>
+            <input type="email" name="email" placeholder="البريد الإلكتروني" required>
             <input type="tel" name="phone" placeholder="رقم الجوال / الواتساب للتواصل" required>
             
             <select name="service" required>
-                <option value="">اختر الخدمة المطلوبة...</option>
-                <option value="تأمين الحسابات">تأمين واستعادة الحسابات (VIP)</option>
-                <option value="الدعم الفني">الدعم الفني والفحص عن بُعد</option>
-                <option value="التصميم والسير الذاتية">تصميم بطاقات QR وسير ذاتية</option>
+                <option value="">اختر الخدمة المطلوب تنفيذها...</option>
+                <option value="تطوير وتصحيح الأكواد">تطوير وتصحيح الأكواد (Python/Web)</option>
+                <option value="برمجة البوتات">برمجة وتجهيز بوتات (Telegram / Discord)</option>
+                <option value="دعم Termux وLinux">تهيئة ودعم بيئات العمل (Termux/Linux)</option>
+                <option value="تصميم المواقع">تصميم وإنشاء مواقع تعريفية (Landing Page)</option>
             </select>
             
-            <input type="text" name="target_platform" placeholder="اسم الحساب / المنصة المراد دعمها (مثال: Snapchat, Instagram)">
-            <textarea name="details" rows="3" placeholder="توضيح طلبك أو المشكلة التي تواجها..." required></textarea>
+            <textarea name="details" rows="4" placeholder="اكتب تفاصيل المشروع أو الكود أو المشكلة التي تواجها..." required></textarea>
             
             <div class="checkbox-container">
                 <input type="checkbox" id="terms" required>
-                <label for="terms">أوافق على الشروط والأحكام وطلب جلسة الدعم الفني من منصة AmirXCA.</label>
+                <label for="terms">أوافق على طلب الخدمة والتواصل معي عبر الإيميل/الواتساب من منصة AmirXCA.</label>
             </div>
             
             <input type="hidden" name="_next" value="https://amirx7662-design.github.io/AmirXCA/">
             <input type="hidden" name="_captcha" value="false">
 
-            <button type="submit" class="btn" style="background-color:#238636;">إرسال الطلب فوراً 🚀</button>
+            <button type="submit" class="btn" style="background-color:#238636;">إرسال طلب الخدمة 🚀</button>
         </form>
     </div>
 
@@ -137,12 +150,11 @@
             var pass = document.getElementById('pass-input').value;
             var status = document.getElementById('pass-status');
             if(pass.length === 0) { status.innerHTML = ''; return; }
-            if(pass.length < 6) { status.style.color = '#f85149'; status.innerHTML = 'ضعيفة جداً ❌'; }
+            if(pass.length < 6) { status.style.color = '#f85149'; status.innerHTML = 'ضعيفة ❌'; }
             else if(pass.length < 10) { status.style.color = '#d29922'; status.innerHTML = 'متوسطة ⚠️'; }
-            else { status.style.color = '#3fb950'; status.innerHTML = 'قوية جداً ممتاز! ✅'; }
+            else { status.style.color = '#3fb950'; status.innerHTML = 'قوية جداً ✅'; }
         }
     </script>
 </body>
 </html>
-
 
