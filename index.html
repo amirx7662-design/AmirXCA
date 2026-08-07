@@ -5,107 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AmirXCA - الحلول والخدمات الرقمية</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            line-height: 1.6;
-            padding: 20px;
-        }
-        header {
-            text-align: center;
-            padding: 40px 10px;
-            background: linear-gradient(135deg, #1f6feb, #0969da);
-            border-radius: 12px;
-            color: #fff;
-            margin-bottom: 30px;
-        }
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        .section-title {
-            text-align: center;
-            margin: 30px 0 20px;
-            color: #58a6ff;
-            font-size: 1.8rem;
-            border-bottom: 2px solid #21262d;
-            padding-bottom: 10px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 10px;
-            padding: 20px;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #58a6ff;
-        }
-        .card h3 {
-            color: #f0f6fc;
-            margin-bottom: 10px;
-        }
-        .card p {
-            font-size: 0.95rem;
-            color: #8b949e;
-            margin-bottom: 15px;
-        }
-        .badge-free {
-            background-color: #238636;
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        .badge-paid {
-            background-color: #d29922;
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        .btn {
-            display: inline-block;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #1f6feb;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        .btn:hover {
-            background-color: #388bfd;
-        }
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            color: #8b949e;
-            border-top: 1px solid #21262d;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding: 15px; }
+        header { text-align: center; padding: 30px 10px; background: linear-gradient(135deg, #1f6feb, #0969da); border-radius: 12px; color: #fff; margin-bottom: 25px; }
+        header h1 { font-size: 2.2rem; margin-bottom: 8px; }
+        .section-title { text-align: center; margin: 30px 0 20px; color: #58a6ff; font-size: 1.6rem; border-bottom: 2px solid #21262d; padding-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; }
+        .card h3 { color: #f0f6fc; margin-bottom: 10px; }
+        .badge-free { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
+        .badge-paid { background-color: #d29922; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
+        
+        /* أدوات تفاعلية */
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; background-color: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 6px; }
+        .btn { display: block; width: 100%; text-align: center; padding: 12px; background-color: #1f6feb; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; margin-top: 10px; }
+        .btn:hover { background-color: #388bfd; }
+        #qr-result { text-align: center; margin-top: 15px; }
+        #qr-result img { border-radius: 8px; background: white; padding: 5px; }
+        
+        footer { text-align: center; margin-top: 40px; padding: 20px; color: #8b949e; border-top: 1px solid #21262d; }
     </style>
 </head>
 <body>
@@ -115,47 +33,79 @@
         <p>مستقبل البرمجيات والمواقع والحلول الرقمية والإلكترونية</p>
     </header>
 
-    <!-- الخدمات المجانية -->
-    <h2 class="section-title">🌐 الخدمات والأدوات المجانية</h2>
+    <!-- الأدوات المجانية التفاعلية -->
+    <h2 class="section-title">🌐 الأدوات والخدمات المجانية</h2>
     <div class="grid">
+        
+        <!-- أداة توليد QR -->
         <div class="card">
-            <span class="badge-free">مجاني</span>
-            <h3>📱 حلول وتوجيهات الجوال</h3>
-            <p>دليل إرشادي لتسريع الأجهزة، حل مشاكل البطارية، وفحص السلامة قبل شراء الأجهزة المستعملة.</p>
+            <span class="badge-free">أداة تفاعلية</span>
+            <h3>📱 صانع أكواد QR</h3>
+            <p>اكتب أي رابط أو نص لتحويله لكود QR فوراً:</p>
+            <input type="text" id="qr-input" placeholder="ضع الرابط هنا...">
+            <button class="btn" onclick="generateQR()">توليد كود QR</button>
+            <div id="qr-result"></div>
         </div>
+
+        <!-- أداة فحص كلمة المرور -->
         <div class="card">
-            <span class="badge-free">مجاني</span>
-            <h3>🛡️ الأمان والحماية الرقمية</h3>
-            <p>خطوات تأمين حساباتك بالتأكيد الثنائي (2FA) وإرشادات اكتشاف الروابط المزيفة وتفادي والاحتيال.</p>
+            <span class="badge-free">أداة تفاعلية</span>
+            <h3>🛡️ فاحص قوة كلمة المرور</h3>
+            <p>اكتب كلمة المرور لاختبار مدى أمانها:</p>
+            <input type="password" id="pass-input" oninput="checkPass()" placeholder="اكتب كلمة المرور...">
+            <p id="pass-status" style="font-weight:bold; margin-top:10px;"></p>
         </div>
+
+        <!-- شروحات سريعة -->
         <div class="card">
-            <span class="badge-free">مجاني</span>
-            <h3>🛠️ أدوات رقمية سريعة</h3>
-            <p>مجموعة أدوات خفيفة متوفرة عبر الموقع لقياس قوة كلمات المرور وتوليد أكواد QR آمنة.</p>
+            <span class="badge-free">دليل مجاني</span>
+            <h3>🛠️ نصائح أمان وجوال سريعة</h3>
+            <p>• فعّل التحقق بخطوتين (2FA) في كل حساباتك.<br>• لا تفتح أي رابط يصلك من رقم غريب.<br>• امسح الكاش من متصفحك دورياً لتسريع الجهاز.</p>
         </div>
+
     </div>
 
-    <!-- الخدمات المدفوعة -->
-    <h2 class="section-title">💎 الخدمات الاحترافية المدفوعة</h2>
+    <!-- الخدمات المدفوعة ونموذج الطلب -->
+    <h2 class="section-title">💎 طلب الخدمات الاحترافية المدفوعة</h2>
+    
     <div class="grid">
         <div class="card">
             <span class="badge-paid">خدمة مدفوعة</span>
             <h3>🔐 تأمين واستعادة الحسابات (VIP)</h3>
-            <p>دعم شخصي مباشر لتأمين حساباتك السوشيال ميديا بشكل حصري واستعادة الحسابات المتضررة.</p>
-            <a href="mailto:amirx7662@gmail.com?subject=طلب%20خدمة:%20تأمين%20واستعادة%20الحسابات&body=مرحباً%20AmirXCA،%0A%0Aأرغب%20في%20طلب%20خدمة%20تأمين%20واستعادة%20الحسابات.%0A%0Aتفاصيل%20الطلب:" class="btn">اطلب عبر البريد</a>
+            <p>دعم شخصي مباشر لتأمين حساباتك واستعادة الحسابات المتضررة.</p>
         </div>
         <div class="card">
             <span class="badge-paid">خدمة مدفوعة</span>
             <h3>📱 الدعم الفني والفحص عن بُعد</h3>
-            <p>جلسة استشارية وتنظيف شامل لنظام جوالك وتوجيهك لأفضل الخيارات التقنية حسب احتياجك.</p>
-            <a href="mailto:amirx7662@gmail.com?subject=طلب%20خدمة:%20الدعم%20الفني%20والفحص&body=مرحباً%20AmirXCA،%0A%0Aأرغب%20في%20طلب%20خدمة%20الدعم%20الفني%20وفحص%20الجوال.%0A%0Aتفاصيل%20المشكلة/الجوال:" class="btn">اطلب عبر البريد</a>
+            <p>جلسة استشارية وتنظيف شامل ونقل بياناتك بأمان.</p>
         </div>
         <div class="card">
             <span class="badge-paid">خدمة مدفوعة</span>
             <h3>📄 تصميم بطاقات QR وسير ذاتية</h3>
-            <p>تصميم بطاقات أعمال رقمية حديثة وكروت QR مخصصة وسير ذاتية احترافية متوافقة مع أنظمة التوظيف.</p>
-            <a href="mailto:amirx7662@gmail.com?subject=طلب%20خدمة:%20التصميم%20والسير%20الذاتية&body=مرحباً%20AmirXCA،%0A%0Aأرغب%20في%20طلب%20خدمة%20تصميم%20(سيرة%20ذاتية/بطاقة%20QR).%0A%0Aالتفاصيل:" class="btn">اطلب عبر البريد</a>
+            <p>تصميم سير ذاتية احترافية وكروت أعمال رقمية مودرن.</p>
         </div>
+    </div>
+
+    <!-- نموذج المراسلة المباشر -->
+    <div class="card" style="margin-top:25px;">
+        <h3>📩 اطلب أي خدمة مدفوعة مباشرة</h3>
+        <form action="https://formsubmit.co/amirx7662@gmail.com" method="POST">
+            <input type="text" name="name" placeholder="اسمك الكريم" required>
+            <input type="email" name="email" placeholder="بريدك الإلكتروني للتواصل" required>
+            <select name="service" required>
+                <option value="">اختر الخدمة المطلوب شراءها...</option>
+                <option value="تأمين الحسابات">تأمين واستعادة الحسابات (VIP)</option>
+                <option value="الدعم الفني">الدعم الفني والفحص عن بُعد</option>
+                <option value="التصميم والسير الذاتية">تصميم بطاقات QR وسير ذاتية</option>
+            </select>
+            <textarea name="message" rows="4" placeholder="تفاصيل الطلب أو المشكلة..." required></textarea>
+            
+            <!-- تحويل التوجيه بعد الإرسال -->
+            <input type="hidden" name="_next" value="https://amirx7662-design.github.io/AmirXCA/">
+            <input type="hidden" name="_captcha" value="false">
+
+            <button type="submit" class="btn" style="background-color:#238636;">إرسال الطلب فوراً 🚀</button>
+        </form>
     </div>
 
     <footer>
@@ -163,6 +113,25 @@
         <p>للتواصل المباشر: amirx7662@gmail.com</p>
     </footer>
 
+    <script>
+        function generateQR() {
+            var text = document.getElementById('qr-input').value;
+            var res = document.getElementById('qr-result');
+            if(text.trim() === '') {
+                alert('من فضلك اكتب رابط أو نص أولاً');
+                return;
+            }
+            res.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(text) + '" alt="QR Code">';
+        }
+
+        function checkPass() {
+            var pass = document.getElementById('pass-input').value;
+            var status = document.getElementById('pass-status');
+            if(pass.length === 0) { status.innerHTML = ''; return; }
+            if(pass.length < 6) { status.style.color = '#f85149'; status.innerHTML = 'ضعيفة جداً ❌'; }
+            else if(pass.length < 10) { status.style.color = '#d29922'; status.innerHTML = 'متوسطة ⚠️'; }
+            else { status.style.color = '#3fb950'; status.innerHTML = 'قوية جداً ممتاز! ✅'; }
+        }
+    </script>
 </body>
 </html>
-
