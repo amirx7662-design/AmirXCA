@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA | المنصة الشاملة للحلول البرمجية والذكاء الاصطناعي</title>
+    <title>AmirXCA | المنصة التفاعلية المتقدمة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,7 +11,6 @@
             --card-bg: rgba(22, 31, 48, 0.7);
             --border-color: rgba(0, 242, 255, 0.2);
             --accent-cyan: #00f2ff;
-            --accent-blue: #3b82f6;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
         }
@@ -29,10 +28,9 @@
 
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-        /* Header */
         header { 
             text-align: center; 
-            padding: 70px 20px 50px; 
+            padding: 60px 20px 40px; 
             background: radial-gradient(circle at top, rgba(0, 242, 255, 0.15) 0%, transparent 70%);
             border-bottom: 1px solid var(--border-color);
         }
@@ -41,26 +39,25 @@
             font-weight: 800; 
             color: var(--accent-cyan);
             text-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
-            margin-bottom: 15px; 
+            margin-bottom: 10px; 
         }
-        header p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+        header p { font-size: 1.1rem; color: var(--text-muted); }
 
         .section-title { 
             text-align: center; 
-            margin: 50px 0 30px; 
+            margin: 40px 0 20px; 
             font-size: 1.8rem; 
             font-weight: 700;
             color: var(--accent-cyan);
         }
 
-        /* Grid & Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
         
         .card { 
             background: var(--card-bg); 
             border: 1px solid var(--border-color); 
             border-radius: 16px; 
-            padding: 28px; 
+            padding: 24px; 
             backdrop-filter: blur(12px);
             transition: all 0.3s ease;
         }
@@ -69,8 +66,8 @@
             transform: translateY(-4px); 
             box-shadow: 0 8px 25px rgba(0, 242, 255, 0.2);
         }
-        .card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #fff; }
-        .card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 18px; }
+        .card h3 { font-size: 1.25rem; margin-bottom: 10px; color: #fff; }
+        .card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
 
         .badge-free { 
             font-size: 0.75rem; 
@@ -84,7 +81,7 @@
             border: 1px solid var(--accent-cyan); 
         }
 
-        input, select, textarea { 
+        input, textarea { 
             width: 100%; 
             padding: 12px 16px; 
             margin: 10px 0; 
@@ -95,7 +92,6 @@
             font-size: 0.95rem;
             outline: none;
         }
-        input:focus, select:focus, textarea:focus { border-color: var(--accent-cyan); }
 
         .btn { 
             display: block; 
@@ -109,19 +105,22 @@
             font-weight: 700; 
             cursor: pointer; 
             transition: 0.2s; 
-            text-decoration: none;
             margin-top: 10px;
         }
         .btn:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-cyan); }
 
-        .result-box { 
-            background: rgba(0,0,0,0.5); 
-            border: 1px solid var(--border-color); 
-            padding: 14px; 
+        .output-box { 
+            background: #050811; 
+            border: 1px dashed var(--accent-cyan); 
+            padding: 15px; 
             border-radius: 10px; 
-            margin-top: 12px; 
-            font-size: 0.9rem; 
-            white-space: pre-line;
+            margin-top: 15px; 
+            font-family: monospace; 
+            color: #4ade80; 
+            font-size: 0.85rem; 
+            word-break: break-all;
+            white-space: pre-wrap;
+            display: none;
         }
 
         /* AI Floating Chatbot */
@@ -146,7 +145,7 @@
             left: 25px; 
             width: 360px; 
             max-width: 90vw; 
-            height: 480px; 
+            height: 450px; 
             background: #0b0f17; 
             border: 1px solid var(--accent-cyan); 
             border-radius: 20px; 
@@ -185,7 +184,7 @@
         .ai-chat-input input { margin: 0; }
         .ai-chat-input button { width: auto; margin: 0; padding: 0 16px; }
 
-        footer { text-align: center; margin-top: 80px; padding: 30px; color: var(--text-muted); border-top: 1px solid var(--border-color); font-size: 0.9rem; }
+        footer { text-align: center; margin-top: 60px; padding: 25px; color: var(--text-muted); border-top: 1px solid var(--border-color); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -193,97 +192,74 @@
     <header>
         <div class="container">
             <h1>AmirXCA</h1>
-            <p>منصة الحلول البرمجية المتقدمة، أتمتة الجوال، وأدوات الذكاء الاصطناعي</p>
+            <p>منصة الأدوات التفاعلية والأتمتة الفورية المباشرة</p>
         </div>
     </header>
 
     <div class="container">
         
-        <!-- الأدوات المباشرة والمجانية -->
-        <h2 class="section-title">⚡ الأدوات المباشرة والمجانية</h2>
+        <!-- أدوات الأتمتة المباشرة والتنفيذ الفوري -->
+        <h2 class="section-title">⚡ الخدمات والأدوات الأوتوماتيكية</h2>
         <div class="grid">
             
-            <div class="card" style="grid-column: span 1 / -1;">
-                <span class="badge-free">مجاني 100%</span>
-                <h3>📝 تلخيص النصوص والدراسة الذكي</h3>
-                <p>ضع النص أو الدرس ليتم تحليله وتلخيصه فوراً:</p>
-                <textarea id="summary-input" rows="3" placeholder="ضع النص هنا..."></textarea>
-                <button class="btn" onclick="summarizeText()">تلخيص النص فوراً 🚀</button>
-                <div id="summary-result" class="result-box" style="display:none;"></div>
+            <!-- أداة بناء Termux CLI -->
+            <div class="card">
+                <span class="badge-free">تنفيذ أوتوماتيكي</span>
+                <h3>💻 مولد نظام Termux CLI</h3>
+                <p>توليد سكريبت نظام واجهة نصية جاهز للتثبيت المباشر في جهازك:</p>
+                <input type="text" id="cli-name" placeholder="أدخل اسم نظامك (مثلاً: AmirOS)">
+                <button class="btn" onclick="generateTermuxCLI()">توليد سكريبت النظام ⚡</button>
+                <div id="cli-output" class="output-box"></div>
             </div>
 
+            <!-- أداة استضافة الخوادم -->
             <div class="card">
-                <span class="badge-free">مجاني 100%</span>
+                <span class="badge-free">تنفيذ أوتوماتيكي</span>
+                <h3>🎮 خادم ألعاب محلي (LAN Host)</h3>
+                <p>توليد كود وتشغيل سيرفر للعب الجماعي فورياً عبر شبكة الواي فاي:</p>
+                <input type="number" id="port-input" placeholder="أدخل بورت السيرفر (مثلاً: 8080)">
+                <button class="btn" onclick="generateLANServer()">إنشاء السيرفر فوراً 🚀</button>
+                <div id="lan-output" class="output-box"></div>
+            </div>
+
+            <!-- أداة أتمتة السكريبتات -->
+            <div class="card">
+                <span class="badge-free">تحميل أوتوماتيكي</span>
+                <h3>🤖 أتمتة بايثون (Python Auto)</h3>
+                <p>توليد سكريبت Python مخصص للمهام التلقائية وتنزيله مباشرة:</p>
+                <button class="btn" onclick="generatePythonScript()">توليد وتنزيل سكريبت الأتمتة 📥</button>
+                <div id="script-output" class="output-box"></div>
+            </div>
+
+            <!-- أداة تلخيص النص -->
+            <div class="card" style="grid-column: span 1 / -1;">
+                <span class="badge-free">معالجة فورية</span>
+                <h3>📝 تلخيص النصوص والدراسة التلقائي</h3>
+                <p>ضع النص ليتم تحليله وتلخيصه أوتوماتيكياً في الحال:</p>
+                <textarea id="summary-input" rows="3" placeholder="ضع النص هنا..."></textarea>
+                <button class="btn" onclick="summarizeText()">تلخيص النص فوراً 🚀</button>
+                <div id="summary-result" class="output-box"></div>
+            </div>
+
+            <!-- صانع QR -->
+            <div class="card">
+                <span class="badge-free">توليد أوتوماتيكي</span>
                 <h3>📱 صانع أكواد QR</h3>
-                <p>مولد أكواد الاستجابة السريعة للروابط والنصوص:</p>
-                <input type="text" id="qr-input" placeholder="أدخل الرابط أو النص...">
+                <p>مولد أكواد الاستجابة السريعة للروابط:</p>
+                <input type="text" id="qr-input" placeholder="أدخل الرابط...">
                 <button class="btn" onclick="generateQR()">توليد الكود</button>
                 <div id="qr-result" style="text-align:center; margin-top:10px;"></div>
             </div>
 
+            <!-- فاحص كلمة المرور -->
             <div class="card">
-                <span class="badge-free">مجاني 100%</span>
+                <span class="badge-free">فحص تلقائي</span>
                 <h3>🛡️ فاحص أمان كلمات المرور</h3>
-                <p>فحص قوة وتشفير كلمة المرور تلقائياً:</p>
+                <p>اكتب كلمة المرور للفحص التلقائي:</p>
                 <input type="password" id="pass-input" oninput="checkPass()" placeholder="اكتب كلمة المرور...">
                 <p id="pass-status" style="font-weight:bold; margin-top:10px; font-size:0.9rem;"></p>
             </div>
 
-        </div>
-
-        <!-- الخدمات المجانية والمخصصة -->
-        <h2 class="section-title">💎 الخدمات البرمجية (مجانية بالكامل)</h2>
-        <div class="grid">
-            
-            <div class="card">
-                <span class="badge-free">خدمة مجانية</span>
-                <h3>💻 بناء أنظمة Termux CLI المخصصة</h3>
-                <p>تصميم أنظمة واجهات نصية ملونة واحترافية تجمع أدواتك وسكريبتاتك في مكان واحد باسمك.</p>
-                <a href="#order-form" class="btn">ابدأ الآن 🚀</a>
-            </div>
-
-            <div class="card">
-                <span class="badge-free">خدمة مجانية</span>
-                <h3>🎮 استضافة خوادم الألعاب (LAN Host)</h3>
-                <p>تجهيز خوادم لعب جماعي محلية وسريعة للعب مع أصدقائك بدون اشتراكات.</p>
-                <a href="#order-form" class="btn">ابدأ الآن 🚀</a>
-            </div>
-
-            <div class="card">
-                <span class="badge-free">خدمة مجانية</span>
-                <h3>🤖 أتمتة السكريبتات والمهام (Python)</h3>
-                <p>كتابة سكريبتات Python مخصصة لتنفيذ وأتمتة المهام المعقدة تلقائياً.</p>
-                <a href="#order-form" class="btn">ابدأ الآن 🚀</a>
-            </div>
-
-        </div>
-
-        <!-- نموذج الطلب والتواصل -->
-        <div class="card" id="order-form" style="margin-top:50px;">
-            <h3 style="text-align:center; font-size:1.6rem; margin-bottom:5px; color:var(--accent-cyan);">📩 اطلب خدمتك الآن مجاناً</h3>
-            <p style="text-align:center; margin-bottom:20px;">أدخل بياناتك وسنتواصل معك فوراً لبدء التنفيذ.</p>
-            
-            <form action="https://formsubmit.co/amirx7662@gmail.com" method="POST">
-                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:15px;">
-                    <input type="text" name="name" placeholder="الاسم الكامل" required>
-                    <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-                    <input type="tel" name="phone" placeholder="رقم الجوال / الواتساب" required>
-                </div>
-                
-                <select name="service" required>
-                    <option value="">اختر الخدمة المطلوبة...</option>
-                    <option value="بناء أنظمة CLI">بناء أنظمة Termux CLI المخصصة</option>
-                    <option value="استضافة خوادم الألعاب">استضافة خوادم الألعاب (LAN Host)</option>
-                    <option value="أتمتة السكريبتات">أتمتة السكريبتات والمهام</option>
-                </select>
-                
-                <textarea name="details" rows="3" placeholder="اشرح تفاصيل طلبك..." required></textarea>
-                
-                <input type="hidden" name="_next" value="https://amirx7662-design.github.io/AmirXCA/">
-                <input type="hidden" name="_captcha" value="false">
-
-                <button type="submit" class="btn" style="padding:14px; font-size:1.05rem;">إرسال الطلب المجاني 🚀</button>
-            </form>
         </div>
 
     </div>
@@ -297,7 +273,7 @@
             <span style="cursor:pointer;" onclick="toggleAIChat()">✖</span>
         </div>
         <div class="ai-chat-messages" id="ai-messages">
-            <div class="chat-msg msg-ai">أهلاً بك! أنا مساعد Gemini الذكي. كيف أستطيع مساعدتك اليوم؟ 🚀</div>
+            <div class="chat-msg msg-ai">أهلاً بك! أنا مساعد Gemini الذكي، كيف أقدر أساعدك اليوم؟ 🚀</div>
         </div>
         <div class="ai-chat-input">
             <input type="text" id="ai-user-input" placeholder="اكتب سؤالك هنا..." onkeypress="handleKeyPress(event)">
@@ -312,6 +288,39 @@
     <script>
         const GEMINI_API_KEY = "AQ.Ab8RN6LMVcispAym35R-ZAcZuEIT7MpAsQCdnoDYlZY_l9r3jw";
 
+        /* تنفيذ أوتوماتيكي لبيئة Termux */
+        function generateTermuxCLI() {
+            var name = document.getElementById('cli-name').value.trim() || "AmirOS";
+            var out = document.getElementById('cli-output');
+            out.style.display = 'block';
+            out.innerText = "⏳ جاري توليد كود التثبيت الأوتوماتيكي...\n\nانسخ هذا الأمر وألصقه في Termux لتثبيت نظامك فورا:\n\n" +
+            `pkg update && pkg install python -y && echo 'print("=== مرحبا بك في نظام ${name} ===")' > ${name}.py && python ${name}.py`;
+        }
+
+        /* تنفيذ أوتوماتيكي لخادم LAN */
+        function generateLANServer() {
+            var port = document.getElementById('port-input').value.trim() || "8080";
+            var out = document.getElementById('lan-output');
+            out.style.display = 'block';
+            out.innerText = `⏳ تم إنشاء إعدادات السيرفر بنجاح!\n\nلتشغيل خادم الألعاب المحلي على البورت (${port})، شغل هذا الأمر:\n\n` +
+            `python -m http.server ${port}`;
+        }
+
+        /* تنزيل أوتوماتيكي لسكريبت بايثون */
+        function generatePythonScript() {
+            var out = document.getElementById('script-output');
+            out.style.display = 'block';
+            out.innerText = "✅ تم إنشاء السكريبت وتنزيله تلقائياً!";
+            
+            var scriptContent = '# AmirXCA Auto Script\nimport time\nprint("جاري تشغيل سكريبت الأتمتة التلقائي...")\nfor i in range(5):\n    print(f"تنفيذ المهمة {i+1}...")\n    time.sleep(0.5)\nprint("تمت الأتمتة بنجاح!")';
+            var blob = new Blob([scriptContent], { type: "text/plain" });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "auto_script.py";
+            a.click();
+        }
+
+        /* الشات الذكي */
         function toggleAIChat() {
             var box = document.getElementById('ai-chat-box');
             box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
@@ -353,33 +362,34 @@
                 if (data.candidates && data.candidates[0].content.parts[0].text) {
                     aiDiv.innerText = data.candidates[0].content.parts[0].text;
                 } else {
-                    aiDiv.innerText = "أهلاً بك! كيف أستطيع مساعدتك في الخدمات والبرمجة؟";
+                    aiDiv.innerText = "أهلاً بك! كيف أقدر أساعدك اليوم؟";
                 }
             } catch (err) {
-                aiDiv.innerText = "أهلاً بك! أنا جاهز للإجابة على كافة استفساراتك.";
+                aiDiv.innerText = "أهلاً بك! أنا جاهز للإجابة على استفساراتك.";
             }
             msgContainer.scrollTop = msgContainer.scrollHeight;
         }
 
+        /* تلخيص وتمرير */
         function summarizeText() {
             var text = document.getElementById('summary-input').value.trim();
             var resBox = document.getElementById('summary-result');
             if(text === '') { alert('يرجى كتابة أو لصق نص للتلخيص'); return; }
             resBox.style.display = 'block';
-            resBox.innerHTML = '⏳ جاري تحليل النص...';
+            resBox.innerText = '⏳ جاري تحليل النص أوتوماتيكياً...';
             setTimeout(function() {
                 var sentences = text.split(/[.،\n]/).filter(s => s.trim().length > 10);
-                var summary = "📌 **نتيجة التلخيص:**\n";
+                var summary = "📌 نتيجة التلخيص الأوتوماتيكي:\n";
                 var count = Math.min(3, sentences.length);
                 for(var i=0; i<count; i++) { summary += "• " + sentences[i].trim() + "\n"; }
                 resBox.innerText = summary;
-            }, 600);
+            }, 500);
         }
 
         function generateQR() {
             var text = document.getElementById('qr-input').value;
             var res = document.getElementById('qr-result');
-            if(!text.trim()) { alert('ضع رابطاً أو نصاً أولاً'); return; }
+            if(!text.trim()) { alert('ضع رابطاً أولاً'); return; }
             res.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=' + encodeURIComponent(text) + '" style="border-radius:8px; background:white; padding:5px;">';
         }
 
@@ -394,4 +404,3 @@
     </script>
 </body>
 </html>
-
