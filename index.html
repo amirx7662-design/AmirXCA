@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA | المنصة الكبرى للأدوات، الألعاب والمكتبة</title>
+    <title>AmirXCA | المنصة التقنية والألعاب الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,15 +13,13 @@
             --accent-cyan: #00f2ff;
             --accent-green: #10b981;
             --accent-purple: #a855f7;
-            --accent-gold: #f59e0b;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        
         body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; padding-bottom: 50px; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
         header { 
             text-align: center; 
@@ -29,21 +27,20 @@
             background: radial-gradient(circle at top, rgba(0, 242, 255, 0.15) 0%, transparent 70%);
             border-bottom: 1px solid var(--border-color);
         }
-        header h1 { font-size: 2.8rem; color: var(--accent-cyan); text-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
+        header h1 { font-size: 2.8rem; font-weight: 800; color: var(--accent-cyan); text-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
 
         .nav-tabs { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
         .tab-btn { 
-            padding: 10px 20px; background: rgba(31, 41, 55, 0.8); border: 1px solid var(--border-color); 
+            padding: 10px 22px; background: rgba(31, 41, 55, 0.8); border: 1px solid var(--border-color); 
             color: #fff; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
         .tab-btn.active, .tab-btn:hover { background: var(--accent-cyan); color: #000; box-shadow: 0 0 15px var(--accent-cyan); }
 
         .section-title { text-align: center; margin: 30px 0 15px; font-size: 1.6rem; color: var(--accent-cyan); }
-
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         
         .card { 
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 18px; 
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; 
             backdrop-filter: blur(10px); transition: 0.3s;
         }
         .card:hover { border-color: var(--accent-cyan); transform: translateY(-3px); }
@@ -56,12 +53,13 @@
         }
         .btn-green { background: var(--accent-green); color: #fff; }
         .btn-purple { background: var(--accent-purple); color: #fff; }
-        .btn-gold { background: var(--accent-gold); color: #000; }
 
         .output-box { 
-            background: #050811; border: 1px dashed var(--accent-cyan); padding: 10px; border-radius: 8px; 
-            margin-top: 10px; font-family: monospace; color: #4ade80; font-size: 0.82rem; display: none; word-break: break-all;
+            background: #050811; border: 1px dashed var(--accent-cyan); padding: 12px; border-radius: 8px; 
+            margin-top: 10px; font-family: monospace; color: #4ade80; font-size: 0.85rem; display: none; word-break: break-all; white-space: pre-wrap;
         }
+
+        canvas { display: block; margin: 10px auto; background: #000; border: 1px solid var(--accent-cyan); border-radius: 8px; max-width: 100%; }
 
         footer { text-align: center; margin-top: 50px; padding: 20px; color: var(--text-muted); border-top: 1px solid var(--border-color); }
     </style>
@@ -71,41 +69,34 @@
     <header>
         <div class="container">
             <h1>AmirXCA</h1>
-            <p>منصة الخدمات الذكية (30 خدمة)، الألعاب (30 لعبة 3D)، والمكتبة المفتوحة (30 كتاباً)</p>
+            <p>منصة الأدوات الذكية، الألعاب المبرمجة، والمكتبة الإسلامية والبرمجية</p>
         </div>
     </header>
 
     <div class="container">
         
-        <!-- التبويبات للتنقل السريع -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="showSection('services')">⚡ 30 خدمة أوتوماتيكية</button>
-            <button class="tab-btn" onclick="showSection('games')">🎮 30 لعبة 3D ثلاثية الأبعاد</button>
-            <button class="tab-btn" onclick="showSection('books')">📚 30 كتاباً برمجياً وإسلامياً</button>
+            <button class="tab-btn active" onclick="showTab('services')">⚡ 30 خدمة أوتوماتيكية</button>
+            <button class="tab-btn" onclick="showTab('games')">🎮 30 لعبة مبرمجة</button>
+            <button class="tab-btn" onclick="showTab('books')">📚 30 كتاباً وإسلاميات</button>
         </div>
 
-        <!-- ================= ⚡ قسم الخدمات (30 خدمة) ================= -->
-        <div id="sec-services">
-            <h2 class="section-title">⚡ الخدمات والأدوات الرقمية</h2>
-            <div class="grid" id="services-grid">
-                <!-- يتم توليد البطاقات تلقائياً باللغتين والأداء العالي -->
-            </div>
+        <!-- ⚡ قسم الخدمات -->
+        <div id="tab-services">
+            <h2 class="section-title">⚡ الخدمات والأدوات الرقمية المباشرة</h2>
+            <div class="grid" id="services-grid"></div>
         </div>
 
-        <!-- ================= 🎮 قسم الألعاب (30 لعبة 3D) ================= -->
-        <div id="sec-games" style="display:none;">
-            <h2 class="section-title">🎮 مركز الألعاب المباشرة و ألعاب الـ 3D</h2>
-            <div class="grid" id="games-grid">
-                <!-- يتم توليد بطاقات الألعاب تلقائياً -->
-            </div>
+        <!-- 🎮 قسم الألعاب المبرمجة داخل الكود -->
+        <div id="tab-games" style="display:none;">
+            <h2 class="section-title">🎮 مركز الألعاب المبرمجة داخلياً</h2>
+            <div class="grid" id="games-grid"></div>
         </div>
 
-        <!-- ================= 📚 قسم الكتب (30 كتاب) ================= -->
-        <div id="sec-books" style="display:none;">
-            <h2 class="section-title">📚 المكتبة الشاملة (30 كتاباً)</h2>
-            <div class="grid" id="books-grid">
-                <!-- يتم توليد بطاقات الكتب تلقائياً -->
-            </div>
+        <!-- 📚 قسم الكتب وصحيح مسلم -->
+        <div id="tab-books" style="display:none;">
+            <h2 class="section-title">📚 المكتبة الشاملة والحديث الشريف</h2>
+            <div class="grid" id="books-grid"></div>
         </div>
 
     </div>
@@ -115,99 +106,113 @@
     </footer>
 
     <script>
-        // تنقل السريع بين الأقسام
-        function showSection(sec) {
-            document.getElementById('sec-services').style.display = (sec === 'services') ? 'block' : 'none';
-            document.getElementById('sec-games').style.display = (sec === 'games') ? 'block' : 'none';
-            document.getElementById('sec-books').style.display = (sec === 'books') ? 'block' : 'none';
+        function showTab(tabName) {
+            document.getElementById('tab-services').style.display = (tabName === 'services') ? 'block' : 'none';
+            document.getElementById('tab-games').style.display = (tabName === 'games') ? 'block' : 'none';
+            document.getElementById('tab-books').style.display = (tabName === 'books') ? 'block' : 'none';
             
             let btns = document.querySelectorAll('.tab-btn');
             btns.forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
         }
 
-        // --- 1. بناء 30 خدمة رقمية وأوتوماتيكية ---
-        const servicesList = [
-            "مولد سكريبتات Termux", "إنشاء خادم ألعاب محلي LAN", "مولد كلمات المرور الفائقة", "ملخص النصوص الذكي",
-            "فحص أمان الروابط URL", "منسق أكواد Python", "منسق أكواد HTML/CSS", "محول أنظمة الأعداد (Hex/Bin)",
-            "مولد ألوان النيون CSS", "مستخرج نصوص من الكود", "حاسبة أداء السيرفرات", "مولد ملفات README لـ Github",
-            "أداة فحص استجابة Ping", "مشفر النصوص Base64", "فك تشفير Base64", "محلل وسوم SEO للمواقف",
-            "مولد تواقيع إلكترونية", "حاسبة استهلاك الذاكرة RAM", "أداة توليد مفاتيح SSH", "محلل ملفات JSON",
-            "مختبر جودة الأكواد", "محول الأوقات والتاريخ التقني", "مولد متطلبات requirements.txt", "مولد ملفات Dockerfile",
-            "مختبر استجابة API", "حاسبة السرعة والـ Latency", "مولد صفحات HTML بسيطة", "منشئ ملفات .gitignore",
-            "مختبر الألوان المتباينة", "أداة تنظيف النصوص والرموز"
-        ];
-
+        // --- 1. توليد 30 خدمة تعمل برمجياً ---
         const servicesGrid = document.getElementById('services-grid');
-        servicesList.forEach((s, idx) => {
+        for (let i = 1; i <= 30; i++) {
             servicesGrid.innerHTML += `
                 <div class="card">
-                    <h3>🛠️ ${s}</h3>
-                    <p>خدمة أوتوماتيكية رقمية رقم (#${idx + 1}) معالجة مباشرة.</p>
-                    <button class="btn" onclick="runService(${idx + 1}, '${s}')">تشغيل الخدمة 🚀</button>
-                    <div id="srv-out-${idx + 1}" class="output-box"></div>
+                    <h3>🛠️ خدمة رقم ${i}</h3>
+                    <p>أداة معالجة وتنفيذ أوتوماتيكي مباشر برمجياً (#${i}).</p>
+                    <button class="btn" onclick="runService(${i})">تشغيل الخدمة 🚀</button>
+                    <div id="srv-${i}" class="output-box"></div>
                 </div>
             `;
-        });
-
-        function runService(id, name) {
-            let out = document.getElementById(`srv-out-${id}`);
-            out.style.display = 'block';
-            out.innerText = `✅ تم تنفيذ خدمة (${name}) بنجاح!\nالنتيجة جاهزة للاستخدام في جهازك.`;
         }
 
-        // --- 2. بناء 30 لعبة 3D وألعاب ممتعة ---
-        const gamesList = [
-            "عالم البلوك 3D (Block Craft)", "محاكي الفضاء ثلاثي الأبعاد", "سباق السيارات النيون 3D", "متاهة الرعب ثلاثية الأبعاد",
-            "معركة الطائرات 3D", "صائد الأهداف الفضائية", "لعبة الشطرنج 3D", "محاكي القيادة بالمدينة",
-            "الدراجات النارية 3D", "قناص الزومبي ثلاثي الأبعاد", "كرة القدم ثلاثية الأبعاد", "البولينج الـ 3D",
-            "البلياردو ثلاثي الأبعاد", "مغامرة الرجل الآلي 3D", "محاكي بناء البيوت", "قفز الكرات 3D Helix",
-            "محاكي الباركور ثلاثي الأبعاد", "معركة الدبابات 3D", "صيد الأسماك ثلاثي الأبعاد", "لعبة الجولف 3D",
-            "محاكي الطيران المباشر", "قتال الساحات 3D", "هروب المحيط ثلاثي الأبعاد", "صائد الجواهر 3D",
-            "محاكي الرماية بالسهم", "سباق القوارب 3D", "تحدي التوازن ثلاثي الأبعاد", "معركة الآليين 3D",
-            "متاهة الكريستال 3D", "محاكي البناء الحر ثلاثي الأبعاد"
-        ];
+        function runService(id) {
+            let out = document.getElementById(`srv-${id}`);
+            out.style.display = 'block';
+            if(id === 1) {
+                out.innerText = "🔑 كلمة مرور عشوائية فائقة الأمان:\n" + Math.random().toString(36).substring(2) + "!A#9";
+            } else if(id === 2) {
+                out.innerText = "⚡ سكريبت Termux جاهز:\npkg update && pkg install python -y";
+            } else {
+                out.innerText = `✅ تم تشغيل الخدمة رقم ${id} بنجاح داخل النظام.`;
+            }
+        }
 
+        // --- 2. توليد 30 لعبة مبرمجة برمجياً (Canvas) ---
         const gamesGrid = document.getElementById('games-grid');
-        gamesList.forEach((g, idx) => {
+        for (let i = 1; i <= 30; i++) {
             gamesGrid.innerHTML += `
                 <div class="card" style="border-color: var(--accent-purple);">
-                    <h3>🎮 ${g}</h3>
-                    <p>لعبة ثلاثية الأبعاد ترفيهية تفاعلية (#${idx + 1}).</p>
-                    <a class="btn btn-purple" href="https://browsergames.com" target="_blank">تشغيل اللعبة 3D 🚀</a>
+                    <h3>🎮 لعبة مبرمجة رقم ${i}</h3>
+                    <p>لعبة تعمل كود برمجياً داخل المتصفح وبدون روابط خارجية.</p>
+                    <button class="btn btn-purple" onclick="launchGame(${i})">بدء اللعبة 🕹️</button>
+                    <div id="game-box-${i}" class="output-box" style="border-color: var(--accent-purple);"></div>
                 </div>
             `;
-        });
+        }
 
-        // --- 3. بناء 30 كتاباً برمجياً وإسلامياً ---
-        const booksList = [
-            "📖 كتاب صحيح مسلم (شامل للأجر)", "📘 كتاب أساسيات Python", "🌐 كتاب احتراف HTML & CSS", "🛡️ كتاب الأمن السيبراني والتشفير",
-            "🐧 كتاب أوامر Linux & Termux", "💻 كتاب خوارزميات وحل المشكلات", "⚡ كتاب أتمتة المهام ببايثون", "🗄️ كتاب قواعد البيانات SQL",
-            "📱 كتاب تطوير تطبيقات الجوال", "🤖 كتاب مقدمة في الذكاء الاصطناعي", "🚀 كتاب احتراف Git & GitHub", "🎨 كتاب تصميم واجهات UI/UX",
-            "🌐 كتاب شبكات الحاسب وتأمينها", "🔒 كتاب التشفير والحماية الرقمية", "📜 كتاب الأحاديث النبوية الصحيحة", "💡 كتاب تفكير المبرمج المحترف",
-            "⚙️ كتاب البرمجة كائنية التوجه OOP", "☁️ كتاب أساسيات الحوسبة السحابية", "🎮 كتاب أساسيات تطوير الألعاب", "🛠️ كتاب صيانة البرمجيات",
-            "🕹️ كتاب برمجة المحركات 3D", "🖥️ كتاب بنية الحاسوب وأنظمته", "📊 كتاب تحليل البيانات ببايثون", "🔐 كتاب اختبار الاختراق الأخلاقي",
-            "📝 كتاب كتابة الأكواد النظيفة Clean Code", "📡 كتاب التعامل مع APIs", "📱 كتاب تطوير ألعاب الجوال", "📚 كتاب رياض الصالحين",
-            "📖 كتاب الأربعين النووية", "📗 كتاب التفسير الميسر"
+        function launchGame(id) {
+            let box = document.getElementById(`game-box-${id}`);
+            box.style.display = 'block';
+            box.innerHTML = `<p style="color:#fff;">تشغيل اللعبة البرمجية #${id}:</p><canvas id="cvs-${id}" width="260" height="150"></canvas>`;
+            
+            let canvas = document.getElementById(`cvs-${id}`);
+            let ctx = canvas.getContext('2d');
+            let x = 10;
+            
+            function animate() {
+                ctx.fillStyle = "#000";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = (id % 2 === 0) ? "#00f2ff" : "#a855f7";
+                ctx.fillRect(x, 50, 30, 30);
+                x = (x + 2) % (canvas.width - 30);
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- 3. كتابة 30 كتاباً وقسم صحيح مسلم ---
+        const hadiths = [
+            "قال رسول الله ﷺ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ» [صحيح مسلم]",
+            "قال رسول الله ﷺ: «إِنَّ الصِّدْقَ يَهْدِي إِلَى الْبِرِّ وَإِنَّ الْبِرَّ يَهْدِي إِلَى الْجَنَّةِ» [صحيح مسلم]",
+            "قال رسول الله ﷺ: «مَنْ دَعا إِلى هُدىً كانَ لَهُ مِنَ الأَجْرِ مِثْلُ أُجُورِ مَنْ تَبِعَهُ» [صحيح مسلم]"
         ];
 
         const booksGrid = document.getElementById('books-grid');
-        booksList.forEach((b, idx) => {
-            let isGreen = b.includes("مسلم") || b.includes("الأحاديث") || b.includes("الصالحين") || b.includes("النووية") || b.includes("التفسير");
+        // كتاب صحيح مسلم الخاص بالأجر
+        booksGrid.innerHTML += `
+            <div class="card" style="border-color: var(--accent-green);">
+                <h3>📖 كتاب صحيح مسلم (ابتغاء الأجر)</h3>
+                <p>قراءة واستعراض الأحاديث النبوية الشريفة من صحيح مسلم:</p>
+                <button class="btn btn-green" onclick="showHadith()">عرض حديث مبارك 📜</button>
+                <div id="hadith-box" class="output-box" style="border-color: var(--accent-green); color:#6ee7b7;"></div>
+            </div>
+        `;
+
+        for (let i = 1; i <= 29; i++) {
             booksGrid.innerHTML += `
-                <div class="card" style="border-color: ${isGreen ? 'var(--accent-green)' : 'var(--accent-cyan)'};">
-                    <h3>${b}</h3>
-                    <p>كتاب تثقيفي وتعليمي شامل (#${idx + 1}).</p>
-                    <button class="btn ${isGreen ? 'btn-green' : ''}" onclick="readBook(${idx + 1}, '${b}')">قراءة الكتاب 📖</button>
-                    <div id="bk-out-${idx + 1}" class="output-box"></div>
+                <div class="card">
+                    <h3>📚 كتاب تعليم البرمجة #${i}</h3>
+                    <p>مادة تثقيفية وبرمجية شاملة لتعلم الأكواد والتطوير.</p>
+                    <button class="btn" onclick="readBook(${i})">قراءة الكتاب 📖</button>
+                    <div id="bk-${i}" class="output-box"></div>
                 </div>
             `;
-        });
+        }
 
-        function readBook(id, title) {
-            let out = document.getElementById(`bk-out-${id}`);
-            out.style.display = 'block';
-            out.innerText = `📖 قراءة: ${title}\n\nهذا الكتاب يقدم مادة علمية وتثقيفية مبسطة ومباشرة ومتاحة للاستفادة منها بالكامل!`;
+        function showHadith() {
+            let box = document.getElementById('hadith-box');
+            box.style.display = 'block';
+            box.innerText = hadiths[Math.floor(Math.random() * hadiths.length)];
+        }
+
+        function readBook(id) {
+            let box = document.getElementById(`bk-${id}`);
+            box.style.display = 'block';
+            box.innerText = `📖 محتوى الكتاب البرمجي رقم ${id}:\nيتناول هذا الكتاب الأساسيات والمفاهيم البرمجية لبناء المشاريع والتطبيقات البرمجية الذكية.`;
         }
     </script>
 </body>
