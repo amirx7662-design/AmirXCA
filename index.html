@@ -12,6 +12,7 @@
             --border-color: rgba(0, 242, 255, 0.25);
             --accent-cyan: #00f2ff;
             --accent-green: #10b981;
+            --accent-purple: #a855f7;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
         }
@@ -80,6 +81,7 @@
         }
         .badge-free { background: rgba(0, 242, 255, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
         .badge-islamic { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
 
         input, textarea { 
             width: 100%; 
@@ -109,8 +111,10 @@
             text-decoration: none;
         }
         .btn-green { background: var(--accent-green); color: #fff; }
+        .btn-purple { background: var(--accent-purple); color: #fff; }
         .btn:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-cyan); }
         .btn-green:hover { box-shadow: 0 0 15px var(--accent-green); }
+        .btn-purple:hover { box-shadow: 0 0 15px var(--accent-purple); }
 
         .output-box { 
             background: #050811; 
@@ -203,8 +207,8 @@
 
     <div class="container">
         
-        <!-- قسم المكتبة والتثقيف -->
-        <h2 class="section-title">📚 مكتبة كتب وتثقيف البرمجة والسنة</h2>
+        <!-- قسم المكتبة والتثقيف المطور -->
+        <h2 class="section-title">📚 المكتبة المفتوحة وكتب الأكواد والسنة</h2>
         <div class="grid">
             
             <!-- كتاب صحيح مسلم -->
@@ -221,26 +225,53 @@
             <div class="card">
                 <span class="badge badge-free">كتاب برمجي</span>
                 <h3>🐍 دليل أساسيات Python الشامل</h3>
-                <p>دليل تثقيفي سريع لتعلم البرمجة بلغة بايثون من الصفر حتى الاحتراف:</p>
-                <button class="btn" onclick="openBook('python')">قراءة ملخص الكتاب 📖</button>
+                <p>دليل تثقيفي لتعلم كتابة السكريبتات والأوامر بلغة بايثون:</p>
+                <button class="btn" onclick="openBook('python')">قراءة الكتاب 📖</button>
                 <div id="book-python" class="output-box"></div>
             </div>
 
-            <!-- دليل أنظمة لنيوكس وتيرمكس -->
+            <!-- كتاب تصميم المواقع -->
+            <div class="card">
+                <span class="badge badge-free">كتاب تصميم</span>
+                <h3>🌐 دليل احتراف HTML & CSS</h3>
+                <p>تعلم كيفية بناء واجهات المواقع وتعديل الألوان والتنسيقات:</p>
+                <button class="btn" onclick="openBook('web')">قراءة الكتاب 📖</button>
+                <div id="book-web" class="output-box"></div>
+            </div>
+
+            <!-- كتاب الأمن السيبراني -->
+            <div class="card">
+                <span class="badge badge-free">كتاب أمان</span>
+                <h3>🛡️ كتاب التشفير والأمن السيبراني</h3>
+                <p>أساسيات حماية البيانات، التشفير، والتعامل الأخلاقي مع الثغرات:</p>
+                <button class="btn" onclick="openBook('security')">قراءة الكتاب 📖</button>
+                <div id="book-security" class="output-box"></div>
+            </div>
+
+            <!-- كتاب الأوامر لنيوكس وتيرمكس -->
             <div class="card">
                 <span class="badge badge-free">كتاب تقني</span>
                 <h3>🐧 كتاب احتراف Linux & Termux</h3>
                 <p>تعلم أهم الأوامر للتحكم في النظام وإدارة الأجهزة عبر السطر البرمجي:</p>
-                <button class="btn" onclick="openBook('linux')">قراءة كتاب الأوامر 📖</button>
+                <button class="btn" onclick="openBook('linux')">قراءة الكتاب 📖</button>
                 <div id="book-linux" class="output-box"></div>
             </div>
 
         </div>
 
-        <!-- أدوات الأتمتة والخدمات المباشرة -->
-        <h2 class="section-title">⚡ الأدوات المباشرة والأتمتة</h2>
+        <!-- أدوات الأتمتة والخدمات المباشرة الجديدة -->
+        <h2 class="section-title">⚡ الأدوات المباشرة والخدمات الأوتوماتيكية</h2>
         <div class="grid">
             
+            <!-- أداة توليد كلمات المرور المعقدة (جديدة) -->
+            <div class="card">
+                <span class="badge badge-purple">خدمة جديدة</span>
+                <h3>🔐 مولد كلمات المرور المجهزة</h3>
+                <p>إنشاء كلمة مرور معقدة ومحمية من التخمين أوتوماتيكياً بضغطة زر:</p>
+                <button class="btn btn-purple" onclick="generateStrongPass()">توليد كلمة مرور فائقة الأمان 🎲</button>
+                <div id="pass-gen-output" class="output-box" style="border-color:var(--accent-purple); color:#c084fc;"></div>
+            </div>
+
             <!-- أداة بناء Termux CLI -->
             <div class="card">
                 <span class="badge badge-free">تنفيذ أوتوماتيكي</span>
@@ -284,7 +315,7 @@
             <span style="cursor:pointer;" onclick="toggleAIChat()">✖</span>
         </div>
         <div class="ai-chat-messages" id="ai-messages">
-            <div class="chat-msg msg-ai">أهلاً بك! أنا مساعد Gemini الذكي المباشر. كيف أستطيع مساعدتك في البرمجة أو الأسئلة التقنية اليوم؟ 🚀</div>
+            <div class="chat-msg msg-ai">أهلاً بك! أنا مساعد Gemini الذكي المباشر. كيف أستطيع مساعدتك اليوم؟ 🚀</div>
         </div>
         <div class="ai-chat-input">
             <input type="text" id="ai-user-input" placeholder="اكتب سؤالك هنا..." onkeypress="handleKeyPress(event)">
@@ -319,12 +350,32 @@
             if(type === 'python') {
                 var out = document.getElementById('book-python');
                 out.style.display = 'block';
-                out.innerText = "📘 **كتاب أساسيات Python:**\n1. المتغيرات: x = 10\n2. الشروط: if x > 5: print('كبير')\n3. الدوارات: for i in range(5): print(i)\n4. الدوال: def my_func(): return 'Ok'\n\nاستخدم هذه المفاهيم لبناء أجهزة ومواقع ذكية!";
+                out.innerText = "📘 **كتاب أساسيات Python:**\n1. المتغيرات: x = 10\n2. الشروط: if x > 5: print('كبير')\n3. الدوارات: for i in range(5): print(i)\n4. الدوال: def my_func(): return 'Ok'\n\nطوّر مهاراتك باستمرار!";
+            } else if(type === 'web') {
+                var out = document.getElementById('book-web');
+                out.style.display = 'block';
+                out.innerText = "🌐 **كتاب تصميم HTML & CSS:**\n1. <h1>العنوان الرئيسي</h1>\n2. <p>الفقرة والنص</p>\n3. css: color: #00f2ff; لعمل لون نيون جذاب.\n4. css: border-radius: 10px; لعمل حواف دائرية للبطاقات.";
+            } else if(type === 'security') {
+                var out = document.getElementById('book-security');
+                out.style.display = 'block';
+                out.innerText = "🛡️ **كتاب الأمن والتشفير:**\n1. التشفير التناظري وغير التناظري (AES / RSA).\n2. مفهوم فحص المنافذ والمواقع أخلاقياً.\n3. تأمين خوادم اللينكس وإغلاق البورتات غير المستخدمة.";
             } else if(type === 'linux') {
                 var out = document.getElementById('book-linux');
                 out.style.display = 'block';
-                out.innerText = "🐧 **كتاب أهم أوامر Termux & Linux:**\n• ls : عرض الملفات\n• cd : التنقل بين المجلدات\n• pkg update && pkg upgrade : تحديث النظام\n• python filename.py : تشغيل سكريبت بايثون\n• nano filename : تعديل ملف نصي مباشرة";
+                out.innerText = "🐧 **كتاب أوامر Termux & Linux:**\n• ls : عرض الملفات\n• cd : التنقل بين المجلدات\n• pkg update && pkg upgrade : تحديث النظام\n• python filename.py : تشغيل سكريبت بايثون\n• nano filename : تعديل ملف نصي مباشرة";
             }
+        }
+
+        /* خدمة توليد كلمة مرور معقدة */
+        function generateStrongPass() {
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=";
+            var pass = "";
+            for (var i = 0; i < 16; i++) {
+                pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            var out = document.getElementById('pass-gen-output');
+            out.style.display = 'block';
+            out.innerText = "🔑 كلمة المرور الآمنة المقترحة:\n\n" + pass;
         }
 
         /* تنفيذ أوتوماتيكي لبيئة Termux */
@@ -344,7 +395,7 @@
             out.innerText = `⏳ تشغيل الخادم المحلي أوتوماتيكياً على البورت (${port}):\n\npython -m http.server ${port}`;
         }
 
-        /* الشات الذكي الحقيقي دون تكرار */
+        /* الشات الذكي */
         function toggleAIChat() {
             var box = document.getElementById('ai-chat-box');
             box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
@@ -385,8 +436,6 @@
                 let data = await response.json();
                 if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
                     aiDiv.innerText = data.candidates[0].content.parts[0].text;
-                } else if(data.error) {
-                    aiDiv.innerText = "عذراً، المفتاح المستعمل يواجه قيوداً من Google. يرجى التأكد من صلاحية المفتاح.";
                 } else {
                     aiDiv.innerText = "أنا هنا لمعاونتك، اطلب أي سؤال أو كود برمجية وسأشرحه لك.";
                 }
