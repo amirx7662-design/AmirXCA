@@ -16,8 +16,10 @@
         .badge-free { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
         .badge-paid { background-color: #d29922; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
         
-        /* أدوات تفاعلية */
         input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; background-color: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 6px; }
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-size: 0.85rem; color: #8b949e; }
+        .checkbox-container input { width: auto; margin: 0; }
+        
         .btn { display: block; width: 100%; text-align: center; padding: 12px; background-color: #1f6feb; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-decoration: none; margin-top: 10px; }
         .btn:hover { background-color: #388bfd; }
         #qr-result { text-align: center; margin-top: 15px; }
@@ -33,11 +35,10 @@
         <p>مستقبل البرمجيات والمواقع والحلول الرقمية والإلكترونية</p>
     </header>
 
-    <!-- الأدوات المجانية التفاعلية -->
+    <!-- الأدوات المجانية -->
     <h2 class="section-title">🌐 الأدوات والخدمات المجانية</h2>
     <div class="grid">
         
-        <!-- أداة توليد QR -->
         <div class="card">
             <span class="badge-free">أداة تفاعلية</span>
             <h3>📱 صانع أكواد QR</h3>
@@ -47,7 +48,6 @@
             <div id="qr-result"></div>
         </div>
 
-        <!-- أداة فحص كلمة المرور -->
         <div class="card">
             <span class="badge-free">أداة تفاعلية</span>
             <h3>🛡️ فاحص قوة كلمة المرور</h3>
@@ -56,28 +56,27 @@
             <p id="pass-status" style="font-weight:bold; margin-top:10px;"></p>
         </div>
 
-        <!-- شروحات سريعة -->
         <div class="card">
             <span class="badge-free">دليل مجاني</span>
             <h3>🛠️ نصائح أمان وجوال سريعة</h3>
-            <p>• فعّل التحقق بخطوتين (2FA) في كل حساباتك.<br>• لا تفتح أي رابط يصلك من رقم غريب.<br>• امسح الكاش من متصفحك دورياً لتسريع الجهاز.</p>
+            <p>• فعّل التحقق بخطوتين (2FA) في حساباتك.<br>• لا تفتح أي رابط يصلك من جهة غير معروفة.<br>• امسح الكاش من متصفحك دورياً لتسريع الجهاز.</p>
         </div>
 
     </div>
 
-    <!-- الخدمات المدفوعة ونموذج الطلب -->
-    <h2 class="section-title">💎 طلب الخدمات الاحترافية المدفوعة</h2>
+    <!-- الخدمات المدفوعة -->
+    <h2 class="section-title">💎 الخدمات الاحترافية المدفوعة</h2>
     
     <div class="grid">
         <div class="card">
             <span class="badge-paid">خدمة مدفوعة</span>
             <h3>🔐 تأمين واستعادة الحسابات (VIP)</h3>
-            <p>دعم شخصي مباشر لتأمين حساباتك واستعادة الحسابات المتضررة.</p>
+            <p>جلسة توجيه ودعم شخصي آمن لتأمين الحسابات واستعادتها دون مشاركة كلمة السر.</p>
         </div>
         <div class="card">
             <span class="badge-paid">خدمة مدفوعة</span>
             <h3>📱 الدعم الفني والفحص عن بُعد</h3>
-            <p>جلسة استشارية وتنظيف شامل ونقل بياناتك بأمان.</p>
+            <p>جلسة استشارية وتنظيف نظام الجوال وتسريعه بأمان.</p>
         </div>
         <div class="card">
             <span class="badge-paid">خدمة مدفوعة</span>
@@ -86,21 +85,31 @@
         </div>
     </div>
 
-    <!-- نموذج المراسلة المباشر -->
+    <!-- نموذج الطلب الآمن والقانوني -->
     <div class="card" style="margin-top:25px;">
-        <h3>📩 اطلب أي خدمة مدفوعة مباشرة</h3>
+        <h3>📩 نموذج طلب خدمة احترافية</h3>
+        <p style="font-size:0.85rem; color:#8b949e; margin-bottom:10px;">يرجى تعبئة النموذج لتواصل معكم وترتيب جلسة الدعم الفني.</p>
+        
         <form action="https://formsubmit.co/amirx7662@gmail.com" method="POST">
             <input type="text" name="name" placeholder="اسمك الكريم" required>
-            <input type="email" name="email" placeholder="بريدك الإلكتروني للتواصل" required>
+            <input type="email" name="email" placeholder="بريدك الإلكتروني" required>
+            <input type="tel" name="phone" placeholder="رقم الجوال / الواتساب للتواصل" required>
+            
             <select name="service" required>
-                <option value="">اختر الخدمة المطلوب شراءها...</option>
+                <option value="">اختر الخدمة المطلوبة...</option>
                 <option value="تأمين الحسابات">تأمين واستعادة الحسابات (VIP)</option>
                 <option value="الدعم الفني">الدعم الفني والفحص عن بُعد</option>
                 <option value="التصميم والسير الذاتية">تصميم بطاقات QR وسير ذاتية</option>
             </select>
-            <textarea name="message" rows="4" placeholder="تفاصيل الطلب أو المشكلة..." required></textarea>
             
-            <!-- تحويل التوجيه بعد الإرسال -->
+            <input type="text" name="target_platform" placeholder="اسم الحساب / المنصة المراد دعمها (مثال: Snapchat, Instagram)">
+            <textarea name="details" rows="3" placeholder="توضيح طلبك أو المشكلة التي تواجها..." required></textarea>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">أوافق على الشروط والأحكام وطلب جلسة الدعم الفني من منصة AmirXCA.</label>
+            </div>
+            
             <input type="hidden" name="_next" value="https://amirx7662-design.github.io/AmirXCA/">
             <input type="hidden" name="_captcha" value="false">
 
@@ -135,3 +144,5 @@
     </script>
 </body>
 </html>
+
+
