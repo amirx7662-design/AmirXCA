@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA | المنصة الشاملة</title>
+    <title>AmirXCA | المنصة المتكاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
             --bg-main: #070a10;
-            --sidebar-bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.8);
+            --sidebar-bg: #0b0f17;
+            --card-bg: #0d131f;
             --accent-cyan: #00f2ff;
-            --accent-green: #10b981;
-            --accent-purple: #a855f7;
-            --text-main: #f8fafc;
+            --text-main: #ffffff;
             --text-muted: #94a3b8;
         }
 
@@ -22,74 +20,81 @@
         body { background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
         .sidebar {
-            width: 260px;
+            width: 280px;
             background: var(--sidebar-bg);
-            border-left: 1px solid rgba(0, 242, 255, 0.2);
+            border-left: 1px solid rgba(0, 242, 255, 0.15);
             display: flex;
             flex-direction: column;
             padding: 20px;
             z-index: 10;
         }
-        .sidebar h2 { color: var(--accent-cyan); font-size: 1.6rem; text-align: center; margin-bottom: 25px; }
+        .sidebar h2 { color: var(--accent-cyan); font-size: 1.8rem; text-align: center; margin-bottom: 30px; font-weight: 800; }
 
         .nav-btn {
             background: transparent;
             border: 1px solid transparent;
             color: var(--text-muted);
-            padding: 12px 16px;
-            border-radius: 10px;
+            padding: 14px 18px;
+            border-radius: 12px;
             cursor: pointer;
             text-align: right;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 8px;
-            transition: all 0.3s;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
         }
         .nav-btn.active, .nav-btn:hover {
-            background: rgba(0, 242, 255, 0.1);
+            background: rgba(0, 242, 255, 0.05);
             color: var(--accent-cyan);
             border-color: var(--accent-cyan);
         }
 
-        .main-content { flex: 1; padding: 25px; overflow-y: auto; }
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
         .section { display: none; }
         .section.active { display: block; }
-        .section-header { font-size: 1.6rem; color: var(--accent-cyan); margin-bottom: 20px; border-bottom: 2px solid rgba(0, 242, 255, 0.2); padding-bottom: 8px; }
+        .section-header { font-size: 1.8rem; color: var(--accent-cyan); margin-bottom: 25px; font-weight: 800; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
-        .card {
+        /* تنسيق كروت الخدمات مثل الصورة تماماً */
+        .cards-list { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
+        .card-item {
             background: var(--card-bg);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 12px;
-            padding: 16px;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.05);
         }
-        .card h3 { font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
-        .card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
+        .card-item h3 { font-size: 1.4rem; color: #fff; margin-bottom: 12px; font-weight: 800; }
+        .card-item p { font-size: 1.1rem; color: #e2e8f0; margin-bottom: 20px; line-height: 1.6; }
 
-        .btn {
-            display: block; width: 100%; padding: 10px;
-            background: var(--accent-cyan); color: #000;
-            border: none; border-radius: 8px; font-weight: 800;
-            cursor: pointer; text-align: center; text-decoration: none;
-            font-size: 0.9rem;
+        .btn-action {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-cyan);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
         }
-        .btn:hover { opacity: 0.9; }
-        .btn-green { background: var(--accent-green); color: #fff; }
+        .btn-action:active { transform: scale(0.98); }
 
         .res-box {
             background: #020617; border: 1px dashed var(--accent-cyan);
-            padding: 10px; border-radius: 6px; margin-top: 10px;
-            font-family: monospace; color: #4ade80; font-size: 0.85rem;
-            display: none; word-break: break-all; white-space: pre-wrap;
+            padding: 15px; border-radius: 8px; margin-top: 15px;
+            font-family: monospace; color: #4ade80; font-size: 1rem;
+            display: none; word-break: break-all; text-align: right; direction: ltr;
         }
 
         #game-3d-container {
             width: 100%;
-            height: 420px;
+            height: 480px;
             background: #000;
-            border-radius: 12px;
+            border-radius: 15px;
             border: 2px solid var(--accent-cyan);
-            position: relative;
         }
     </style>
 </head>
@@ -97,30 +102,30 @@
 
     <div class="sidebar">
         <h2>AmirXCA</h2>
-        <button class="nav-btn active" onclick="switchSection('games-sec', this)">🎮 لعبة السيارات 3D</button>
-        <button class="nav-btn" onclick="switchSection('services-sec', this)">⚡ الخدمات والأدوات (10)</button>
-        <button class="nav-btn" onclick="switchSection('books-sec', this)">📚 المكتبة الإسلامية والبرمجية</button>
+        <button class="nav-btn active" onclick="switchSection('services-sec', this)">⚡ الخدمات والأدوات</button>
+        <button class="nav-btn" onclick="switchSection('books-sec', this)">📚 المكتبة والأحاديث</button>
+        <button class="nav-btn" onclick="switchSection('games-sec', this)">🎮 لعبة السيارات 3D</button>
     </div>
 
     <div class="main-content">
 
-        <!-- 1. قسم اللعبة 3D -->
-        <div id="games-sec" class="section active">
-            <h1 class="section-header">🎮 محاكي القيادة 3D</h1>
-            <div id="game-3d-container"></div>
-            <p style="margin-top:10px; color:var(--text-muted);">🕹️ التحكم بالأسهم: ↑ للسرعة | ↓ للفرامل | ← يسار | → يمين</p>
+        <!-- 1. قسم الخدمات (بنفس شكل كروت الصورة 4) -->
+        <div id="services-sec" class="section active">
+            <h1 class="section-header">⚡ أدوات وخدمات حقيقية وأوتوماتيكية</h1>
+            <div class="cards-list" id="services-list"></div>
         </div>
 
-        <!-- 2. قسم الخدمات (10 أدوات أوتوماتيكية) -->
-        <div id="services-sec" class="section">
-            <h1 class="section-header">⚡ أدوات وخدمات رقمية حقيقية</h1>
-            <div class="grid" id="services-grid"></div>
-        </div>
-
-        <!-- 3. قسم الكتب -->
+        <!-- 2. قسم الكتب والأحاديث التفاعلي -->
         <div id="books-sec" class="section">
             <h1 class="section-header">📚 المكتبة والأحاديث الشريفة</h1>
-            <div class="grid" id="books-grid"></div>
+            <div class="cards-list" id="books-list"></div>
+        </div>
+
+        <!-- 3. قسم اللعبة 3D -->
+        <div id="games-sec" class="section">
+            <h1 class="section-header">🎮 محاكي القيادة 3D</h1>
+            <div id="game-3d-container"></div>
+            <p style="margin-top:15px; color:var(--text-muted); font-size:1.1rem;">🕹️ التحكم بالأسهم: ↑ تسريع | ↓ فرامل | ← يسار | → يمين</p>
         </div>
 
     </div>
@@ -134,55 +139,50 @@
             if(secId === 'games-sec' && !window.gameInitialized) init3DGame();
         }
 
-        // --- قائمة الخدمات الحقيقية (10) ---
+        // --- الخدمات (كروت بتصميم "ابدأ الآن") ---
         const servicesData = [
-            { id: 1, title: "🔑 مولد كلمة مرور آمنة", desc: "توليد كلمة مرور معقدة وعشوائية أوتوماتيكياً.", action: () => Math.random().toString(36).substring(2) + "!A9#" },
-            { id: 2, title: "🔒 تشفير Base64", desc: "تحويل النص إلى كود تشفير Base64.", action: () => { let t = prompt("أدخل النص لتشفيره:"); return t ? btoa(t) : "لم يتم إدخال نص"; } },
-            { id: 3, title: "🔓 فك تشفير Base64", desc: "فك شفرة نصوص Base64 إلى نص عادي.", action: () => { let t = prompt("أدخل النص المشفر:"); try { return atob(t); } catch(e) { return "شفرة غير صالحة"; } } },
-            { id: 4, title: "📝 عداد الحروف والكلمات", desc: "حساب عدد الحروف والكلمات في النص.", action: () => { let t = prompt("أدخل النص لحسابه:"); return t ? `الحروف: ${t.length} | الكلمات: ${t.trim().split(/\s+/).length}` : "لم يتم إدخال نص"; } },
-            { id: 5, title: "⚡ سكريبت تحديث Termux", desc: "توليد كود التحديث الشامل للترمكس.", action: () => "pkg update && pkg upgrade -y && pkg install git python -y" },
-            { id: 6, title: "🔤 تحويل النص لحروف كبيرة (UPPER)", desc: "تحويل النصوص الإنجليزية للنمط الكبير.", action: () => { let t = prompt("أدخل النص:"); return t ? t.toUpperCase() : "خطأ"; } },
-            { id: 7, title: "🎲 مولد أرقام عشوائية", desc: "إنشاء رقم عشوائي بين 1 و 10000.", action: () => Math.floor(Math.random() * 10000) + 1 },
-            { id: 8, title: "🌐 فحص بروتوكول الرابط", desc: "تحليل هل الرابط آمن (HTTPS) أم لا.", action: () => { let u = prompt("أدخل الرابط:"); return u ? (u.startsWith("https") ? "✅ رابط آمن HTTPS" : "⚠️ رابط غير مشفر HTTP") : "لم يتم إدخال رابط"; } },
-            { id: 9, title: "🕒 الوقت والتاريخ الحالي", desc: "عرض الوقت الدقيق والسيرفر المحلي.", action: () => new Date().toLocaleString("ar-SA") },
-            { id: 10, title: "🧹 نظافة النصوص (Strip Spaces)", desc: "إزالة المسافات الزائدة والتنسيق.", action: () => { let t = prompt("أدخل النص:"); return t ? t.replace(/\s+/g, ' ').trim() : "خطأ"; } }
+            { id: 1, title: "💻 بناء أنظمة Termux", desc: "توليد أوامر تجهيز البيئة الكاملة لأداة الترمكس تلقائياً.", action: () => "pkg update && pkg upgrade -y && pkg install git python curl wget -y" },
+            { id: 2, title: "🔐 مولد كلمات المرور المشفرة", desc: "توليد كلمة سر معقدة وأوتوماتيكية لحماية حساباتك.", action: () => Math.random().toString(36).substring(2) + "!" + Math.random().toString(36).substring(2, 6).toUpperCase() },
+            { id: 3, title: "🤖 أتمتة السكريبتات (Base64 Encode)", desc: "تشفير الكود والنصوص بنظام Base64 فوراً.", action: () => { let t = prompt("أدخل النص المراد تشفيره:"); return t ? btoa(t) : "لم يتم إدخال نص"; } },
+            { id: 4, title: "🔓 فك تشفير البيانات (Base64 Decode)", desc: "فك التشفير المباشر عن الأكواد والنصوص.", action: () => { let t = prompt("أدخل النص المشفر:"); try { return atob(t); } catch(e) { return "الرمز غير صالح!"; } } },
+            { id: 5, title: "📊 حاسبة النصوص والكلمات", desc: "حساب دقيق لعدد الحروف والكلمات داخل أي نص.", action: () => { let t = prompt("أدخل النص:"); return t ? `عدد الحروف: ${t.length} | عدد الكلمات: ${t.trim().split(/\s+/).length}` : "خطأ"; } }
         ];
 
-        const sGrid = document.getElementById('services-grid');
+        const sContainer = document.getElementById('services-list');
         servicesData.forEach(s => {
-            sGrid.innerHTML += `
-                <div class="card">
+            sContainer.innerHTML += `
+                <div class="card-item">
                     <h3>${s.title}</h3>
                     <p>${s.desc}</p>
-                    <button class="btn" onclick="runSrv(${s.id})">تشغيل الأداة 🚀</button>
+                    <button class="btn-action" onclick="runService(${s.id})">ابدأ الآن</button>
                     <div id="res-srv-${s.id}" class="res-box"></div>
                 </div>
             `;
         });
 
-        function runSrv(id) {
+        function runService(id) {
             const srv = servicesData.find(x => x.id === id);
             const res = srv.action();
             const box = document.getElementById(`res-srv-${id}`);
             box.style.display = 'block';
-            box.innerText = "النتيجة:\n" + res;
+            box.innerText = res;
         }
 
-        // --- قائمة الكتب وصحيح مسلم ---
+        // --- الكتب والأحاديث (تفاعلية) ---
         const booksData = [
-            { title: "📖 صحيح مسلم (مقدمة في العلم)", content: "قال رسول الله ﷺ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ»." },
-            { title: "📘 أساسيات لغة Python", content: "تعلم المتغيرات (Variables)، الدوال (Functions)، والـ Loops لبناء أدواتك وتطبيقاتك الذكية." },
-            { title: "🐧 دليل أوامر Termux و Linux", content: "أهم الأوامر: ls لفتح الملفات، cd للتنقل، chmod +x لمنح صلاحية التنفيذ، وgit clone لسحب المشاريع." },
-            { title: "🛡️ مبادئ أمن المعلومات", content: "تأمين الحسابات يعتمد على استخدام التحقق بخطوتين (2FA) وتوليد كلمات مرور قوية لا تقل عن 12 رمزاً." },
-            { title: "🌐 أساسيات الشبكات والـ IP", content: "فهم بروتوكولات الإنترنت (TCP/IP) وكيفية تحويل العناوين الرقمية عبر خوادم DNS." }
+            { id: 1, title: "📖 صحيح مسلم (مقدمة في العلم)", desc: "قال رسول الله ﷺ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ»." },
+            { id: 2, title: "📘 أساسيات لغة Python", desc: "تعلم المتغيرات (Variables)، الدوال (Functions)، والـ Loops لبناء أدواتك وتطبيقاتك الذكية." },
+            { id: 3, title: "🐧 دليل أوامر Termux و Linux", desc: "أهم الأوامر: ls لفتح الملفات، cd للتنقل، chmod +x لمنح صلاحية التنفيذ، وgit clone لسحب المشاريع." },
+            { id: 4, title: "🛡️ مبادئ أمن المعلومات", desc: "تأمين الحسابات يعتمد على استخدام التحقق بخطوتين (2FA) وتوليد كلمات مرور قوية لا تقل عن 12 رمزاً." }
         ];
 
-        const bGrid = document.getElementById('books-grid');
+        const bContainer = document.getElementById('books-list');
         booksData.forEach(b => {
-            bGrid.innerHTML += `
-                <div class="card">
+            bContainer.innerHTML += `
+                <div class="card-item">
                     <h3>${b.title}</h3>
-                    <p style="color:#e2e8f0;">${b.content}</p>
+                    <p>${b.desc}</p>
+                    <button class="btn-action" onclick="alert('تم فتح الكتاب بشكل كامل!')">قراءة المحتوى</button>
                 </div>
             `;
         });
@@ -211,12 +211,10 @@
             scene.add(light);
             scene.add(new THREE.AmbientLight(0x404040, 1.5));
 
-            // الطريق
             const road = new THREE.Mesh(new THREE.PlaneGeometry(16, 400), new THREE.MeshBasicMaterial({ color: 0x1e293b }));
             road.rotation.x = -Math.PI / 2;
             scene.add(road);
 
-            // السيارة
             const carGroup = new THREE.Group();
             const bodyMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.7, 3.6), new THREE.MeshLambertMaterial({ color: 0x00f2ff }));
             bodyMesh.position.y = 0.5;
@@ -254,8 +252,6 @@
 
             renderer.render(scene, camera);
         }
-
-        window.onload = init3DGame;
     </script>
 </body>
 </html>
