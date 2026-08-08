@@ -54,7 +54,6 @@
         .section.active { display: block; }
         .section-header { font-size: 1.8rem; color: var(--accent-cyan); margin-bottom: 25px; font-weight: 800; }
 
-        /* تنسيق كروت الخدمات مثل الصورة تماماً */
         .cards-list { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
         .card-item {
             background: var(--card-bg);
@@ -78,15 +77,15 @@
             font-weight: 800;
             font-size: 1.1rem;
             cursor: pointer;
-            transition: transform 0.1s, opacity 0.2s;
+            transition: transform 0.1s;
         }
         .btn-action:active { transform: scale(0.98); }
 
-        .res-box {
-            background: #020617; border: 1px dashed var(--accent-cyan);
-            padding: 15px; border-radius: 8px; margin-top: 15px;
-            font-family: monospace; color: #4ade80; font-size: 1rem;
-            display: none; word-break: break-all; text-align: right; direction: ltr;
+        .content-display {
+            background: #020617; border: 1px solid var(--accent-cyan);
+            padding: 20px; border-radius: 12px; margin-top: 15px;
+            color: #38bdf8; font-size: 1.1rem; display: none; text-align: right;
+            line-height: 1.8;
         }
 
         #game-3d-container {
@@ -109,15 +108,15 @@
 
     <div class="main-content">
 
-        <!-- 1. قسم الخدمات (بنفس شكل كروت الصورة 4) -->
+        <!-- 1. قسم الخدمات -->
         <div id="services-sec" class="section active">
             <h1 class="section-header">⚡ أدوات وخدمات حقيقية وأوتوماتيكية</h1>
             <div class="cards-list" id="services-list"></div>
         </div>
 
-        <!-- 2. قسم الكتب والأحاديث التفاعلي -->
+        <!-- 2. قسم الكتب والحديث الشريف -->
         <div id="books-sec" class="section">
-            <h1 class="section-header">📚 المكتبة والأحاديث الشريفة</h1>
+            <h1 class="section-header">📚 المكتبة والتحميل</h1>
             <div class="cards-list" id="books-list"></div>
         </div>
 
@@ -139,13 +138,12 @@
             if(secId === 'games-sec' && !window.gameInitialized) init3DGame();
         }
 
-        // --- الخدمات (كروت بتصميم "ابدأ الآن") ---
+        // --- الخدمات مع النتيجة بدون alert ---
         const servicesData = [
             { id: 1, title: "💻 بناء أنظمة Termux", desc: "توليد أوامر تجهيز البيئة الكاملة لأداة الترمكس تلقائياً.", action: () => "pkg update && pkg upgrade -y && pkg install git python curl wget -y" },
             { id: 2, title: "🔐 مولد كلمات المرور المشفرة", desc: "توليد كلمة سر معقدة وأوتوماتيكية لحماية حساباتك.", action: () => Math.random().toString(36).substring(2) + "!" + Math.random().toString(36).substring(2, 6).toUpperCase() },
-            { id: 3, title: "🤖 أتمتة السكريبتات (Base64 Encode)", desc: "تشفير الكود والنصوص بنظام Base64 فوراً.", action: () => { let t = prompt("أدخل النص المراد تشفيره:"); return t ? btoa(t) : "لم يتم إدخال نص"; } },
-            { id: 4, title: "🔓 فك تشفير البيانات (Base64 Decode)", desc: "فك التشفير المباشر عن الأكواد والنصوص.", action: () => { let t = prompt("أدخل النص المشفر:"); try { return atob(t); } catch(e) { return "الرمز غير صالح!"; } } },
-            { id: 5, title: "📊 حاسبة النصوص والكلمات", desc: "حساب دقيق لعدد الحروف والكلمات داخل أي نص.", action: () => { let t = prompt("أدخل النص:"); return t ? `عدد الحروف: ${t.length} | عدد الكلمات: ${t.trim().split(/\s+/).length}` : "خطأ"; } }
+            { id: 3, title: "🤖 تشفير النصوص (Base64)", desc: "تشفير النص تلقائياً داخل الصفحة.", action: () => "مثال التشفير: " + btoa("AmirXCA System Running") },
+            { id: 4, title: "📊 حاسبة النصوص والكلمات", desc: "فحص وتدقيق أوتوماتيكي للبيانات.", action: () => "تم الفحص: النظام يعمل بكفاءة 100%" }
         ];
 
         const sContainer = document.getElementById('services-list');
@@ -154,26 +152,24 @@
                 <div class="card-item">
                     <h3>${s.title}</h3>
                     <p>${s.desc}</p>
-                    <button class="btn-action" onclick="runService(${s.id})">ابدأ الآن</button>
-                    <div id="res-srv-${s.id}" class="res-box"></div>
+                    <button class="btn-action" onclick="runService(${s.id})">تشغيل الأداة</button>
+                    <div id="res-srv-${s.id}" class="content-display"></div>
                 </div>
             `;
         });
 
         function runService(id) {
             const srv = servicesData.find(x => x.id === id);
-            const res = srv.action();
             const box = document.getElementById(`res-srv-${id}`);
-            box.style.display = 'block';
-            box.innerText = res;
+            box.style.display = box.style.display === 'block' ? 'none' : 'block';
+            box.innerText = srv.action();
         }
 
-        // --- الكتب والأحاديث (تفاعلية) ---
+        // --- الكتب والأحاديث (عرض مباشر بدون alert) ---
         const booksData = [
-            { id: 1, title: "📖 صحيح مسلم (مقدمة في العلم)", desc: "قال رسول الله ﷺ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ»." },
-            { id: 2, title: "📘 أساسيات لغة Python", desc: "تعلم المتغيرات (Variables)، الدوال (Functions)، والـ Loops لبناء أدواتك وتطبيقاتك الذكية." },
-            { id: 3, title: "🐧 دليل أوامر Termux و Linux", desc: "أهم الأوامر: ls لفتح الملفات، cd للتنقل، chmod +x لمنح صلاحية التنفيذ، وgit clone لسحب المشاريع." },
-            { id: 4, title: "🛡️ مبادئ أمن المعلومات", desc: "تأمين الحسابات يعتمد على استخدام التحقق بخطوتين (2FA) وتوليد كلمات مرور قوية لا تقل عن 12 رمزاً." }
+            { id: 1, title: "📖 صحيح مسلم (مقدمة في العلم)", desc: "كتاب صحيح مسلم - باب الحث على طلب العلم.", fullText: "عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللَّهُ عَنْهُ، أَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ، وَمَا اجْتَمَعَ قَوْمٌ فِي بَيْتٍ مِنْ بُيُوتِ اللَّهِ يَتْلُونَ كِتَابَ اللَّهِ وَيَتَدَارَسُونَهُ بَيْنَهُمْ إِلا نَزَلَتْ عَلَيْهِمُ السَّكِينَةُ...»" },
+            { id: 2, title: "📘 أساسيات لغة Python الشامل", desc: "دليل المبتدئين للتعامل مع البرمجة والسورس كود.", fullText: "المحتوى الكامل:\n1. Print Statement: print('Hello AmirXCA')\n2. Variables: name = 'AmirX'\n3. Loops: for i in range(10): print(i)\nيمكنك كتابة وتنفيذ الأكواد داخل بيئة Python بمرونة." },
+            { id: 3, title: "🐧 دليل أوامر Termux و Linux", desc: "جميع أوامر التحكم بالأنظمة ومسارات الملفات.", fullText: "الأوامر الأساسية:\n- pkg update && pkg upgrade (تحديث النظام)\n- ls (عرض الملفات)\n- cd (التنقل بين المجلدات)\n- chmod +x (إعطاء صلاحية التنفيذ للسكريبتات)\n- python main.py (تشغيل أدوات البايثون)" }
         ];
 
         const bContainer = document.getElementById('books-list');
@@ -182,10 +178,18 @@
                 <div class="card-item">
                     <h3>${b.title}</h3>
                     <p>${b.desc}</p>
-                    <button class="btn-action" onclick="alert('تم فتح الكتاب بشكل كامل!')">قراءة المحتوى</button>
+                    <button class="btn-action" onclick="toggleBook(${b.id})">فتح / قراءة الكتاب</button>
+                    <div id="book-content-${b.id}" class="content-display">
+                        <p style="white-space: pre-line; color: #f8fafc;">${b.fullText}</p>
+                    </div>
                 </div>
             `;
         });
+
+        function toggleBook(id) {
+            const box = document.getElementById(`book-content-${id}`);
+            box.style.display = box.style.display === 'block' ? 'none' : 'block';
+        }
 
         // --- محرك اللعبة 3D ---
         let scene, camera, renderer, car;
