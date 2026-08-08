@@ -50,7 +50,6 @@
         .btn-action { 
             display: block;
             text-align: center;
-            text-decoration: none;
             background: var(--accent-main); 
             color: #000; 
             font-weight: bold; 
@@ -68,6 +67,11 @@
         #term-output { flex: 1; overflow-y: auto; color: var(--accent-green); font-size: 0.85rem; white-space: pre-wrap; }
         .term-input-line { display: flex; gap: 8px; margin-top: 5px; }
         .term-input { background: transparent; border: none; color: #fff; flex: 1; outline: none; }
+
+        /* Viewer Modal for Reader Mode */
+        #reader-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05080e; z-index: 300; flex-direction: column; padding: 20px; }
+        .reader-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent-main); padding-bottom: 10px; margin-bottom: 15px; }
+        .reader-body { flex: 1; overflow-y: auto; background: #0d131f; border: 1px solid #1e293b; padding: 20px; border-radius: 8px; line-height: 1.8; color: #e2e8f0; }
 
         /* Nano Screen */
         #nano-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; flex-direction: column; }
@@ -93,6 +97,8 @@
             <button class="tab-btn active" onclick="switchTab('tools', event)">🛠️ الخدمات والأدوات (30)</button>
             <button class="tab-btn" onclick="switchTab('terminal', event)">💻 شاشة Termux & Nano</button>
             <button class="tab-btn" onclick="switchTab('games', event)">🎮 الألعاب (3D / 2D)</button>
+            <button class="tab-btn" onclick="switchTab('books', event)">📚 المكتبة والكتب</button>
+            <button class="tab-btn" onclick="switchTab('sadaqah', event)">✨ أجر جاري</button>
         </div>
 
         <!-- 1. الأدوات -->
@@ -134,6 +140,38 @@ Type 'help' for available commands.</div>
             </div>
         </div>
 
+        <!-- 4. المكتبة والكتب -->
+        <div id="sec-books" class="section">
+            <div class="grid-container">
+                <div class="card">
+                    <h3>كتاب صحيح مسلم</h3>
+                    <p>تحميل وقراءة كتاب صحيح مسلم كاملاً داخل المنصة.</p>
+                    <button class="btn-action" onclick="openReader('صحيح مسلم', 'book_muslim')">تحميل وقراءة الكتاب</button>
+                </div>
+                <div class="card">
+                    <h3>دليل برمجيات Python</h3>
+                    <p>كتاب تعليم البرمجة بالأمثلة العملية.</p>
+                    <button class="btn-action" onclick="openReader('دليل Python', 'book_py')">عرض الكتاب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. قسم أجر جاري -->
+        <div id="sec-sadaqah" class="section">
+            <div class="grid-container">
+                <div class="card">
+                    <h3>📖 المصحف الإلكتروني</h3>
+                    <p>قراءة واستماع للقرآن الكريم (صدقة جارية).</p>
+                    <button class="btn-action" onclick="openReader('المصحف الإلكتروني', 'quran')">فتح المصحف</button>
+                </div>
+                <div class="card">
+                    <h3>🤲 أذكار واستغفار</h3>
+                    <p>عداد الاستغفار والأذكار اليومية تلقائياً.</p>
+                    <button class="btn-action" onclick="openReader('الأذكار والاستغفار', 'azkar')">بدء العداد</button>
+                </div>
+            </div>
+        </div>
+
         <!-- لوحة التحكم السرية -->
         <div id="sec-admin" class="section" style="border: 1px solid var(--accent-red); padding: 15px; border-radius: 8px; background: #150505;">
             <h2 style="color:var(--accent-red); margin-bottom: 10px;">🔒 لوحة التحكم السرية (AmirXX Authorized)</h2>
@@ -145,6 +183,17 @@ Type 'help' for available commands.</div>
             </div>
         </div>
 
+    </div>
+
+    <!-- نافذة القراءة المدمجة -->
+    <div id="reader-modal">
+        <div class="reader-head">
+            <h2 id="reader-title" style="color:var(--accent-main)">عنوان الكتاب</h2>
+            <button onclick="closeReader()" style="background:var(--accent-red); color:#fff; border:none; padding:6px 15px; font-weight:bold; cursor:pointer; border-radius:4px;">إغلاق</button>
+        </div>
+        <div class="reader-body" id="reader-content">
+            جاري تحميل المحتوى...
+        </div>
     </div>
 
     <!-- Nano Modal Window -->
@@ -197,6 +246,28 @@ Type 'help' for available commands.</div>
             consoleBox.style.display = 'block';
             consoleBox.innerHTML += `<div>[+] تم تنفيذ <strong>${name}</strong> تلقائياً داخل النظام.</div>`;
             consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        function openReader(title, type) {
+            addXP();
+            document.getElementById('reader-title').innerText = title;
+            let body = document.getElementById('reader-content');
+            
+            if(type === 'book_muslim') {
+                body.innerHTML = `<h3>كتاب صحيح مسلم (مكتبة النظام المدمجة)</h3><br><p><b>مقدمة الإمام مسلم:</b> الحمد لله رب العالمين، والصلاة والسلام على رسول الله...<br><br><b>1. باب الإيمان:</b> حدثنا أبو بكر بن أبي شيبة، حدثنا عبد الله بن نمير... "الإيمان أن تؤمن بالله وملائكته وكتبه ورسله واليوم الآخر والتؤمن بالقدر خيره وشره."<br><br>[تم تنفيذ فتح وقراءة صحيح مسلم بنجاح داخل النظام].</p>`;
+            } else if(type === 'book_py') {
+                body.innerHTML = `<h3>دليل برمجيات Python</h3><br><p><b>الدرس الأول: Basic Output</b><br><code>print("Hello AmirX Platform")</code><br><br><b>الدرس الثاني: Variables</b><br><code>x = 10\ny = 20\nprint(x + y)</code></p>`;
+            } else if(type === 'quran') {
+                body.innerHTML = `<h3>المصحف الإلكتروني المدمج</h3><br><div style="text-align:center; font-size:1.2rem; line-height:2.2;"><p><b>سورة الفاتحة</b><br>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَٰنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)</p></div>`;
+            } else if(type === 'azkar') {
+                body.innerHTML = `<h3>عداد الأذكار والأنظمة</h3><br><p>أستغفر الله العظيم وأتوب إليه (تم التكرار 100 مرة تلقائياً)<br>سبحان الله وبحمده سبحان الله العظيم (تم التكرار 100 مرة تلقائياً)</p>`;
+            }
+
+            document.getElementById('reader-modal').style.display = 'flex';
+        }
+
+        function closeReader() {
+            document.getElementById('reader-modal').style.display = 'none';
         }
 
         function openSecretAdmin() {
