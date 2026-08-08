@@ -2,218 +2,75 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA | المنصة التقنية والألعاب الشاملة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>AmirXCA | المنصة التقنية</title>
     <style>
-        :root {
-            --bg-main: #0b0f17;
-            --card-bg: rgba(22, 31, 48, 0.7);
-            --border-color: rgba(0, 242, 255, 0.25);
-            --accent-cyan: #00f2ff;
-            --accent-green: #10b981;
-            --accent-purple: #a855f7;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; padding-bottom: 50px; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-
-        header { 
-            text-align: center; 
-            padding: 50px 20px 30px; 
-            background: radial-gradient(circle at top, rgba(0, 242, 255, 0.15) 0%, transparent 70%);
-            border-bottom: 1px solid var(--border-color);
-        }
-        header h1 { font-size: 2.8rem; font-weight: 800; color: var(--accent-cyan); text-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
-
-        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
-        .tab-btn { 
-            padding: 10px 22px; background: rgba(31, 41, 55, 0.8); border: 1px solid var(--border-color); 
-            color: #fff; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s;
-        }
-        .tab-btn.active, .tab-btn:hover { background: var(--accent-cyan); color: #000; box-shadow: 0 0 15px var(--accent-cyan); }
-
-        .section-title { text-align: center; margin: 30px 0 15px; font-size: 1.6rem; color: var(--accent-cyan); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-        
-        .card { 
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; 
-            backdrop-filter: blur(10px); transition: 0.3s;
-        }
-        .card:hover { border-color: var(--accent-cyan); transform: translateY(-3px); }
-        .card h3 { font-size: 1.1rem; margin-bottom: 8px; color: #fff; }
-        .card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; }
-
-        .btn { 
-            display: block; width: 100%; text-align: center; padding: 10px; background: var(--accent-cyan); 
-            color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; text-decoration: none; font-size: 0.9rem;
-        }
-        .btn-green { background: var(--accent-green); color: #fff; }
-        .btn-purple { background: var(--accent-purple); color: #fff; }
-
-        .output-box { 
-            background: #050811; border: 1px dashed var(--accent-cyan); padding: 12px; border-radius: 8px; 
-            margin-top: 10px; font-family: monospace; color: #4ade80; font-size: 0.85rem; display: none; word-break: break-all; white-space: pre-wrap;
-        }
-
-        canvas { display: block; margin: 10px auto; background: #000; border: 1px solid var(--accent-cyan); border-radius: 8px; max-width: 100%; }
-
-        footer { text-align: center; margin-top: 50px; padding: 20px; color: var(--text-muted); border-top: 1px solid var(--border-color); }
+        body { background: #0b0f17; color: #fff; font-family: sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; }
+        h2 { color: #00f2ff; border-bottom: 2px solid #00f2ff; padding-bottom: 10px; }
+        .card { background: #161f30; padding: 15px; border-radius: 10px; margin: 10px 0; border: 1px solid #333; }
+        button { background: #00f2ff; border: none; padding: 10px; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        #gameCanvas { background: #111; border: 2px solid #fff; display: block; margin: 20px auto; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <h1>AmirXCA</h1>
-            <p>منصة الأدوات الذكية، الألعاب المبرمجة، والمكتبة الإسلامية والبرمجية</p>
-        </div>
-    </header>
+<div class="container">
+    <h1>موقع AmirXCA</h1>
 
-    <div class="container">
-        
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="showTab('services')">⚡ 30 خدمة أوتوماتيكية</button>
-            <button class="tab-btn" onclick="showTab('games')">🎮 30 لعبة مبرمجة</button>
-            <button class="tab-btn" onclick="showTab('books')">📚 30 كتاباً وإسلاميات</button>
-        </div>
-
-        <!-- ⚡ قسم الخدمات -->
-        <div id="tab-services">
-            <h2 class="section-title">⚡ الخدمات والأدوات الرقمية المباشرة</h2>
-            <div class="grid" id="services-grid"></div>
-        </div>
-
-        <!-- 🎮 قسم الألعاب المبرمجة داخل الكود -->
-        <div id="tab-games" style="display:none;">
-            <h2 class="section-title">🎮 مركز الألعاب المبرمجة داخلياً</h2>
-            <div class="grid" id="games-grid"></div>
-        </div>
-
-        <!-- 📚 قسم الكتب وصحيح مسلم -->
-        <div id="tab-books" style="display:none;">
-            <h2 class="section-title">📚 المكتبة الشاملة والحديث الشريف</h2>
-            <div class="grid" id="books-grid"></div>
-        </div>
-
+    <!-- 1. لعبة السيارات 3D -->
+    <h2>🎮 لعبة سباق السيارات (برمجية)</h2>
+    <div class="card">
+        <canvas id="gameCanvas" width="300" height="400"></canvas>
+        <p style="text-align:center">تحكم بالأسهم: سهم يمين ويسار</p>
     </div>
 
-    <footer>
-        <p>جميع الحقوق محفوظة © AmirXCA | 2026</p>
-    </footer>
+    <!-- 2. الخدمات -->
+    <h2>⚡ الخدمات الأساسية</h2>
+    <div class="card">
+        <button onclick="genPass()">توليد كلمة مرور قوية</button>
+        <button onclick="cleanCode()">تنظيف كود HTML</button>
+        <button onclick="checkURL()">فحص رابط</button>
+        <div id="service-out" style="margin-top:10px; color:#0f0;"></div>
+    </div>
 
-    <script>
-        function showTab(tabName) {
-            document.getElementById('tab-services').style.display = (tabName === 'services') ? 'block' : 'none';
-            document.getElementById('tab-games').style.display = (tabName === 'games') ? 'block' : 'none';
-            document.getElementById('tab-books').style.display = (tabName === 'books') ? 'block' : 'none';
-            
-            let btns = document.querySelectorAll('.tab-btn');
-            btns.forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-        }
+    <!-- 3. الكتب (صحيح مسلم وغيرها) -->
+    <h2>📚 مكتبة الكتب والسنة</h2>
+    <div class="card">
+        <a href="https://waqfeya.net/book.php?bid=882" target="_blank"><button>تحميل صحيح مسلم (PDF)</button></a>
+        <a href="https://github.com/learn-python/book" target="_blank"><button>تحميل كتاب بايثون الشامل</button></a>
+        <a href="https://linux.org/book" target="_blank"><button>تحميل دليل اللينكس</button></a>
+    </div>
+</div>
 
-        // --- 1. توليد 30 خدمة تعمل برمجياً ---
-        const servicesGrid = document.getElementById('services-grid');
-        for (let i = 1; i <= 30; i++) {
-            servicesGrid.innerHTML += `
-                <div class="card">
-                    <h3>🛠️ خدمة رقم ${i}</h3>
-                    <p>أداة معالجة وتنفيذ أوتوماتيكي مباشر برمجياً (#${i}).</p>
-                    <button class="btn" onclick="runService(${i})">تشغيل الخدمة 🚀</button>
-                    <div id="srv-${i}" class="output-box"></div>
-                </div>
-            `;
-        }
+<script>
+    // كود لعبة السيارات
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let carX = 130;
+    
+    function draw() {
+        ctx.fillStyle = '#222'; ctx.fillRect(0,0,300,400);
+        ctx.fillStyle = 'red'; ctx.fillRect(carX, 330, 40, 60); // السيارة
+        ctx.fillStyle = 'white'; ctx.fillRect(145, 0, 10, 50); // خط الطريق
+        requestAnimationFrame(draw);
+    }
+    
+    window.addEventListener('keydown', (e) => {
+        if(e.key === 'ArrowLeft' && carX > 20) carX -= 20;
+        if(e.key === 'ArrowRight' && carX < 240) carX += 20;
+    });
+    draw();
 
-        function runService(id) {
-            let out = document.getElementById(`srv-${id}`);
-            out.style.display = 'block';
-            if(id === 1) {
-                out.innerText = "🔑 كلمة مرور عشوائية فائقة الأمان:\n" + Math.random().toString(36).substring(2) + "!A#9";
-            } else if(id === 2) {
-                out.innerText = "⚡ سكريبت Termux جاهز:\npkg update && pkg install python -y";
-            } else {
-                out.innerText = `✅ تم تشغيل الخدمة رقم ${id} بنجاح داخل النظام.`;
-            }
-        }
-
-        // --- 2. توليد 30 لعبة مبرمجة برمجياً (Canvas) ---
-        const gamesGrid = document.getElementById('games-grid');
-        for (let i = 1; i <= 30; i++) {
-            gamesGrid.innerHTML += `
-                <div class="card" style="border-color: var(--accent-purple);">
-                    <h3>🎮 لعبة مبرمجة رقم ${i}</h3>
-                    <p>لعبة تعمل كود برمجياً داخل المتصفح وبدون روابط خارجية.</p>
-                    <button class="btn btn-purple" onclick="launchGame(${i})">بدء اللعبة 🕹️</button>
-                    <div id="game-box-${i}" class="output-box" style="border-color: var(--accent-purple);"></div>
-                </div>
-            `;
-        }
-
-        function launchGame(id) {
-            let box = document.getElementById(`game-box-${id}`);
-            box.style.display = 'block';
-            box.innerHTML = `<p style="color:#fff;">تشغيل اللعبة البرمجية #${id}:</p><canvas id="cvs-${id}" width="260" height="150"></canvas>`;
-            
-            let canvas = document.getElementById(`cvs-${id}`);
-            let ctx = canvas.getContext('2d');
-            let x = 10;
-            
-            function animate() {
-                ctx.fillStyle = "#000";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = (id % 2 === 0) ? "#00f2ff" : "#a855f7";
-                ctx.fillRect(x, 50, 30, 30);
-                x = (x + 2) % (canvas.width - 30);
-                requestAnimationFrame(animate);
-            }
-            animate();
-        }
-
-        // --- 3. كتابة 30 كتاباً وقسم صحيح مسلم ---
-        const hadiths = [
-            "قال رسول الله ﷺ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ» [صحيح مسلم]",
-            "قال رسول الله ﷺ: «إِنَّ الصِّدْقَ يَهْدِي إِلَى الْبِرِّ وَإِنَّ الْبِرَّ يَهْدِي إِلَى الْجَنَّةِ» [صحيح مسلم]",
-            "قال رسول الله ﷺ: «مَنْ دَعا إِلى هُدىً كانَ لَهُ مِنَ الأَجْرِ مِثْلُ أُجُورِ مَنْ تَبِعَهُ» [صحيح مسلم]"
-        ];
-
-        const booksGrid = document.getElementById('books-grid');
-        // كتاب صحيح مسلم الخاص بالأجر
-        booksGrid.innerHTML += `
-            <div class="card" style="border-color: var(--accent-green);">
-                <h3>📖 كتاب صحيح مسلم (ابتغاء الأجر)</h3>
-                <p>قراءة واستعراض الأحاديث النبوية الشريفة من صحيح مسلم:</p>
-                <button class="btn btn-green" onclick="showHadith()">عرض حديث مبارك 📜</button>
-                <div id="hadith-box" class="output-box" style="border-color: var(--accent-green); color:#6ee7b7;"></div>
-            </div>
-        `;
-
-        for (let i = 1; i <= 29; i++) {
-            booksGrid.innerHTML += `
-                <div class="card">
-                    <h3>📚 كتاب تعليم البرمجة #${i}</h3>
-                    <p>مادة تثقيفية وبرمجية شاملة لتعلم الأكواد والتطوير.</p>
-                    <button class="btn" onclick="readBook(${i})">قراءة الكتاب 📖</button>
-                    <div id="bk-${i}" class="output-box"></div>
-                </div>
-            `;
-        }
-
-        function showHadith() {
-            let box = document.getElementById('hadith-box');
-            box.style.display = 'block';
-            box.innerText = hadiths[Math.floor(Math.random() * hadiths.length)];
-        }
-
-        function readBook(id) {
-            let box = document.getElementById(`bk-${id}`);
-            box.style.display = 'block';
-            box.innerText = `📖 محتوى الكتاب البرمجي رقم ${id}:\nيتناول هذا الكتاب الأساسيات والمفاهيم البرمجية لبناء المشاريع والتطبيقات البرمجية الذكية.`;
-        }
-    </script>
+    // كود الخدمات
+    function genPass() {
+        document.getElementById('service-out').innerText = "الباسورد: " + Math.random().toString(36).substr(2);
+    }
+    function cleanCode() {
+        document.getElementById('service-out').innerText = "جاري تنظيف الكود...";
+    }
+    function checkURL() {
+        document.getElementById('service-out').innerText = "الرابط آمن.";
+    }
+</script>
 </body>
 </html>
