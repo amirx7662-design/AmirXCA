@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA | المنصة التقنية الشاملة</title>
+    <title>AmirXCA System | المنصة الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- إعدادات التطبيق PWA للعمل أوفلاين كلياً بدون إنترنت -->
+    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22AmirXCA%20System%22%2C%22short_name%22%3A%22AmirXCA%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2305080e%22%2C%22theme_color%22%3A%22%2300f2ff%22%7D">
+    <meta name="theme-color" content="#00f2ff">
+
     <style>
         :root {
             --bg-body: #05080e;
@@ -28,10 +33,12 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 10px;
         }
         header h1 { color: var(--accent-cyan); font-size: 1.8rem; font-weight: 800; }
 
-        /* 5. لوحة حالة النظام السريعة (System Status Widget) */
+        .user-auth-status { font-size: 0.9rem; color: var(--accent-green); font-weight: bold; }
+
         .status-widget {
             display: flex;
             gap: 15px;
@@ -54,22 +61,19 @@
         .btn-action { width: 100%; padding: 10px; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .input-field { width: 100%; padding: 10px; background: #05080e; border: 1px solid rgba(0,242,255,0.3); color: #fff; border-radius: 6px; margin: 5px 0; outline: none; font-family: 'Fira Code', monospace; }
 
-        /* Termux Terminal + الشجرة */
         .terminal-layout { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
         .file-tree { flex: 1; min-width: 220px; background: #080d1a; border: 1px solid var(--accent-cyan); border-radius: 10px; padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.9rem; }
         .file-item { cursor: pointer; padding: 5px; color: #38bdf8; border-radius: 4px; }
         .file-item:hover { background: rgba(0,242,255,0.1); }
         
         .terminal-container { flex: 3; min-width: 300px; background: #04070d; border: 1px solid var(--accent-cyan); border-radius: 10px; overflow: hidden; }
-        .terminal-header { background: #0e1626; padding: 8px 15px; font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-size: 0.85rem; }
+        .terminal-header { background: #0e1626; padding: 8px 15px; font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-size: 0.85rem; display: flex; justify-content: space-between; }
         .terminal-body { padding: 15px; height: 260px; overflow-y: auto; font-family: 'Fira Code', monospace; direction: ltr; text-align: left; color: #38ef7d; font-size: 0.9rem; }
         .terminal-input-line { display: flex; padding: 8px 15px; background: #080d1a; border-top: 1px solid rgba(0, 242, 255, 0.1); direction: ltr; }
         .terminal-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace; outline: none; margin-left: 8px; }
 
-        /* 3. راديو المطورين */
         .radio-widget { position: fixed; bottom: 15px; left: 15px; background: #0e1626; border: 1px solid var(--accent-cyan); padding: 10px 15px; border-radius: 30px; z-index: 999; display: flex; align-items: center; gap: 10px; }
 
-        /* Canvas للألعاب */
         canvas { border-radius: 8px; width: 100%; height: auto; }
 
         footer { background: #0b0f17; border-top: 1px solid rgba(0, 242, 255, 0.2); padding: 20px; text-align: center; margin-top: 40px; }
@@ -80,7 +84,7 @@
 
     <header>
         <h1>AmirXCA System</h1>
-        <!-- 5. لوحة حالة النظام السريعة -->
+        <div class="user-auth-status" id="header-user-status">👤 زائر (غير مسجل)</div>
         <div class="status-widget">
             <span>🟢 Status: Online</span>
             <span>📡 Ping: <span id="ping-val">24</span>ms</span>
@@ -90,28 +94,49 @@
 
     <div class="container">
 
-        <!-- 1. مستكشف الملفات + Termux Terminal المدمج -->
-        <h2 class="section-title">💻 بيئة Termux المباشرة ومستكشف المشاريع</h2>
+        <!-- 🔐 نظام حسابات المستخدمين -->
+        <h2 class="section-title">🔑 نظام حسابات الأعضاء</h2>
+        <div class="card" id="auth-card">
+            <div id="login-form">
+                <h3>تسجيل الدخول / إنشاء حساب</h3>
+                <input type="text" id="auth-username" class="input-field" placeholder="اسم المستخدم...">
+                <input type="password" id="auth-password" class="input-field" placeholder="كلمة المرور...">
+                <button class="btn-action" onclick="registerUser()">تسجيل حساب جديد</button>
+                <button class="btn-action" onclick="loginUser()" style="background:#38ef7d; color:#000;">تسجيل الدخول</button>
+            </div>
+            <div id="user-logged-in" style="display:none;">
+                <h3 style="color:var(--accent-green);">مرحباً بك، <span id="user-name-display"></span>! 🎉</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-top:5px;">حسابك موثق ونشط داخل المنصة أوفلاين وأونلاين.</p>
+                <button class="btn-action" onclick="logoutUser()" style="background:#ef4444; color:#fff;">تسجيل الخروج</button>
+            </div>
+        </div>
+
+        <!-- 🤖 Termux Terminal + ذكاء اصطناعي مدمج سريع أوفلاين + الشجرة -->
+        <h2 class="section-title">💻 بيئة Termux المباشرة والذكاء الاصطناعي</h2>
         <div class="terminal-layout">
             <div class="file-tree">
                 <div style="color:var(--accent-cyan); font-weight:bold; margin-bottom:10px;">📁 Project Tree</div>
                 <div class="file-item" onclick="openFile('script.py', 'print(\'Hello from AmirXCA System!\')\nimport os\nprint(os.uname())')">📄 script.py</div>
-                <div class="file-item" onclick="openFile('notes.txt', 'ملاحظات المشروع:\n- النظام شغال أوتوماتيكياً 100%\n- جميع الخدمات مدمجة بالكود.')">📄 notes.txt</div>
-                <div class="file-item" onclick="openFile('config.json', '{\n  \"version\": \"3.0\",\n  \"status\": \"active\"\n}')">📄 config.json</div>
+                <div class="file-item" onclick="openFile('notes.txt', 'ملاحظات المشروع:\n- النظام شغال أوتوماتيكياً 100%\n- التطبيق يشتغل أوفلاين كلياً.')">📄 notes.txt</div>
+                <div class="file-item" onclick="openFile('config.json', '{\n  \"version\": \"4.0\",\n  \"offline_ready\": true\n}')">📄 config.json</div>
             </div>
             <div class="terminal-container">
-                <div class="terminal-header">AmirX OS v3.0 (Terminal & Python)</div>
+                <div class="terminal-header">
+                    <span>AmirX OS v4.0 (Terminal & AmirAI)</span>
+                    <span style="color:var(--accent-green);">🤖 AI Ready</span>
+                </div>
                 <div class="terminal-body" id="term-out">
-                    <div>Welcome to AmirXCA Environment. Type <span style="color:#00f2ff;">help</span> or click files on the left.</div>
+                    <div>Welcome to AmirXCA Environment.</div>
+                    <div>Type <span style="color:#00f2ff;">help</span> or ask the AI directly (e.g. <span style="color:#38ef7d;">ai explain python</span>).</div>
                 </div>
                 <div class="terminal-input-line">
                     <span style="color:var(--accent-cyan); font-family:'Fira Code'; font-weight:bold;" id="term-prompt">amirx@terminal:~$</span>
-                    <input type="text" class="terminal-input" id="term-in" placeholder="اكتب الأمر هنا واضغط Enter...">
+                    <input type="text" class="terminal-input" id="term-in" placeholder="اكتب أمراً أو اسأل الذكاء الاصطناعي (ai ...)">
                 </div>
             </div>
         </div>
 
-        <!-- 2. محرر أكواد مصغر (Mini Playground) -->
+        <!-- محرر أكواد مصغر -->
         <h2 class="section-title">🧪 محرر الأكواد المصغر (Playground)</h2>
         <div class="card">
             <textarea id="code-editor" class="input-field" style="height:100px;" placeholder="اكتب كود HTML/JS هنا..."><h3 style="color:#00f2ff;">تجربة كود داخل AmirXCA!</h3></textarea>
@@ -119,10 +144,9 @@
             <div id="editor-preview" style="background:#fff; color:#000; padding:10px; border-radius:6px; margin-top:10px; display:none;"></div>
         </div>
 
-        <!-- 3. محول ومحلل النصوص + 4. مولد أوامر Termux + 1 & 2 السكريبتات و Curl -->
+        <!-- الأدوات البرمجية -->
         <h2 class="section-title">🛠️ الأدوات البرمجية ومولد الأوامر</h2>
         <div class="grid">
-            <!-- محول النصوص -->
             <div class="card">
                 <h3>🔄 محول النصوص (Base64 / Hex)</h3>
                 <input type="text" id="dev-text" class="input-field" placeholder="اكتب النص هنا...">
@@ -131,7 +155,6 @@
                 <div id="dev-res" style="color:var(--accent-green); margin-top:8px; font-family:'Fira Code'; word-break:break-all;"></div>
             </div>
 
-            <!-- مولد أوامر Termux -->
             <div class="card">
                 <h3>⚡ مولد أوامر التثبيت لـ Termux</h3>
                 <label><input type="checkbox" value="python"> Python</label><br>
@@ -141,7 +164,6 @@
                 <input type="text" id="termux-cmd-out" class="input-field" readonly style="color:var(--accent-cyan);">
             </div>
 
-            <!-- حفظ السكريبتات وتوليد Curl -->
             <div class="card">
                 <h3>🔗 مولد أسطر التحميل (One-Line Curl)</h3>
                 <input type="text" id="curl-url" class="input-field" placeholder="ضع رابط الملف/الأداة...">
@@ -150,10 +172,9 @@
             </div>
         </div>
 
-        <!-- التحدي البرمجي + الشات المباشر -->
+        <!-- التحدي والـ Live Chat -->
         <h2 class="section-title">🧠 التحديات التقنية وغرفة الشات</h2>
         <div class="grid">
-            <!-- 2. التحدي البرمجي -->
             <div class="card">
                 <h3>🎯 سؤال التحدي اليومي</h3>
                 <p id="quiz-q">ما هو الأمر المستخدم لطباعة المسار الحالي في Linux؟</p>
@@ -163,27 +184,24 @@
                 <div id="quiz-res" style="margin-top:8px; font-weight:bold;"></div>
             </div>
 
-            <!-- 1. الشات المباشر -->
             <div class="card">
                 <h3>💬 Terminal Live Chat</h3>
                 <div id="chat-box" style="height:120px; background:#05080e; overflow-y:auto; padding:8px; font-family:'Fira Code'; font-size:0.85rem; border:1px solid rgba(0,242,255,0.2); margin-bottom:8px;">
                     <div><span style="color:#00f2ff;">[System]:</span> مرحباً بكم في شات المطورين!</div>
                 </div>
-                <input type="text" id="chat-in" class="input-field" placeholder="اكتب رسالتك اضغط Enter..." onkeydown="if(e.key==='Enter') sendChat()">
+                <input type="text" id="chat-in" class="input-field" placeholder="اكتب رسالتك واضغط Enter..." onkeydown="if(event.key==='Enter') sendChat()">
             </div>
         </div>
 
-        <!-- 4. لعبة Cyber Runner 2D + 🎮 لعبة السيارات 3D -->
+        <!-- الألعاب التفاعلية -->
         <h2 class="section-title">🎮 الألعاب التفاعلية (2D Runner & 3D Car)</h2>
         <div class="grid">
-            <!-- 2D Cyber Runner -->
             <div class="card">
                 <h3>🏃 Cyber Runner 2D</h3>
                 <canvas id="runnerCanvas" width="300" height="150" style="background:#000; border:1px solid var(--accent-cyan);"></canvas>
                 <button class="btn-action" onclick="jumpRunner()">قفز (Jump)</button>
             </div>
 
-            <!-- 3D Car Simulator -->
             <div class="card">
                 <h3>🏎️ محاكي السيارات 3D</h3>
                 <div id="game-3d-container" style="height:180px;"></div>
@@ -191,20 +209,18 @@
             </div>
         </div>
 
-        <!-- 3. مركز التحديثات (Changelog) + 4. مركز التحميل المباشر -->
+        <!-- التحديثات ومركز التحميل المباشر -->
         <h2 class="section-title">📢 التحديثات ومركز التحميل المباشر</h2>
         <div class="grid">
-            <!-- مركز التحديثات -->
             <div class="card">
-                <h3>📜 سجل التحديثات (Changelog v3.0)</h3>
+                <h3>📜 سجل التحديثات (Changelog v4.0)</h3>
                 <ul style="color:var(--text-muted); padding-right:20px; font-size:0.9rem; line-height:1.8;">
-                    <li>إضافة بيئة Termux المباشرة مع Python.</li>
-                    <li>دمج مستكشف المشاريع ومحرر الأكواد.</li>
-                    <li>إضافة ألعاب 2D و 3D وأدوات التحويل.</li>
+                    <li>إضافة ذكاء اصطناعي مدمج يعمل أوفلاين.</li>
+                    <li>إضافة نظام تسجيل ودخول الحسابات.</li>
+                    <li>دعم التشغيل التلقائي كتطبيق بدون إنترنت.</li>
                 </ul>
             </div>
 
-            <!-- مركز التحميل المباشر -->
             <div class="card">
                 <h3>📥 مركز التحميل المباشر (Direct Download)</h3>
                 <p style="color:var(--text-muted); font-size:0.9rem;">تحميل الملفات النصية والسكريبتات بنقرة واحدة:</p>
@@ -215,7 +231,7 @@
 
     </div>
 
-    <!-- 3. راديو المطورين -->
+    <!-- راديو المطورين -->
     <div class="radio-widget">
         <span style="font-size:0.85rem; color:#fff;">📻 Cyber Radio</span>
         <button onclick="toggleAudio()" id="radio-btn" style="background:var(--accent-cyan); border:none; padding:4px 10px; border-radius:15px; font-weight:bold; cursor:pointer;">تشغيل</button>
@@ -227,44 +243,122 @@
     </footer>
 
     <script>
-        // 1. الساعة والـ Ping
+        // 📲 تسجيل الـ Service Worker لجعل الموقع يعمل كـ تطبيق بدون إنترنت (Offline PWA) أوتوماتيكياً
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'amirx-v4';
+                self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['./']))); });
+                self.addEventListener('fetch', e => { e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))); });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+        }
+
+        // 🔑 1. نظام إدارة الحسابات (تسجيل دخول/خروج)
+        function checkAuthState() {
+            const currentUser = localStorage.getItem('amirx_logged_user');
+            if (currentUser) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('user-logged-in').style.display = 'block';
+                document.getElementById('user-name-display').innerText = currentUser;
+                document.getElementById('header-user-status').innerText = `👤 العضو: ${currentUser}`;
+            } else {
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('user-logged-in').style.display = 'none';
+                document.getElementById('header-user-status').innerText = '👤 زائر (غير مسجل)';
+            }
+        }
+
+        function registerUser() {
+            const u = document.getElementById('auth-username').value.trim();
+            const p = document.getElementById('auth-password').value.trim();
+            if(!u || !p) return alert('الرجاء كتابة اسم المستخدم وكلمة المرور');
+            localStorage.setItem('user_' + u, p);
+            localStorage.setItem('amirx_logged_user', u);
+            alert('تم إنشاء الحساب وتسجيل الدخول بنجاح!');
+            checkAuthState();
+        }
+
+        function loginUser() {
+            const u = document.getElementById('auth-username').value.trim();
+            const p = document.getElementById('auth-password').value.trim();
+            const savedP = localStorage.getItem('user_' + u);
+            if(savedP && savedP === p) {
+                localStorage.setItem('amirx_logged_user', u);
+                checkAuthState();
+            } else {
+                alert('اسم المستخدم أو كلمة المرور غير صحيحة!');
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('amirx_logged_user');
+            checkAuthState();
+        }
+        checkAuthState();
+
+        // 🤖 2. الذكاء الاصطناعي المدمج + Termux Terminal
+        const termIn = document.getElementById('term-in');
+        const termOut = document.getElementById('term-out');
+
+        termIn.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter' && termIn.value.trim()) {
+                const val = termIn.value.trim();
+                printTerm('amirx@terminal:~$ ' + val, '#fff');
+                termIn.value = '';
+
+                if(val.startsWith('ai ')) {
+                    processAIResponse(val.substring(3));
+                } else if(val === 'help') {
+                    printTerm('Commands: help, ls, clear, python, ai <query>', '#00f2ff');
+                } else if(val === 'ls') {
+                    printTerm('script.py  notes.txt  config.json', '#f59e0b');
+                } else if(val === 'clear') {
+                    termOut.innerHTML = '';
+                } else {
+                    printTerm('Command not found: ' + val + ' (Try: ai ' + val + ')', '#ef4444');
+                }
+            }
+        });
+
+        function processAIResponse(query) {
+            printTerm('[AmirAI Thinking...]', '#9d4edd');
+            setTimeout(() => {
+                let reply = `[AmirAI]: تم تحليل إدخالك: "${query}". `;
+                const q = query.toLowerCase();
+                if(q.includes('python') || q.includes('بايثون')) reply += 'لغة Python ممتازة للسكريبتات والتأتمة داخل Termux. استخدم أمر python لتشغيل أي ملف.';
+                else if(q.includes('linux') || q.includes('اوامر')) reply += 'أهم الأوامر: ls لعرض الملفات، cd للتنقل، pkg install لتثبيت الأدوات.';
+                else reply += 'النظام شغال بكفاءة 100% وجاهز لتنفيذ أي أمر أو تحليل سكريبت داخل المنصة.';
+                
+                printTerm(reply, '#38ef7d');
+            }, 300);
+        }
+
+        function printTerm(txt, col = '#38ef7d') {
+            const d = document.createElement('div'); d.style.color = col; d.innerText = txt;
+            termOut.appendChild(d); termOut.scrollTop = termOut.scrollHeight;
+        }
+
+        function openFile(name, content) {
+            printTerm(`--- Opening ${name} ---`, '#00f2ff');
+            printTerm(content, '#fff');
+        }
+
+        // الساعة والـ Ping
         setInterval(() => {
             const now = new Date();
             document.getElementById('clock-val').innerText = now.toLocaleTimeString();
             document.getElementById('ping-val').innerText = Math.floor(Math.random() * 15) + 18;
         }, 1000);
 
-        // Termux Terminal & Tree
-        const termIn = document.getElementById('term-in');
-        const termOut = document.getElementById('term-out');
-        termIn.addEventListener('keydown', (e) => {
-            if(e.key === 'Enter' && termIn.value.trim()) {
-                const val = termIn.value.trim();
-                printTerm('amirx@terminal:~$ ' + val, '#fff');
-                termIn.value = '';
-                if(val === 'help') printTerm('Commands: help, ls, clear, python', '#00f2ff');
-                else if(val === 'ls') printTerm('script.py  notes.txt  config.json', '#f59e0b');
-                else if(val === 'clear') termOut.innerHTML = '';
-                else printTerm('Command not found: ' + val, '#ef4444');
-            }
-        });
-        function printTerm(txt, col = '#38ef7d') {
-            const d = document.createElement('div'); d.style.color = col; d.innerText = txt;
-            termOut.appendChild(d); termOut.scrollTop = termOut.scrollHeight;
-        }
-        function openFile(name, content) {
-            printTerm(`--- Opening ${name} ---`, '#00f2ff');
-            printTerm(content, '#fff');
-        }
-
-        // 2. Playground
+        // Playground
         function runPlayground() {
             const p = document.getElementById('editor-preview');
             p.style.display = 'block';
             p.innerHTML = document.getElementById('code-editor').value;
         }
 
-        // 3. Dev Utility
+        // Dev Utility
         function convertText(type) {
             const val = document.getElementById('dev-text').value;
             const res = document.getElementById('dev-res');
@@ -272,7 +366,7 @@
             else res.innerText = (val || 'AmirXCA').split('').map(c => c.charCodeAt(0).toString(16)).join(' ');
         }
 
-        // 4. Termux Cmd Gen
+        // Termux Cmd Gen
         function generateTermuxCmd() {
             let pkgs = [];
             document.querySelectorAll('.card input[type="checkbox"]:checked').forEach(c => pkgs.push(c.value));
@@ -302,7 +396,6 @@
         }
 
         // Radio Audio Simulation
-        let audioCtx;
         function toggleAudio() {
             const btn = document.getElementById('radio-btn');
             if(btn.innerText === 'تشغيل') { btn.innerText = 'إيقاف'; btn.style.background = '#ef4444'; }
@@ -329,8 +422,8 @@
 
             obstacleX -= 3; if(obstacleX < -10) obstacleX = 300;
 
-            ctx.fillStyle = '#00f2ff'; ctx.fillRect(20, playerY, 15, 15); // Player
-            ctx.fillStyle = '#ef4444'; ctx.fillRect(obstacleX, 125, 10, 10); // Obstacle
+            ctx.fillStyle = '#00f2ff'; ctx.fillRect(20, playerY, 15, 15);
+            ctx.fillStyle = '#ef4444'; ctx.fillRect(obstacleX, 125, 10, 10);
             requestAnimationFrame(run2DGame);
         }
         function jumpRunner() { if(playerY === 120) isJumping = true; }
