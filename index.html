@@ -3,83 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA | System</title>
+    <title>AmirXCA Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        :root { --accent: #00f2ff; --bg: #05080e; }
-        body { background: var(--bg); color: #fff; font-family: sans-serif; margin: 0; }
-        header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-        .logo-title { color: var(--accent); font-weight: bold; font-size: 1.5rem; cursor: pointer; }
-        .section { display: none; padding: 20px; }
+        :root {
+            --bg-body: #05080e;
+            --card-bg: #0d131f;
+            --accent-main: #00f2ff;
+            --accent-green: #38ef7d;
+            --accent-red: #ef4444;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Fira Code', monospace; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding-bottom: 60px; }
+
+        header {
+            background: #0b0f17;
+            padding: 12px 20px;
+            border-bottom: 2px solid var(--accent-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .logo-title { color: var(--accent-main); font-size: 1.5rem; font-weight: bold; cursor: pointer; }
+        .status-widget { font-size: 0.85rem; color: var(--accent-green); background: rgba(0, 242, 255, 0.05); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(0, 242, 255, 0.2); }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn { background: var(--card-bg); color: var(--text-muted); border: 1px solid #1e293b; padding: 8px 16px; border-radius: 6px; cursor: pointer; white-space: nowrap; font-weight: bold; }
+        .tab-btn.active, .tab-btn:hover { color: var(--accent-main); border-color: var(--accent-main); background: rgba(0,242,255,0.1); }
+
+        .section { display: none; }
         .section.active { display: block; }
-        .card { background: #111; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #222; }
-        .btn { background: var(--accent); color: #000; border: none; padding: 10px; cursor: pointer; border-radius: 4px; }
+
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        .card { background: var(--card-bg); border: 1px solid #1e293b; border-radius: 8px; padding: 15px; }
+        .card h3 { color: var(--accent-main); font-size: 1rem; margin-bottom: 8px; }
+        .card p { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px; line-height: 1.4; }
+        .btn-action { background: var(--accent-main); color: #000; font-weight: bold; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; width: 100%; }
+
+        #console-output { background: #000; border: 1px solid var(--accent-main); padding: 10px; border-radius: 6px; font-size: 0.85rem; color: var(--accent-green); height: 100px; overflow-y: auto; margin-bottom: 20px; display: none; }
+
+        /* Termux Emulator */
+        #term-box { background: #000; border: 1px solid var(--accent-main); border-radius: 6px; padding: 15px; height: 320px; display: flex; flex-direction: column; }
+        #term-output { flex: 1; overflow-y: auto; color: var(--accent-green); font-size: 0.85rem; white-space: pre-wrap; }
+        .term-input-line { display: flex; gap: 8px; margin-top: 5px; }
+        .term-input { background: transparent; border: none; color: #fff; flex: 1; outline: none; }
+
+        /* Nano Screen */
+        #nano-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; flex-direction: column; }
+        .nano-head { background: #fff; color: #000; padding: 4px 10px; font-weight: bold; font-size: 0.85rem; }
+        .nano-text { flex: 1; background: #000; color: #fff; border: none; padding: 10px; outline: none; font-family: monospace; resize: none; }
+        .nano-foot { background: #1e293b; color: #fff; padding: 6px; font-size: 0.75rem; text-align: center; }
     </style>
 </head>
 <body>
 
-<header>
-    <!-- عند الضغط مرتين يطلب الباسورد -->
-    <div class="logo-title" ondblclick="accessSecretPanel()">AmirXCA</div>
-    <nav>
-        <button onclick="showSection('home')">الرئيسية</button>
-        <button onclick="showSection('books')">الكتب</button>
-        <button onclick="showSection('sadaqah')">أجر جاري</button>
-    </nav>
-</header>
+    <header>
+        <!-- النقر المزدوج هنا يفتح لوحة التحكم السرية -->
+        <div class="logo-title" ondblclick="openSecretAdmin()">⚡ AmirXCA</div>
+        <div class="status-widget">
+            <span>النقاط: <strong id="user-xp" style="color:#fff;">100</strong> XP</span>
+        </div>
+    </header>
 
-<!-- القسم الرئيسي -->
-<div id="sec-home" class="section active">
-    <h1>أهلاً بك في النظام</h1>
-    <p>النظام يعمل بكفاءة.</p>
-</div>
+    <div class="container">
 
-<!-- قسم الكتب -->
-<div id="sec-books" class="section">
-    <h2>المكتبة الرقمية</h2>
-    <div class="card">
-        <h3>صحيح مسلم</h3>
-        <p>تحميل كتاب صحيح مسلم بصيغة PDF.</p>
-        <a href="https://archive.org/details/Sahih-Muslim" target="_blank"><button class="btn">تحميل الآن</button></a>
+        <div id="console-output"></div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('tools', event)">🛠️ الخدمات والأدوات (30)</button>
+            <button class="tab-btn" onclick="switchTab('terminal', event)">💻 شاشة Termux & Nano</button>
+            <button class="tab-btn" onclick="switchTab('games', event)">🎮 الألعاب (3D / 2D)</button>
+            <button class="tab-btn" onclick="switchTab('books', event)">📚 المكتبة والكتب</button>
+            <button class="tab-btn" onclick="switchTab('sadaqah', event)">✨ أجر جاري</button>
+        </div>
+
+        <!-- الأقسام الرئيسية والخدمات -->
+        <div id="sec-tools" class="section active">
+            <div class="grid-container" id="tools-grid"></div>
+        </div>
+
+        <!-- قسم الترمكس والتيرمنال -->
+        <div id="sec-terminal" class="section">
+            <div class="card">
+                <h3>💻 محاكي Termux ونظام Nano التفاعلي</h3>
+                <p>اكتب <code>help</code> لمعرفة الأوامر، أو <code>nano filename.py</code> لفتح محرر الملفات.</p>
+                <div id="term-box">
+                    <div id="term-output">AmirX OS Terminal [Version 2.0]
+Type 'help' for available commands.</div>
+                    <div class="term-input-line">
+                        <span style="color:var(--accent-main)">amirx@system:~$</span>
+                        <input type="text" id="term-cmd" class="term-input" onkeydown="handleTerm(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم الألعاب -->
+        <div id="sec-games" class="section">
+            <div class="grid-container">
+                <div class="card">
+                    <h3>Cyber Runner 2D</h3>
+                    <p>تشغيل لعبة تفاعلية 2D داخل الصفحة تلقائياً.</p>
+                    <button class="btn-action" onclick="run2DGame()">تشغيل 2D</button>
+                    <canvas id="game2DCanvas" style="width:100%; height:140px; background:#000; margin-top:10px; border-radius:4px;"></canvas>
+                </div>
+                <div class="card">
+                    <h3>3D Matrix Space Engine</h3>
+                    <p>بيئة ثلاثية الأبعاد مبنية بالكامل داخل الكود.</p>
+                    <button class="btn-action" onclick="init3DGame()">تشغيل 3D Engine</button>
+                    <div id="canvas3DContainer" style="width:100%; height:140px; background:#000; margin-top:10px; border-radius:4px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم الكتب -->
+        <div id="sec-books" class="section">
+            <div class="grid-container">
+                <div class="card">
+                    <h3>كتاب صحيح مسلم</h3>
+                    <p>تحميل وقراءة كتاب صحيح مسلم كاملاً.</p>
+                    <button class="btn-action" onclick="executeService('تحميل صحيح مسلم')">تحميل الكتاب</button>
+                </div>
+                <div class="card">
+                    <h3>دليل برمجيات Python</h3>
+                    <p>كتاب تعليم البرمجة بالأمثلة العملية.</p>
+                    <button class="btn-action" onclick="executeService('قراءة كتاب Python')">عرض الكتاب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم أجر جاري -->
+        <div id="sec-sadaqah" class="section">
+            <div class="grid-container">
+                <div class="card">
+                    <h3>📖 المصحف الإلكتروني</h3>
+                    <p>قراءة واستماع للقرآن الكريم (صدقة جارية).</p>
+                    <button class="btn-action" onclick="executeService('تشغيل المصحف الإلكتروني')">فتح المصحف</button>
+                </div>
+                <div class="card">
+                    <h3>🤲 أذكار واستغفار</h3>
+                    <p>عداد الاستغفار والأذكار اليومية تلقائياً.</p>
+                    <button class="btn-action" onclick="executeService('عداد الأذكار')">بدء العداد</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- لوحة التحكم السرية (مخفية كلياً ولا يوصل لها إلا بالرمز) -->
+        <div id="sec-admin" class="section" style="border: 1px solid var(--accent-red); padding: 15px; border-radius: 8px; background: #150505;">
+            <h2 style="color:var(--accent-red); margin-bottom: 10px;">🔒 لوحة التحكم السرية (AmirXX Authorized)</h2>
+            <p style="color:#ccc; font-size: 0.9rem; margin-bottom: 15px;">أهلاً بك في نظام الإدارة السري. جميع الصلاحيات مفتوحة.</p>
+            <div class="grid-container">
+                <div class="card">
+                    <h3>إدارة السيرفر والجسور</h3>
+                    <button class="btn-action" style="background:var(--accent-red); color:#fff;" onclick="alert('تم إعادة ضبط الخادم التلقائي بنجاح')">إعادة تشغيل الخادم</button>
+                </div>
+                <div class="card">
+                    <h3>سجلات الجلسات الحية</h3>
+                    <button class="btn-action" style="background:var(--accent-red); color:#fff;" onclick="alert('الجلسات النشطة: 1 (AmirX)')">عرض الجلسات</button>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
 
-<!-- قسم الأجر الجاري -->
-<div id="sec-sadaqah" class="section">
-    <h2>أجر جاري (صدقة جارية)</h2>
-    <div class="card">
-        <h3>القرآن الكريم</h3>
-        <p>استمع واقرأ القرآن الكريم صدقة عنك وعن المسلمين.</p>
-        <a href="https://quran.com" target="_blank"><button class="btn">زيارة الموقع</button></a>
+    <!-- Nano Modal Window -->
+    <div id="nano-modal">
+        <div class="nano-head">GNU nano 9.2 &nbsp;&nbsp;&nbsp;&nbsp; File: <span id="nano-filename">script.py</span></div>
+        <textarea id="nano-content" class="nano-text" spellcheck="false"></textarea>
+        <div class="nano-foot">
+            [ اضغط الزر بالأسفل للخروج والحفظ ]<br>
+            <button onclick="closeNano()" style="background:var(--accent-red); color:#fff; border:none; padding:5px 12px; font-weight:bold; cursor:pointer; margin-top:5px; border-radius:3px;">خروج من Nano (Exit)</button>
+        </div>
     </div>
-</div>
 
-<!-- لوحة التحكم السرية (مخفية) -->
-<div id="sec-admin" class="section" style="border: 2px solid red;">
-    <h2>🔒 لوحة التحكم السرية (AmirXX)</h2>
-    <div class="card">
-        <h3>إعدادات النظام المتقدمة</h3>
-        <p>تم الدخول بنجاح.</p>
-    </div>
-</div>
+    <script>
+        let xp = 100;
 
-<script>
-    // التنقل بين الأقسام
-    function showSection(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById('sec-' + id).classList.add('active');
-    }
+        // توليد الخدمات الـ 30 تلقائياً
+        const toolsGrid = document.getElementById('tools-grid');
+        const serviceNames = [
+            'Port Scanner', 'IP Intelligence', 'Hash Generator', 'Payload Crafter', 'SQLi Tester', 
+            'XSS Detector', 'Subdomain Finder', 'DNS Lookup', 'Packet Sniffer', 'Header Analyzer',
+            'MAC Spoof Tool', 'Ping Sweep', 'Whois Query', 'SSL Checker', 'Proxy Rotator',
+            'Base64 Encoder', 'JWT Decoder', 'FTP Bruter', 'SSH Manager', 'Web Crawler',
+            'Log Parser', 'Port Forwarder', 'Traffic Monitor', 'Vulnerability Scanner', 'Exploit DB Search',
+            'AES Encrypter', 'Regex Tester', 'API Benchmark', 'Firewall Bypass Check', 'Auto System Cleaner'
+        ];
 
-    // الدخول للوحة السرية
-    function accessSecretPanel() {
-        let pass = prompt("أدخل رمز الوصول السري:");
-        if (pass === "AmirXX") {
-            showSection('admin');
-            alert("تم فتح لوحة التحكم السرية بنجاح.");
-        } else {
-            alert("رمز خاطئ!");
+        serviceNames.forEach((srv, index) => {
+            toolsGrid.innerHTML += `
+                <div class="card">
+                    <h3>#${index + 1} ${srv}</h3>
+                    <p>أداة معالجة وتنفيذ آلي للأنظمة والشبكات.</p>
+                    <button class="btn-action" onclick="executeService('${srv}')">تشغيل الخدمة</button>
+                </div>
+            `;
+        });
+
+        function switchTab(tabName, evt) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            if(evt) evt.target.classList.add('active');
+            document.getElementById('sec-' + tabName).classList.add('active');
         }
-    }
-</script>
 
+        function executeService(name) {
+            xp += 10;
+            document.getElementById('user-xp').innerText = xp;
+            let consoleBox = document.getElementById('console-output');
+            consoleBox.style.display = 'block';
+            consoleBox.innerHTML += `<div>[+] تم تنفيذ <strong>${name}</strong> تلقائياً داخل النظام.</div>`;
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        // فتح لوحة التحكم السرية
+        function openSecretAdmin() {
+            let pwd = prompt("أدخل كلمة المرور السرية للوحة التحكم:");
+            if(pwd === "AmirXX") {
+                document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+                document.getElementById('sec-admin').classList.add('active');
+                alert("تم الدخول بنجاح للوحة التحكم السرية!");
+            } else if(pwd !== null) {
+                alert("رمز الوصول خاطئ!");
+            }
+        }
+
+        // محاكي Termux
+        function handleTerm(e) {
+            if(e.key === 'Enter') {
+                let input = document.getElementById('term-cmd');
+                let out = document.getElementById('term-output');
+                let cmd = input.value.trim();
+                out.innerHTML += '\namirx@system:~$ ' + cmd;
+
+                if(cmd === 'help') {
+                    out.innerHTML += '\nالأوامر:\n - ls : عرض الملفات\n - clear : مسح الشاشة\n - nano [اسم_الملف] : فتح محرر نصوص nano\n - status : حالة النظام';
+                } else if(cmd === 'ls') {
+                    out.innerHTML += '\nindex.html   system.py   config.json   sahih_muslim.pdf';
+                } else if(cmd === 'clear') {
+                    out.innerHTML = 'Terminal Cleared.';
+                } else if(cmd.startsWith('nano')) {
+                    let fname = cmd.split(' ')[1] || 'script.py';
+                    document.getElementById('nano-filename').innerText = fname;
+                    document.getElementById('nano-modal').style.display = 'flex';
+                } else if(cmd !== '') {
+                    out.innerHTML += `\n${cmd}: command not found`;
+                }
+
+                input.value = '';
+                document.getElementById('term-box').scrollTop = document.getElementById('term-box').scrollHeight;
+            }
+        }
+
+        function closeNano() {
+            document.getElementById('nano-modal').style.display = 'none';
+            let out = document.getElementById('term-output');
+            out.innerHTML += '\n[+] Exit Nano: Saved changes successfully.';
+        }
+
+        // 2D Game
+        function run2DGame() {
+            let canvas = document.getElementById('game2DCanvas');
+            let ctx = canvas.getContext('2d');
+            let x = 10;
+            function animate() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.fillStyle = '#00f2ff';
+                ctx.fillRect(x, 50, 20, 20);
+                x = (x + 2) % canvas.width;
+                requestAnimationFrame(animate);
+            }
+            animate();
+            executeService('تشغيل لعبة 2D');
+        }
+
+        // 3D Game Engine
+        function init3DGame() {
+            let container = document.getElementById('canvas3DContainer');
+            container.innerHTML = '';
+            let scene = new THREE.Scene();
+            let camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            let renderer = new THREE.WebGLRenderer();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            let geometry = new THREE.BoxGeometry();
+            let material = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true });
+            let cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+            camera.position.z = 3;
+
+            function animate3D() {
+                requestAnimationFrame(animate3D);
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate3D();
+            executeService('تشغيل محاكي 3D');
+        }
+    </script>
 </body>
 </html>
