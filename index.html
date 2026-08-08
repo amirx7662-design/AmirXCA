@@ -22,80 +22,93 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
+        body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
         header {
             background: #0b0f17;
-            padding: 15px 20px;
+            padding: 10px 15px;
             border-bottom: 2px solid var(--accent-cyan);
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        .logo-title { color: var(--accent-cyan); font-size: 1.8rem; font-weight: 800; cursor: pointer; user-select: none; }
-
-        /* هيكلة الصفحة: القائمة الجانبية على اليمين والمساحة الرئيسية */
-        .layout-wrapper { display: flex; flex: 1; overflow: hidden; }
-        
-        .sidebar {
-            width: 260px;
-            background: #080d1a;
-            border-left: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 10px;
         }
+        .logo-title { color: var(--accent-cyan); font-size: 1.5rem; font-weight: 800; cursor: pointer; user-select: none; }
+
+        .status-widget {
+            display: flex; gap: 10px; font-size: 0.8rem; color: var(--accent-green);
+            font-family: 'Fira Code', monospace; background: rgba(0, 242, 255, 0.05);
+            padding: 5px 10px; border-radius: 6px; border: 1px solid rgba(0,242,255,0.2);
+        }
+
+        /* هيكلة الصفحة التكيفية للجوال والشاشات الكبيرة */
+        .layout-wrapper { display: flex; flex-direction: column; flex: 1; }
+
+        @media (min-width: 768px) {
+            .layout-wrapper { flex-direction: row; }
+            .sidebar { width: 240px !important; flex-direction: column !important; border-left: 1px solid rgba(0, 242, 255, 0.2); border-bottom: none !important; }
+        }
+
+        /* القائمة في الجوال تصير شريط أزرار علوي مريح وسريع */
+        .sidebar {
+            width: 100%;
+            background: #080d1a;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 8px;
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
         .nav-btn {
             background: transparent;
             color: var(--text-muted);
             border: 1px solid transparent;
-            padding: 12px 15px;
-            text-align: right;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
         .nav-btn:hover, .nav-btn.active {
-            background: rgba(0, 242, 255, 0.1);
+            background: rgba(0, 242, 255, 0.15);
             color: var(--accent-cyan);
             border-color: var(--accent-cyan);
         }
 
-        .main-content { flex: 1; padding: 25px; overflow-y: auto; }
+        .main-content { flex: 1; padding: 15px; width: 100%; overflow-x: hidden; }
         .tab-section { display: none; }
         .tab-section.active { display: block; }
 
-        .status-widget {
-            display: flex; gap: 15px; font-size: 0.85rem; color: var(--accent-green);
-            font-family: 'Fira Code', monospace; background: rgba(0, 242, 255, 0.05);
-            padding: 8px 15px; border-radius: 8px; border: 1px solid rgba(0,242,255,0.2);
-        }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 12px; padding: 20px; }
-        .btn-action { width: 100%; padding: 10px; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .card { background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; padding: 15px; }
+        .btn-action { width: 100%; padding: 10px; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px; }
         .input-field { width: 100%; padding: 10px; background: #05080e; border: 1px solid rgba(0,242,255,0.3); color: #fff; border-radius: 6px; margin: 5px 0; outline: none; font-family: 'Fira Code', monospace; }
 
-        .terminal-layout { display: flex; gap: 15px; flex-wrap: wrap; }
-        .file-tree { flex: 1; min-width: 200px; background: #080d1a; border: 1px solid var(--accent-cyan); border-radius: 10px; padding: 15px; font-family: 'Fira Code', monospace; }
-        .file-item { cursor: pointer; padding: 5px; color: #38bdf8; }
+        /* ترتيب الـ Terminal بشكل واسع في الجوال */
+        .terminal-layout { display: flex; flex-direction: column; gap: 12px; }
         
-        .terminal-container { flex: 3; min-width: 300px; background: #04070d; border: 1px solid var(--accent-cyan); border-radius: 10px; overflow: hidden; }
-        .terminal-header { background: #0e1626; padding: 8px 15px; font-family: 'Fira Code', monospace; color: var(--accent-cyan); display: flex; justify-content: space-between; }
-        .terminal-body { padding: 15px; height: 300px; overflow-y: auto; font-family: 'Fira Code', monospace; direction: ltr; text-align: left; color: #38ef7d; }
-        .terminal-input-line { display: flex; padding: 8px 15px; background: #080d1a; border-top: 1px solid rgba(0, 242, 255, 0.1); direction: ltr; }
-        .terminal-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace; outline: none; margin-left: 8px; }
+        .file-tree { background: #080d1a; border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        .file-item { cursor: pointer; padding: 4px; color: #38bdf8; display: inline-block; margin-left: 10px; }
+        
+        .terminal-container { background: #04070d; border: 1px solid var(--accent-cyan); border-radius: 8px; overflow: hidden; width: 100%; }
+        .terminal-header { background: #0e1626; padding: 8px 12px; font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-size: 0.8rem; display: flex; justify-content: space-between; }
+        .terminal-body { padding: 12px; height: 280px; overflow-y: auto; font-family: 'Fira Code', monospace; direction: ltr; text-align: left; color: #38ef7d; font-size: 0.85rem; word-break: break-all; }
+        .terminal-input-line { display: flex; padding: 8px 12px; background: #080d1a; border-top: 1px solid rgba(0, 242, 255, 0.1); direction: ltr; }
+        .terminal-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace; outline: none; margin-left: 5px; font-size: 0.85rem; }
 
-        /* نافذة غرفة التحكم السرية (Admin Overlay) */
+        /* نافذة غرفة التحكم السرية */
         .admin-modal {
             display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(5, 8, 14, 0.95); z-index: 9999; padding: 30px; overflow-y: auto;
+            background: rgba(5, 8, 14, 0.98); z-index: 9999; padding: 15px; overflow-y: auto;
         }
         .admin-modal.active { display: block; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-red); padding-bottom: 10px; margin-bottom: 20px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-red); padding-bottom: 8px; margin-bottom: 15px; }
 
         canvas { border-radius: 8px; width: 100%; height: auto; }
     </style>
@@ -103,48 +116,47 @@
 <body>
 
     <header>
-        <!-- الضغط المزدوج هنا يفتح غرفة التحكم -->
         <h1 class="logo-title" id="site-logo" ondblclick="openAdminPrompt()">AmirXCA System</h1>
         <div class="status-widget">
-            <span>🟢 Status: Online</span>
+            <span>🟢 Online</span>
             <span>🕒 <span id="clock-val">00:00:00</span></span>
         </div>
     </header>
 
     <div class="layout-wrapper">
         
-        <!-- 📌 القائمة الجانبية المنسقة على اليمين -->
+        <!-- 📌 شريط تنقل أفقي للجوال ويدعم التمرير -->
         <aside class="sidebar">
-            <button class="nav-btn active" onclick="switchTab('term-tab', this)">💻 Terminal & الذكاء الاصطناعي</button>
+            <button class="nav-btn active" onclick="switchTab('term-tab', this)">💻 Terminal & AI</button>
             <button class="nav-btn" onclick="switchTab('auth-tab', this)">🔑 الحسابات والأعضاء</button>
             <button class="nav-btn" onclick="switchTab('tools-tab', this)">🛠️ أدوات المطورين</button>
             <button class="nav-btn" onclick="switchTab('games-tab', this)">🎮 مركز الألعاب</button>
             <button class="nav-btn" onclick="switchTab('downloads-tab', this)">📥 مركز التحميل</button>
         </aside>
 
-        <!-- 🖥️ المساحة الرئيسية لعرض الأقسام -->
+        <!-- 🖥️ المساحة الرئيسية الواسعة للمحتوى -->
         <main class="main-content">
 
             <!-- قسم Terminal والذكاء الاصطناعي -->
             <section id="term-tab" class="tab-section active">
-                <h2 style="color:var(--accent-cyan); margin-bottom:15px;">💻 بيئة Termux المباشرة والذكاء الاصطناعي</h2>
+                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">💻 بيئة Termux المباشرة والذكاء الاصطناعي</h2>
                 <div class="terminal-layout">
                     <div class="file-tree">
-                        <div style="color:var(--accent-cyan); font-weight:bold; margin-bottom:10px;">📁 Project Tree</div>
+                        <span style="color:var(--accent-cyan); font-weight:bold; margin-left:10px;">📁 Projects:</span>
                         <div class="file-item" onclick="openFile('script.py', 'print(\'Hello from AmirXCA!\')')">📄 script.py</div>
                         <div class="file-item" onclick="openFile('notes.txt', 'نظام AmirXCA متكامل أوفلاين كلياً.')">📄 notes.txt</div>
                     </div>
                     <div class="terminal-container">
                         <div class="terminal-header">
                             <span>AmirX OS v5.0</span>
-                            <span style="color:var(--accent-green);">🤖 AmirAI Ready</span>
+                            <span style="color:var(--accent-green);">🤖 AmirAI</span>
                         </div>
                         <div class="terminal-body" id="term-out">
                             <div>مرحباً بك في منصة AmirXCA. اسأل الذكاء الاصطناعي (أمثلة: <span style="color:#00f2ff;">ai python</span> أو اكتب الأوامر المباشرة).</div>
                         </div>
                         <div class="terminal-input-line">
                             <span style="color:var(--accent-cyan); font-family:'Fira Code';" id="term-prompt">amirx@terminal:~$</span>
-                            <input type="text" class="terminal-input" id="term-in" placeholder="اكتب أمراً أو اسأل الذكاء الاصطناعي (ai ...)">
+                            <input type="text" class="terminal-input" id="term-in" placeholder="اكتب أمراً أو (ai ...)">
                         </div>
                     </div>
                 </div>
@@ -152,8 +164,8 @@
 
             <!-- قسم الحسابات -->
             <section id="auth-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); margin-bottom:15px;">🔑 نظام الحسابات للأعضاء</h2>
-                <div class="card" style="max-width:500px;">
+                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">🔑 نظام الحسابات للأعضاء</h2>
+                <div class="card">
                     <div id="login-form">
                         <h3>تسجيل الدخول / حساب جديد</h3>
                         <input type="text" id="auth-username" class="input-field" placeholder="اسم المستخدم...">
@@ -170,14 +182,14 @@
 
             <!-- قسم أدوات المطورين -->
             <section id="tools-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); margin-bottom:15px;">🛠️ أدوات المطورين والتشفير</h2>
+                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">🛠️ أدوات المطورين والتشفير</h2>
                 <div class="grid">
                     <div class="card">
                         <h3>🔄 محول النصوص (Base64 / Hex)</h3>
                         <input type="text" id="dev-text" class="input-field" placeholder="النص...">
                         <button class="btn-action" onclick="convertText('b64')">تشفير Base64</button>
                         <button class="btn-action" onclick="convertText('hex')" style="background:#f59e0b;">تحويل Hex</button>
-                        <div id="dev-res" style="color:var(--accent-green); margin-top:8px; font-family:'Fira Code';"></div>
+                        <div id="dev-res" style="color:var(--accent-green); margin-top:8px; font-family:'Fira Code'; word-break:break-all;"></div>
                     </div>
                     <div class="card">
                         <h3>⚡ مولد أوامر Termux</h3>
@@ -191,7 +203,7 @@
 
             <!-- قسم الألعاب -->
             <section id="games-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); margin-bottom:15px;">🎮 الألعاب التفاعلية</h2>
+                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">🎮 الألعاب التفاعلية</h2>
                 <div class="grid">
                     <div class="card">
                         <h3>🏃 Cyber Runner 2D</h3>
@@ -207,8 +219,8 @@
 
             <!-- قسم مركز التحميل -->
             <section id="downloads-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); margin-bottom:15px;">📥 مركز التحميل المباشر</h2>
-                <div class="card" style="max-width:500px;">
+                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">📥 مركز التحميل المباشر</h2>
+                <div class="card">
                     <button class="btn-action" onclick="downloadFile('script.py', 'print(\'AmirXCA Script\')')">💾 تحميل script.py</button>
                     <button class="btn-action" onclick="downloadFile('notes.txt', 'AmirXCA Documentation')" style="background:#38ef7d; color:#000;">📄 تحميل notes.txt</button>
                 </div>
@@ -220,38 +232,33 @@
     <!-- 🚨 غرفة التحكم السرية (Admin Dashboard Control Room) -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-header">
-            <h2 style="color:var(--accent-red);">🚨 غرفة التحكم الشاملة (Root Admin - AmirXX)</h2>
-            <button onclick="closeAdmin()" style="background:var(--accent-red); color:#fff; border:none; padding:8px 15px; font-weight:bold; cursor:pointer; border-radius:5px;">إغلاق ×</button>
+            <h2 style="color:var(--accent-red); font-size:1.1rem;">🚨 غرفة التحكم الشاملة (AmirXX)</h2>
+            <button onclick="closeAdmin()" style="background:var(--accent-red); color:#fff; border:none; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:5px;">إغلاق ×</button>
         </div>
 
         <div class="grid">
-            <!-- التحكم في اسم وشكل المنصة -->
             <div class="card">
                 <h3 style="color:var(--accent-cyan);">✏️ البرمجة الحية وتغيير المسميات</h3>
                 <input type="text" id="admin-logo-text" class="input-field" placeholder="تغيير اسم المنصة الرئيسي...">
                 <button class="btn-action" onclick="changeSiteName()">تحديث اسم المنصة فوراً</button>
             </div>
 
-            <!-- عرض الحسابات المسجلة -->
             <div class="card">
-                <h3 style="color:var(--accent-green);">👥 إدارة كافة الحسابات المسجلة</h3>
-                <div id="admin-users-list" style="max-height:150px; overflow-y:auto; font-family:'Fira Code'; font-size:0.85rem; color:#fff; background:#05080e; padding:10px; border-radius:5px;"></div>
+                <h3 style="color:var(--accent-green);">👥 إدارة الحسابات المسجلة</h3>
+                <div id="admin-users-list" style="max-height:120px; overflow-y:auto; font-family:'Fira Code'; font-size:0.8rem; color:#fff; background:#05080e; padding:8px; border-radius:5px;"></div>
             </div>
 
-            <!-- سجل محاولات الاختراق والثغرات -->
             <div class="card">
-                <h3 style="color:var(--accent-red);">🛡️ مراقبة الثغرات ومحاولات الاختراق</h3>
-                <div style="font-family:'Fira Code'; font-size:0.85rem; color:var(--accent-red); background:#05080e; padding:10px; border-radius:5px; height:120px; overflow-y:auto;">
-                    <div>[SEC-LOG]: Firewall Active. 0 Unauthorized Access.</div>
-                    <div>[VULN-CHECK]: Session Isolation: SECURE.</div>
-                    <div>[AI-LOG]: AmirAI Engine Operating Normally.</div>
+                <h3 style="color:var(--accent-red);">🛡️ الثغرات ومحاولات الاختراق</h3>
+                <div style="font-family:'Fira Code'; font-size:0.8rem; color:var(--accent-red); background:#05080e; padding:8px; border-radius:5px; height:100px; overflow-y:auto;">
+                    <div>[SEC-LOG]: Firewall Active. 0 Vulnerabilities.</div>
+                    <div>[AI-LOG]: AmirAI Engine Operating.</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // التنقل بين الأقسام الجانبية
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -260,7 +267,6 @@
             if(tabId === 'games-tab' && !window.threeInited) { init3D(); window.threeInited = true; }
         }
 
-        // 🔐 فتح غرفة التحكم بالرمز AmirXX
         function openAdminPrompt() {
             const pass = prompt('ادخل رمز التحكم السرية:');
             if (pass === 'AmirXX') {
@@ -271,16 +277,11 @@
             }
         }
 
-        function closeAdmin() {
-            document.getElementById('adminModal').classList.remove('active');
-        }
+        function closeAdmin() { document.getElementById('adminModal').classList.remove('active'); }
 
         function changeSiteName() {
             const newName = document.getElementById('admin-logo-text').value.trim();
-            if(newName) {
-                document.getElementById('site-logo').innerText = newName;
-                alert('تم تعديل الاسم فوراً!');
-            }
+            if(newName) { document.getElementById('site-logo').innerText = newName; alert('تم تعديل الاسم!'); }
         }
 
         function loadAdminUsers() {
@@ -292,13 +293,12 @@
                 if (key.startsWith('user_')) {
                     count++;
                     const uname = key.replace('user_', '');
-                    container.innerHTML += `<div>👤 user: <span style="color:var(--accent-cyan);">${uname}</span> | pass: ****</div>`;
+                    container.innerHTML += `<div>👤 user: <span style="color:var(--accent-cyan);">${uname}</span></div>`;
                 }
             }
-            if(count === 0) container.innerHTML = 'لا يوجد حسابات مسجلة حالياً.';
+            if(count === 0) container.innerHTML = 'لا يوجد حسابات مسجلة.';
         }
 
-        // الحسابات والـ Terminal واللعبة
         function registerUser() {
             const u = document.getElementById('auth-username').value.trim();
             const p = document.getElementById('auth-password').value.trim();
@@ -318,10 +318,7 @@
             } else alert('بيانات غير صحيحة!');
         }
 
-        function logoutUser() {
-            localStorage.removeItem('amirx_logged_user');
-            checkAuthState();
-        }
+        function logoutUser() { localStorage.removeItem('amirx_logged_user'); checkAuthState(); }
 
         function checkAuthState() {
             const u = localStorage.getItem('amirx_logged_user');
@@ -336,7 +333,6 @@
         }
         checkAuthState();
 
-        // Terminal AI & Actions
         const termIn = document.getElementById('term-in');
         const termOut = document.getElementById('term-out');
         termIn.addEventListener('keydown', (e) => {
@@ -345,7 +341,7 @@
                 printTerm('amirx@terminal:~$ ' + val, '#fff');
                 termIn.value = '';
                 if(val.startsWith('ai ')) {
-                    printTerm('[AmirAI]: تم تحليل الإدخال: "' + val.substring(3) + '". النظام جاهز وتفاعلي.', '#38ef7d');
+                    printTerm('[AmirAI]: تم التحليل: "' + val.substring(3) + '". المنصة جاهزة.', '#38ef7d');
                 } else if(val === 'ls') printTerm('script.py  notes.txt', '#f59e0b');
                 else if(val === 'clear') termOut.innerHTML = '';
                 else printTerm('Command not found: ' + val, '#ef4444');
@@ -361,7 +357,7 @@
         function generateTermuxCmd() { document.getElementById('termux-cmd-out').value = 'pkg update && pkg install python git -y'; }
         function downloadFile(f, t) { const a = document.createElement('a'); a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(t); a.download = f; a.click(); }
 
-        // 2D Runner
+        // 2D Game
         const canvas = document.getElementById('runnerCanvas'); const ctx = canvas.getContext('2d');
         let playerY = 120, isJumping = false, obstacleX = 300;
         function run2DGame() {
@@ -375,7 +371,7 @@
         function jumpRunner() { if(playerY===120) isJumping=true; }
         run2DGame();
 
-        // 3D Car Game
+        // 3D Game
         function init3D() {
             const container = document.getElementById('game-3d-container');
             const scene = new THREE.Scene();
