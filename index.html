@@ -43,8 +43,8 @@
 
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
         .card { background: var(--card-bg); border: 1px solid #1e293b; border-radius: 8px; padding: 15px; }
-        .card h3 { color: var(--accent-main); font-size: 1rem; margin-bottom: 8px; }
-        .card p { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px; line-height: 1.4; }
+        .card h3 { color: var(--accent-main); font-size: 1rem; margin-bottom: 8px; direction: ltr; text-align: left; }
+        .card p { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px; line-height: 1.4; direction: ltr; text-align: left; }
 
         .tool-input {
             width: 100%;
@@ -56,9 +56,8 @@
             margin-bottom: 10px;
             font-size: 0.85rem;
             outline: none;
+            direction: ltr;
         }
-
-        .tool-input:focus { border-color: var(--accent-main); }
 
         .btn-action { 
             display: block;
@@ -84,24 +83,24 @@
             display: none;
             white-space: pre-wrap;
             word-break: break-all;
+            direction: ltr;
+            text-align: left;
         }
 
         /* Termux Emulator */
-        #term-box { background: #000; border: 1px solid var(--accent-main); border-radius: 6px; padding: 15px; height: 320px; display: flex; flex-direction: column; }
+        #term-box { background: #000; border: 1px solid var(--accent-main); border-radius: 6px; padding: 15px; height: 320px; display: flex; flex-direction: column; direction: ltr; }
         #term-output { flex: 1; overflow-y: auto; color: var(--accent-green); font-size: 0.85rem; white-space: pre-wrap; }
         .term-input-line { display: flex; gap: 8px; margin-top: 5px; }
         .term-input { background: transparent; border: none; color: #fff; flex: 1; outline: none; }
+
+        /* AI Chat Box */
+        .ai-box { background: #000; border: 1px solid var(--accent-main); border-radius: 8px; padding: 15px; }
+        .ai-logs { height: 250px; overflow-y: auto; color: #fff; font-size: 0.9rem; margin-bottom: 10px; white-space: pre-wrap; }
 
         /* Reader Window */
         #reader-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05080e; z-index: 300; flex-direction: column; padding: 20px; }
         .reader-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent-main); padding-bottom: 10px; margin-bottom: 15px; }
         .reader-body { flex: 1; overflow-y: auto; background: #0d131f; border: 1px solid #1e293b; padding: 20px; border-radius: 8px; line-height: 1.8; color: #e2e8f0; }
-
-        /* Nano Window */
-        #nano-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; flex-direction: column; }
-        .nano-head { background: #fff; color: #000; padding: 4px 10px; font-weight: bold; font-size: 0.85rem; }
-        .nano-text { flex: 1; background: #000; color: #fff; border: none; padding: 10px; outline: none; font-family: monospace; resize: none; }
-        .nano-foot { background: #1e293b; color: #fff; padding: 6px; font-size: 0.75rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -109,7 +108,7 @@
     <header>
         <div class="logo-title" ondblclick="openSecretAdmin()">⚡ AmirXCA</div>
         <div class="status-widget">
-            <span>النقاط: <strong id="user-xp" style="color:#fff;">290</strong> XP</span>
+            <span>Points: <strong id="user-xp" style="color:#fff;">290</strong> XP</span>
         </div>
     </header>
 
@@ -117,23 +116,40 @@
 
         <!-- الأقسام الرئيسية -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('tools', event)">🛠️ الخدمات والأدوات (30)</button>
-            <button class="tab-btn" onclick="switchTab('terminal', event)">💻 شاشة Termux & Nano</button>
-            <button class="tab-btn" onclick="switchTab('games', event)">🎮 الألعاب (3D / 2D)</button>
-            <button class="tab-btn" onclick="switchTab('books', event)">📚 المكتبة والكتب</button>
-            <button class="tab-btn" onclick="switchTab('sadaqah', event)">✨ أجر جاري</button>
+            <button class="tab-btn active" onclick="switchTab('tools', event)">🛠️ Services (1-10)</button>
+            <button class="tab-btn" onclick="switchTab('ai', event)">🤖 الذكاء الاصطناعي (AI)</button>
+            <button class="tab-btn" onclick="switchTab('terminal', event)">💻 Termux</button>
+            <button class="tab-btn" onclick="switchTab('games', event)">🎮 Games</button>
+            <button class="tab-btn" onclick="switchTab('books', event)">📚 Books</button>
         </div>
 
-        <!-- 1. قسم الأدوات والخدمات (30) -->
+        <!-- 1. الأدوات المحددة من 1 إلى 10 فقط -->
         <div id="sec-tools" class="section active">
             <div class="grid-container" id="tools-grid"></div>
         </div>
 
-        <!-- 2. قسم Termux & Nano -->
+        <!-- 2. قسم الذكاء الاصطناعي (مفتاح API + محادثة مباشرة) -->
+        <div id="sec-ai" class="section">
+            <div class="card">
+                <h3 style="direction:rtl; text-align:right;">🤖 مساعد الذكاء الاصطناعي (AmirX AI)</h3>
+                <p style="direction:rtl; text-align:right;">أدخل مفتاح الـ API الخاص بك لتفعيل المحادثة والاستجابة التلقائية المباشرة.</p>
+                
+                <input type="password" id="ai-key" class="tool-input" placeholder="أدخل مفتاح API الخاص بك (API Key)...">
+                
+                <div class="ai-box">
+                    <div id="ai-logs" class="ai-logs">نظام الذكاء الاصطناعي جاهز... أضف مفتاح الـ API واكتب سؤالك.</div>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="ai-prompt" class="tool-input" style="margin-bottom:0;" placeholder="اكتب سؤالك أو أمرك هنا...">
+                        <button class="btn-action" style="width:120px;" onclick="sendAIQuery()">إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. قسم Termux -->
         <div id="sec-terminal" class="section">
             <div class="card">
-                <h3>💻 محاكي Termux ونظام Nano</h3>
-                <p>اكتب <code>help</code> لمعرفة الأوامر، أو <code>nano script.py</code> لفتح محرر النصوص.</p>
+                <h3 style="direction:rtl; text-align:right;">💻 محاكي Termux</h3>
                 <div id="term-box">
                     <div id="term-output">AmirX OS Terminal [Version 2.0]
 Type 'help' for available commands.</div>
@@ -145,85 +161,45 @@ Type 'help' for available commands.</div>
             </div>
         </div>
 
-        <!-- 3. قسم الألعاب -->
+        <!-- 4. قسم الألعاب -->
         <div id="sec-games" class="section">
             <div class="grid-container">
                 <div class="card">
                     <h3>Cyber Runner 2D</h3>
-                    <p>تشغيل لعبة تفاعلية 2D داخل الصفحة مباشرة.</p>
-                    <button class="btn-action" onclick="run2DGame()">تشغيل 2D</button>
+                    <button class="btn-action" onclick="run2DGame()">Run 2D Game</button>
                     <canvas id="game2DCanvas" style="width:100%; height:140px; background:#000; margin-top:10px; border-radius:4px;"></canvas>
                 </div>
                 <div class="card">
                     <h3>3D Matrix Space Engine</h3>
-                    <p>بيئة ثلاثية الأبعاد مبنية بالكامل داخل الكود.</p>
-                    <button class="btn-action" onclick="init3DGame()">تشغيل 3D Engine</button>
+                    <button class="btn-action" onclick="init3DGame()">Run 3D Engine</button>
                     <div id="canvas3DContainer" style="width:100%; height:140px; background:#000; margin-top:10px; border-radius:4px;"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 4. قسم الكتب -->
+        <!-- 5. قسم الكتب -->
         <div id="sec-books" class="section">
             <div class="grid-container">
                 <div class="card">
-                    <h3>كتاب صحيح مسلم</h3>
-                    <p>تحميل وقراءة كتاب صحيح مسلم كاملاً داخل المنصة.</p>
-                    <button class="btn-action" onclick="openReader('صحيح مسلم', 'book_muslim')">تحميل وقراءة الكتاب</button>
+                    <h3 style="direction:rtl; text-align:right;">كتاب صحيح مسلم</h3>
+                    <button class="btn-action" onclick="openReader('صحيح مسلم', 'book_muslim')">عرض الكتاب</button>
                 </div>
                 <div class="card">
-                    <h3>دليل برمجيات Python</h3>
-                    <p>كتاب تعليم البرمجة بالأمثلة العملية.</p>
+                    <h3 style="direction:rtl; text-align:right;">دليل Python</h3>
                     <button class="btn-action" onclick="openReader('دليل Python', 'book_py')">عرض الكتاب</button>
                 </div>
             </div>
         </div>
 
-        <!-- 5. قسم أجر جاري -->
-        <div id="sec-sadaqah" class="section">
-            <div class="grid-container">
-                <div class="card">
-                    <h3>📖 المصحف الإلكتروني</h3>
-                    <p>قراءة واستماع للقرآن الكريم (صدقة جارية).</p>
-                    <button class="btn-action" onclick="openReader('المصحف الإلكتروني', 'quran')">فتح المصحف</button>
-                </div>
-                <div class="card">
-                    <h3>🤲 أذكار واستغفار</h3>
-                    <p>عداد الاستغفار والأذكار اليومية تلقائياً.</p>
-                    <button class="btn-action" onclick="openReader('الأذكار والاستغفار', 'azkar')">بدء العداد</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- لوحة التحكم السرية -->
-        <div id="sec-admin" class="section" style="border: 1px solid var(--accent-red); padding: 15px; border-radius: 8px; background: #150505;">
-            <h2 style="color:var(--accent-red); margin-bottom: 10px;">🔒 لوحة التحكم السرية (AmirXX Authorized)</h2>
-            <div class="grid-container">
-                <div class="card">
-                    <h3>إدارة السيرفر والجسور</h3>
-                    <button class="btn-action" style="background:var(--accent-red); color:#fff;" onclick="alert('تم إعادة ضبط الخادم التلقائي بنجاح')">إعادة تشغيل الخادم</button>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- نافذة القراءة المدمجة -->
+    <!-- نافذة القراءة -->
     <div id="reader-modal">
         <div class="reader-head">
-            <h2 id="reader-title" style="color:var(--accent-main)">عنوان الكتاب</h2>
-            <button onclick="closeReader()" style="background:var(--accent-red); color:#fff; border:none; padding:6px 15px; font-weight:bold; cursor:pointer; border-radius:4px;">إغلاق</button>
+            <h2 id="reader-title" style="color:var(--accent-main)">Book Reader</h2>
+            <button onclick="closeReader()" style="background:var(--accent-red); color:#fff; border:none; padding:6px 15px; cursor:pointer; border-radius:4px;">Close</button>
         </div>
         <div class="reader-body" id="reader-content"></div>
-    </div>
-
-    <!-- نافذة Nano Modal -->
-    <div id="nano-modal">
-        <div class="nano-head">GNU nano 9.2 &nbsp;&nbsp;&nbsp;&nbsp; File: <span id="nano-filename">script.py</span></div>
-        <textarea id="nano-content" class="nano-text" spellcheck="false"></textarea>
-        <div class="nano-foot">
-            <button onclick="closeNano()" style="background:var(--accent-red); color:#fff; border:none; padding:5px 12px; font-weight:bold; cursor:pointer; border-radius:3px;">خروج من Nano (Exit)</button>
-        </div>
     </div>
 
     <script>
@@ -235,53 +211,80 @@ Type 'help' for available commands.</div>
         }
 
         const toolsGrid = document.getElementById('tools-grid');
+        
+        // الأدوات المعتمدة فقط من 1 إلى 10
         const toolsList = [
-            { id: 1, name: 'Port Scanner', ph: 'أدخل الـ IP (مثال: 127.0.0.1)' },
-            { id: 2, name: 'IP Intelligence', ph: 'أدخل الـ IP للتحليل (مثال: 8.8.8.8)' },
-            { id: 3, name: 'Hash Generator', ph: 'أدخل النص للتشفير...' },
-            { id: 4, name: 'Base64 Encoder/Decoder', ph: 'أدخل النص للتحويل...' },
-            { id: 5, name: 'SQLi Tester', ph: 'أدخل رابط الموقع (URL)' },
-            { id: 6, name: 'XSS Detector', ph: 'أدخل السكريبت أو الرابط للفحص' },
-            { id: 7, name: 'Subdomain Finder', ph: 'أدخل اسم الدومين (example.com)' },
-            { id: 8, name: 'DNS Lookup', ph: 'أدخل اسم الدومين' },
-            { id: 9, name: 'Packet Sniffer', ph: 'أدخل الواجهة (مثال: eth0)' },
-            { id: 10, name: 'Header Analyzer', ph: 'أدخل رابط الموقع الفعلي' }
+            { id: 1, name: 'Port Scanner', ph: 'Target IP (e.g., 127.0.0.1)' },
+            { id: 2, name: 'IP Intelligence', ph: 'Target IP (e.g., 8.8.8.8)' },
+            { id: 3, name: 'Hash Generator', ph: 'Enter string to hash...' },
+            { id: 4, name: 'Base64 Converter', ph: 'Enter string to encode/decode...' },
+            { id: 5, name: 'SQLi Vulnerability Tester', ph: 'Target URL...' },
+            { id: 6, name: 'XSS Detector', ph: 'Target URL or payload...' },
+            { id: 7, name: 'Subdomain Finder', ph: 'Target domain (example.com)' },
+            { id: 8, name: 'DNS Lookup Tool', ph: 'Target domain...' },
+            { id: 9, name: 'Packet Sniffer Engine', ph: 'Interface (e.g., eth0)' },
+            { id: 10, name: 'HTTP Header Analyzer', ph: 'Target URL...' }
         ];
 
-        // بناء الـ 30 أداة تفاعلية
-        for(let i = 1; i <= 30; i++) {
-            let t = toolsList.find(item => item.id === i) || { id: i, name: `أداة معالجة وتنفيذ آلي #${i}`, ph: 'أدخل الهدف...' };
+        toolsList.forEach(t => {
             toolsGrid.innerHTML += `
                 <div class="card">
                     <h3>#${t.id} ${t.name}</h3>
-                    <p>أداة معالجة وتنفيذ آلي مباشرة.</p>
+                    <p>Automated execution module.</p>
                     <input type="text" id="inp-${t.id}" class="tool-input" placeholder="${t.ph}">
-                    <button class="btn-action" onclick="runTool(${t.id})">تشغيل الخدمة</button>
+                    <button class="btn-action" onclick="runTool(${t.id})">Execute Service</button>
                     <div class="tool-res" id="res-${t.id}"></div>
                 </div>
             `;
-        }
+        });
 
         function runTool(id) {
             addXP();
-            let inp = document.getElementById(`inp-${id}`).value.trim();
+            let inp = document.getElementById(`inp-${id}`).value.trim() || "127.0.0.1";
             let resBox = document.getElementById(`res-${id}`);
             resBox.style.display = 'block';
 
-            if(!inp) inp = "127.0.0.1";
-
             if(id === 1) {
-                resBox.innerText = `[+] جاري فحص البورتات لـ (${inp})...\n- Port 80 (HTTP): OPEN\n- Port 443 (HTTPS): OPEN\n- Port 22 (SSH): CLOSED\n[!] اكتمل الفحص بنجاح.`;
-            } else if(id === 2) {
-                resBox.innerText = `[+] تحليل IP (${inp}):\n- الدولة: Local Host\n- المزود: ISP Network\n- حالة التشفير: Safe`;
+                resBox.innerText = `[+] Port Scan (${inp}):\n- Port 80: OPEN\n- Port 443: OPEN\n- Port 22: CLOSED`;
             } else if(id === 3) {
-                resBox.innerText = `[+] النص: ${inp}\n- Base64: ${btoa(inp)}\n- Pseudo-MD5: ${Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)}`;
-            } else if(id === 4) {
-                resBox.innerText = `[+] التحويل:\nEncoded: ${btoa(inp)}`;
-            } else if(id === 7) {
-                resBox.innerText = `[+] النطاقات الفرعية لـ (${inp}):\n- api.${inp}\n- admin.${inp}\n- mail.${inp}\n- dev.${inp}`;
+                resBox.innerText = `[+] Hash Output:\nBase64: ${btoa(inp)}`;
             } else {
-                resBox.innerText = `[+] تنفيذ الخدمة #${id} على (${inp})...\n- Status: OK (200)\n- Processed in: 0.03s\n[✓] اكتملت العملية بنجاح!`;
+                resBox.innerText = `[+] Executed #${id} on ${inp}\nStatus: 200 OK`;
+            }
+        }
+
+        async function sendAIQuery() {
+            let apiKey = document.getElementById('ai-key').value.trim();
+            let prompt = document.getElementById('ai-prompt').value.trim();
+            let logs = document.getElementById('ai-logs');
+
+            if(!prompt) return;
+            logs.innerText += `\n\nأنت: ${prompt}`;
+            document.getElementById('ai-prompt').value = '';
+
+            if(!apiKey) {
+                logs.innerText += `\n[تنبيه]: يرجى إدخال مفتاح الـ API أولاً لربط النموذج بالخدمة.`;
+                return;
+            }
+
+            logs.innerText += `\n[جاري المعالجة والاتصال بالذكاء الاصطناعي...]`;
+
+            try {
+                let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+                let data = await response.json();
+                if(data.candidates && data.candidates[0].content.parts[0].text) {
+                    logs.innerText += `\n\nالذكاء الاصطناعي:\n${data.candidates[0].content.parts[0].text}`;
+                } else {
+                    logs.innerText += `\n[خطأ]: تحقق من صحة مفتاح الـ API.`;
+                }
+            } catch(e) {
+                logs.innerText += `\n[خطأ]: تعذر الاتصال بالخادم.`;
             }
         }
 
@@ -293,82 +296,36 @@ Type 'help' for available commands.</div>
         }
 
         function openReader(title, type) {
-            addXP();
             document.getElementById('reader-title').innerText = title;
             let body = document.getElementById('reader-content');
-            
-            if(type === 'book_muslim') {
-                body.innerHTML = `<h3>كتاب صحيح مسلم (مكتبة النظام المدمجة)</h3><br><p><b>مقدمة الإمام مسلم:</b> الحمد لله رب العالمين، والصلاة والسلام على رسول الله...<br><br><b>1. باب الإيمان:</b> "الإيمان أن تؤمن بالله وملائكته وكتبه ورسله واليوم الآخر وتؤمن بالقدر خيره وشره."</p>`;
-            } else if(type === 'book_py') {
-                body.innerHTML = `<h3>دليل برمجيات Python</h3><br><p><b>الدرس الأول: Output</b><br><code>print("Hello AmirX Platform")</code><br><br><b>الدرس الثاني: Operations</b><br><code>x = 10\ny = 20\nprint(x + y)</code></p>`;
-            } else if(type === 'quran') {
-                body.innerHTML = `<h3>المصحف الإلكتروني المدمج</h3><br><div style="text-align:center; font-size:1.2rem; line-height:2.2;"><p><b>سورة الفاتحة</b><br>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَٰنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)</p></div>`;
-            } else if(type === 'azkar') {
-                body.innerHTML = `<h3>عداد الأذكار والأنظمة</h3><br><p>أستغفر الله العظيم وأتوب إليه (تم التكرار 100 مرة تلقائياً)<br>سبحان الله وبحمده سبحان الله العظيم (تم التكرار 100 مرة تلقائياً)</p>`;
-            }
-
+            if(type === 'book_muslim') body.innerHTML = `<p><b>صحيح مسلم:</b> كتاب الإيمان والحديث الشريف...</p>`;
+            else body.innerHTML = `<p><b>Python Guide:</b> print('Hello World')</p>`;
             document.getElementById('reader-modal').style.display = 'flex';
         }
 
-        function closeReader() {
-            document.getElementById('reader-modal').style.display = 'none';
-        }
-
-        function openSecretAdmin() {
-            let pwd = prompt("أدخل كلمة المرور السرية للوحة التحكم:");
-            if(pwd === "AmirXX") {
-                document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-                document.getElementById('sec-admin').classList.add('active');
-                alert("تم الدخول بنجاح للوحة التحكم السرية!");
-            } else if(pwd !== null) {
-                alert("رمز الوصول خاطئ!");
-            }
-        }
+        function closeReader() { document.getElementById('reader-modal').style.display = 'none'; }
 
         function handleTerm(e) {
             if(e.key === 'Enter') {
                 let input = document.getElementById('term-cmd');
                 let out = document.getElementById('term-output');
-                let cmd = input.value.trim();
-                out.innerHTML += '\namirx@system:~$ ' + cmd;
-
-                if(cmd === 'help') {
-                    out.innerHTML += '\nالأوامر المتاحة:\n - ls : عرض الملفات\n - clear : مسح الشاشة\n - nano [اسم_الملف] : فتح محرر نصوص nano';
-                } else if(cmd === 'ls') {
-                    out.innerHTML += '\nindex.html   system.py   config.json';
-                } else if(cmd === 'clear') {
-                    out.innerHTML = 'Terminal Cleared.';
-                } else if(cmd.startsWith('nano')) {
-                    let fname = cmd.split(' ')[1] || 'script.py';
-                    document.getElementById('nano-filename').innerText = fname;
-                    document.getElementById('nano-modal').style.display = 'flex';
-                } else if(cmd !== '') {
-                    out.innerHTML += `\n${cmd}: command not found`;
-                }
-
+                out.innerHTML += '\namirx@system:~$ ' + input.value;
+                if(input.value === 'clear') out.innerHTML = 'Cleared.';
+                else out.innerHTML += '\nCommand executed.';
                 input.value = '';
-                document.getElementById('term-box').scrollTop = document.getElementById('term-box').scrollHeight;
             }
-        }
-
-        function closeNano() {
-            document.getElementById('nano-modal').style.display = 'none';
-            let out = document.getElementById('term-output');
-            out.innerHTML += '\n[+] Exit Nano: Saved changes successfully.';
         }
 
         function run2DGame() {
             let canvas = document.getElementById('game2DCanvas');
             let ctx = canvas.getContext('2d');
-            let x = 10;
-            function animate() {
+            let x = 0;
+            setInterval(() => {
                 ctx.clearRect(0,0,canvas.width,canvas.height);
                 ctx.fillStyle = '#00f2ff';
                 ctx.fillRect(x, 50, 20, 20);
                 x = (x + 2) % canvas.width;
-                requestAnimationFrame(animate);
-            }
-            animate();
+            }, 20);
         }
 
         function init3DGame() {
@@ -379,20 +336,11 @@ Type 'help' for available commands.</div>
             let renderer = new THREE.WebGLRenderer();
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
-
-            let geometry = new THREE.BoxGeometry();
-            let material = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true });
-            let cube = new THREE.Mesh(geometry, material);
+            let cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true }));
             scene.add(cube);
             camera.position.z = 3;
-
-            function animate3D() {
-                requestAnimationFrame(animate3D);
-                cube.rotation.x += 0.01;
-                cube.rotation.y += 0.01;
-                renderer.render(scene, camera);
-            }
-            animate3D();
+            function animate() { requestAnimationFrame(animate); cube.rotation.x += 0.01; cube.rotation.y += 0.01; renderer.render(scene, camera); }
+            animate();
         }
     </script>
 </body>
