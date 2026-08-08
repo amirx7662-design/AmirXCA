@@ -106,9 +106,9 @@
 <body>
 
     <header>
-        <div class="logo-title" ondblclick="openSecretAdmin()">⚡ AmirXCA</div>
+        <div class="logo-title">⚡ AmirXCA</div>
         <div class="status-widget">
-            <span>Points: <strong id="user-xp" style="color:#fff;">290</strong> XP</span>
+            <span>Points: <strong id="user-xp" style="color:#fff;">300</strong> XP</span>
         </div>
     </header>
 
@@ -123,21 +123,21 @@
             <button class="tab-btn" onclick="switchTab('books', event)">📚 Books</button>
         </div>
 
-        <!-- 1. الأدوات المحددة من 1 إلى 10 فقط -->
+        <!-- 1. الأدوات -->
         <div id="sec-tools" class="section active">
             <div class="grid-container" id="tools-grid"></div>
         </div>
 
-        <!-- 2. قسم الذكاء الاصطناعي (مفتاح API + محادثة مباشرة) -->
+        <!-- 2. قسم الذكاء الاصطناعي المحسّن -->
         <div id="sec-ai" class="section">
             <div class="card">
-                <h3 style="direction:rtl; text-align:right;">🤖 مساعد الذكاء الاصطناعي (AmirX AI)</h3>
-                <p style="direction:rtl; text-align:right;">أدخل مفتاح الـ API الخاص بك لتفعيل المحادثة والاستجابة التلقائية المباشرة.</p>
+                <h3 style="direction:rtl; text-align:right;">🤖 مساعد الذكاء الاصطناعي (AmirX AI Engine)</h3>
+                <p style="direction:rtl; text-align:right;">أدخل مفتاح الـ API الخاص بك لتشغيل الخدمة.</p>
                 
-                <input type="password" id="ai-key" class="tool-input" placeholder="أدخل مفتاح API الخاص بك (API Key)...">
+                <input type="text" id="ai-key" class="tool-input" placeholder="أدخل مفتاح الـ API الخاص بك هنا...">
                 
                 <div class="ai-box">
-                    <div id="ai-logs" class="ai-logs">نظام الذكاء الاصطناعي جاهز... أضف مفتاح الـ API واكتب سؤالك.</div>
+                    <div id="ai-logs" class="ai-logs">نظام AmirX AI جاهز... اكتب مفتاحك واكتب أي سؤال.</div>
                     <div style="display:flex; gap:10px;">
                         <input type="text" id="ai-prompt" class="tool-input" style="margin-bottom:0;" placeholder="اكتب سؤالك أو أمرك هنا...">
                         <button class="btn-action" style="width:120px;" onclick="sendAIQuery()">إرسال</button>
@@ -203,7 +203,7 @@ Type 'help' for available commands.</div>
     </div>
 
     <script>
-        let xp = 290;
+        let xp = 300;
 
         function addXP() {
             xp += 10;
@@ -211,8 +211,6 @@ Type 'help' for available commands.</div>
         }
 
         const toolsGrid = document.getElementById('tools-grid');
-        
-        // الأدوات المعتمدة فقط من 1 إلى 10
         const toolsList = [
             { id: 1, name: 'Port Scanner', ph: 'Target IP (e.g., 127.0.0.1)' },
             { id: 2, name: 'IP Intelligence', ph: 'Target IP (e.g., 8.8.8.8)' },
@@ -263,13 +261,14 @@ Type 'help' for available commands.</div>
             document.getElementById('ai-prompt').value = '';
 
             if(!apiKey) {
-                logs.innerText += `\n[تنبيه]: يرجى إدخال مفتاح الـ API أولاً لربط النموذج بالخدمة.`;
+                logs.innerText += `\n[تنبيه]: يرجى إدخال المفتاح أولاً.`;
                 return;
             }
 
-            logs.innerText += `\n[جاري المعالجة والاتصال بالذكاء الاصطناعي...]`;
+            logs.innerText += `\n[جاري الاتصال بالذكاء الاصطناعي...]`;
 
             try {
+                // إرسال الطلب المرن الذي يتقبل الصيغ المحدثة من جوجل
                 let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -277,14 +276,18 @@ Type 'help' for available commands.</div>
                         contents: [{ parts: [{ text: prompt }] }]
                     })
                 });
+
                 let data = await response.json();
+                
                 if(data.candidates && data.candidates[0].content.parts[0].text) {
                     logs.innerText += `\n\nالذكاء الاصطناعي:\n${data.candidates[0].content.parts[0].text}`;
+                } else if(data.error) {
+                    logs.innerText += `\n[خطأ من السيرفر]: ${data.error.message || 'المفتاح يتطلب صلاحيات إضافية'}`;
                 } else {
-                    logs.innerText += `\n[خطأ]: تحقق من صحة مفتاح الـ API.`;
+                    logs.innerText += `\n[تنبيه]: حدث خطأ في معالجة الاستجابة.`;
                 }
             } catch(e) {
-                logs.innerText += `\n[خطأ]: تعذر الاتصال بالخادم.`;
+                logs.innerText += `\n[خطأ شبكة]: تعذر الوصول إلى الخدمة.`;
             }
         }
 
