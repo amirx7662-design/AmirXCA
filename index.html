@@ -3,280 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA | المنصة التقنية الاحترافية</title>
-    <!-- خط Tajawal الأنيق والمستخدم في المواقع الاحترافية -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>AmirXCA | المنصة والبيئة البرمجية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
-            --bg-body: #f9fafb; /* خلفية فاتحة جداً */
-            --text-main: #1f2937; /* لون نص داكن مريح للعين */
-            --primary-color: #6d28d9; /* لون بنفسجي احترافي للأزرار */
-            --card-bg-1: #fef2f2; /* كرت أحمر هادئ */
-            --card-bg-2: #fffbeb; /* كرت أصفر هادئ */
-            --card-bg-3: #f0fdf4; /* كرت أخضر هادئ */
-            --card-bg-4: #eff6ff; /* كرت أزرق هادئ */
-            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --bg-body: #070a10;
+            --card-bg: #0d131f;
+            --accent-cyan: #00f2ff;
+            --accent-green: #38ef7d;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding-bottom: 60px; }
 
-        /* الهيدر الأنيق */
         header {
-            background: #ffffff;
+            background: #0b0f17;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-bottom: 2px solid var(--accent-cyan);
             text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
-        header h1 { color: var(--primary-color); font-size: 2rem; font-weight: 800; }
+        header h1 { color: var(--accent-cyan); font-size: 2rem; font-weight: 800; }
 
-        /* حاوية المحتوى الرئيسي */
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 30px 15px; }
 
-        .section-title { text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 40px; color: #111827; }
-        .section-title span { color: var(--primary-color); }
+        .section-title { font-size: 1.8rem; color: var(--accent-cyan); margin: 30px 0 20px 0; font-weight: 800; text-align: center; }
 
-        /* شبكة الكروت (تلقائية الأعمدة) */
+        /* Termux / Terminal مدمج */
+        .terminal-container {
+            background: #05080e;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        .terminal-header {
+            background: #0e1626;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+        }
+        .terminal-body {
+            padding: 15px;
+            height: 320px;
+            overflow-y: auto;
+            font-family: 'Fira Code', monospace;
+            direction: ltr;
+            text-align: left;
+            color: #4ade80;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #080d1a;
+            border-top: 1px solid rgba(0, 242, 255, 0.1);
+            direction: ltr;
+        }
+        .terminal-prompt { color: var(--accent-cyan); font-family: 'Fira Code', monospace; font-weight: bold; margin-right: 10px; }
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        /* شبكة الكروت للخدمات والكتب */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            gap: 20px;
         }
 
-        /* تنسيق الكرت الاحترافي (نفس أسلوب المثال) */
         .card {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: var(--shadow-card);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-
-        /* أيقونات الكروت */
-        .card-icon { font-size: 3rem; margin-bottom: 20px; color: var(--primary-color); }
-
-        .card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; color: #111827; }
-        .card p { font-size: 1rem; color: #4b5563; margin-bottom: 25px; min-height: 60px; }
-
-        /* أزرار الإجراءات داخل الكروت */
-        .btn-card {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            transition: opacity 0.2s;
-            width: 100%;
-        }
-        .btn-card:hover { opacity: 0.9; }
-
-        /* صندوق المحتوى (يظهر أسفل الكرت) */
-        .content-display {
-            background: #ffffff;
-            border: 2px solid var(--primary-color);
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 15px;
             padding: 20px;
-            border-radius: 12px;
-            margin-top: 15px;
-            color: var(--text-main);
-            font-size: 1.1rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .card h3 { color: #fff; font-size: 1.3rem; margin-bottom: 10px; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5; }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-cyan);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .content-box {
+            background: #04070d;
+            border: 1px dashed var(--accent-cyan);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 12px;
             display: none;
             text-align: right;
-            line-height: 1.8;
-            box-shadow: var(--shadow-card);
+            color: #38bdf8;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        /* زر "عرض جميع الخدمات" العريض */
-        .btn-main-action {
-            display: block;
-            width: fit-content;
-            margin: 0 auto 60px auto;
-            padding: 15px 40px;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 4px 14px 0 rgba(109, 40, 217, 0.3);
-        }
-
-        /* حاوية اللعبة 3D */
         #game-3d-container {
             width: 100%;
-            height: 500px;
+            height: 400px;
             background: #000;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 4px solid #ffffff;
-            box-shadow: var(--shadow-card);
-            position: relative;
+            border-radius: 15px;
+            border: 2px solid var(--accent-cyan);
         }
 
-        /* أزرار تواصل عائمة (واتساب واتصال) */
-        .floating-contact {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 1000;
+        /* فوتر التواصل الحصري بالبريد */
+        footer {
+            background: #0b0f17;
+            border-top: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 25px;
+            text-align: center;
+            margin-top: 50px;
         }
-        .float-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.8rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            text-decoration: none;
-        }
-        .float-whatsapp { background-color: #25d366; }
-        .float-call { background-color: #f59e0b; }
-
-        /* تلوين خلفيات الكروت بأسلوب المثال */
-        .card-red { background-color: var(--card-bg-1); }
-        .card-yellow { background-color: var(--card-bg-2); }
-        .card-green { background-color: var(--card-bg-3); }
-        .card-blue { background-color: var(--card-bg-4); }
-
+        footer p { color: var(--text-muted); font-size: 1rem; }
+        footer a { color: var(--accent-cyan); font-weight: bold; text-decoration: none; word-break: break-all; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>AmirXCA</h1>
+        <h1>AmirXCA System</h1>
     </header>
 
     <div class="container">
 
-        <!-- قسم الخدمات والأدوات (منظم بكروت ملونة) -->
-        <h2 class="section-title">⚡ الخدمات <span>والأدوات</span> الرقمية</h2>
-        <div class="grid" id="services-list">
-            <!-- الكروت ستتولد هنا تلقائياً -->
+        <!-- 💻 Termux / Terminal المدمج -->
+        <h2 class="section-title">💻 بيئة Termux البرمجية المباشرة</h2>
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <span>AmirX OS (Termux Terminal v2.0)</span>
+                <span>Bash / Python Environment</span>
+            </div>
+            <div class="terminal-body" id="term-output">
+                <div>مرحباً بك في بيئة AmirX البرمجية!</div>
+                <div>اكتب <span style="color:#00f2ff;">help</span> لعرض الأوامر، أو <span style="color:#00f2ff;">python</span> لتشغيل البرمجة.</div>
+                <br>
+            </div>
+            <div class="terminal-input-line">
+                <span class="terminal-prompt">amirx@terminal:~$</span>
+                <input type="text" class="terminal-input" id="term-input" autofocus placeholder="اكتب الأمر هنا واضغط Enter...">
+            </div>
         </div>
 
-        <button class="btn-main-action">عرض جميع الخدمات</button>
+        <!-- ⚡ الخدمات والأدوات -->
+        <h2 class="section-title">⚡ الخدمات والأدوات الحقيقية</h2>
+        <div class="grid" id="services-grid"></div>
 
-        <!-- قسم المكتبة -->
-        <h2 class="section-title">📚 المكتبة <span>والأحاديث</span> الشريفة</h2>
-        <div class="grid" id="books-list">
-            <!-- الكروت ستتولد هنا تلقائياً -->
-        </div>
+        <!-- 📚 المكتبة والكتب -->
+        <h2 class="section-title">📚 المكتبة والأحاديث الشريفة</h2>
+        <div class="grid" id="books-grid"></div>
 
-        <!-- قسم اللعبة -->
-        <h2 class="section-title">🎮 محاكي <span>القيادة</span> 3D</h2>
-        <div class="card card-blue" style="margin-bottom: 50px;">
+        <!-- 🎮 اللعبة 3D -->
+        <h2 class="section-title">🎮 محاكي القيادة 3D</h2>
+        <div class="card">
             <div id="game-3d-container"></div>
-            <p style="margin-top:20px; color:var(--text-main); font-size:1.1rem; font-weight:500;">🕹️ التحكم بالأسهم: ↑ تسريع | ↓ فرامل | ← يسار | → يمين</p>
+            <p style="margin-top: 15px; color: var(--text-muted);">🕹️ التحكم: ↑ تسريع | ↓ فرامل | ← يسار | → يمين</p>
         </div>
 
     </div>
 
-    <!-- أزرار تواصل عائمة (نفس أسلوب المثال) -->
-    <div class="floating-contact">
-        <a href="https://wa.me/966500000000" class="float-btn float-whatsapp" target="_blank">💬</a>
-        <a href="tel:0500000000" class="float-btn float-call">📞</a>
-    </div>
+    <!-- التواصل الرسمي ببريدك فقط -->
+    <footer>
+        <p>لتواصل العمل والاستفسارات البرمجية الرسمية:</p>
+        <p style="margin-top:8px;"><a href="mailto:amirx7662@gmail.com">amirx7662@gmail.com</a></p>
+    </footer>
 
     <script>
-        // --- بيانات الخدمات (المنظمة في كروت) ---
-        // تم استخدام كلاسات الألوان (card-red, card-yellow, card-green, card-blue)
-        const servicesData = [
-            { id: 1, title: "💻 بناء أنظمة Termux", desc: "توليد أوامر تجهيز البيئة الكاملة لأداة الترمكس تلقائياً.", color: "card-red", icon: "🛠️", action: () => "pkg update && pkg upgrade -y && pkg install git python curl wget -y" },
-            { id: 2, title: "🔐 مولد كلمات المرور", desc: "توليد كلمة سر معقدة وأوتوماتيكية لحماية حساباتك.", color: "card-yellow", icon: "🔑", action: () => Math.random().toString(36).substring(2) + "!" + Math.random().toString(36).substring(2, 6).toUpperCase() },
-            { id: 3, title: "🤖 تشفير النصوص", desc: "تشفير الكود والنصوص بنظام Base64 فوراً داخل الصفحة.", color: "card-green", icon: "🔒", action: () => "مثال التشفير: " + btoa("AmirXCA System Running") },
-            { id: 4, title: "📊 حاسبة النصوص", desc: "فحص وتدقيق أوتوماتيكي لبيانات النصوص والكلمات.", color: "card-blue", icon: "📝", action: () => "تم الفحص: النظام يعمل بكفاءة 100%" }
+        // --- 1. برمجة ترمكس المدمج (Terminal System) ---
+        const termInput = document.getElementById('term-input');
+        const termOutput = document.getElementById('term-output');
+
+        let inPythonMode = false;
+
+        termInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = this.value.trim();
+                if(!cmd && !inPythonMode) return;
+
+                printToTerm((inPythonMode ? '>>> ' : 'amirx@terminal:~$ ') + cmd, '#fff');
+                this.value = '';
+
+                if (inPythonMode) {
+                    handlePythonMode(cmd);
+                    return;
+                }
+
+                handleTerminalCommand(cmd.toLowerCase());
+            }
+        });
+
+        function printToTerm(text, color = '#4ade80') {
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.innerText = text;
+            termOutput.appendChild(div);
+            termOutput.scrollTop = termOutput.scrollHeight;
+        }
+
+        function handleTerminalCommand(cmd) {
+            if (cmd === 'help') {
+                printToTerm("الأوامر المتاحة:\n- python : فتح مفسر بايثون للبرمجة\n- ls     : عرض المجلدات والملفات\n- clear  : مسح الشاشة\n- info   : معلومات النظام", "#00f2ff");
+            } else if (cmd === 'ls') {
+                printToTerm("main.py   system.sh   books_db/   tools/", "#f59e0b");
+            } else if (cmd === 'clear') {
+                termOutput.innerHTML = '';
+            } else if (cmd === 'python') {
+                inPythonMode = true;
+                document.querySelector('.terminal-prompt').innerText = '>>>';
+                printToTerm("Python 3.10.12 (AmirX Environment)\nاكتب كود بايثون للبدء (أو اكتب exit() للخروج).", "#38ef7d");
+            } else if (cmd === 'info') {
+                printToTerm("نظام AmirXCA - الإصدار 2.0 أوتوماتيكي بالكامل.", "#38bdf8");
+            } else {
+                printToTerm(`الأمر غير معروف: ${cmd}. اكتب help للمساعدة.`, "#ef4444");
+            }
+        }
+
+        function handlePythonMode(cmd) {
+            if (cmd === 'exit()' || cmd === 'exit') {
+                inPythonMode = false;
+                document.querySelector('.terminal-prompt').innerText = 'amirx@terminal:~$';
+                printToTerm("تم الخروج من بايثون.", "#f59e0b");
+                return;
+            }
+
+            try {
+                if (cmd.startsWith('print(') && cmd.endsWith(')')) {
+                    let content = cmd.substring(6, cmd.length - 1);
+                    if ((content.startsWith("'") && content.endsWith("'")) || (content.startsWith('"') && content.endsWith('"'))) {
+                        printToTerm(content.slice(1, -1));
+                    } else {
+                        printToTerm(eval(content));
+                    }
+                } else {
+                    let result = eval(cmd);
+                    if (result !== undefined) printToTerm(result);
+                }
+            } catch (err) {
+                printToTerm("SyntaxError: " + err.message, "#ef4444");
+            }
+        }
+
+        // --- 2. الخدمات والأدوات ---
+        const services = [
+            { id: 1, title: "💻 أوامر تجهيز Termux", desc: "توليد أوامر التحديث وتثبيت بايثون وجيت تلقائياً.", act: () => "pkg update && pkg upgrade -y && pkg install git python curl -y" },
+            { id: 2, title: "🔐 مولد باسوردات معقدة", desc: "توليد كلمة سر عشوائية عالية الأمان.", act: () => Math.random().toString(36).substring(2) + "!" + Math.random().toString(36).substring(2,6).toUpperCase() },
+            { id: 3, title: "🤖 تشفير Base64 أوتوماتيكي", desc: "تشفير النص تلقائياً داخل النظام.", act: () => "النص المشفر: " + btoa("AmirXCA Automated Script") }
         ];
 
-        const sContainer = document.getElementById('services-list');
-        servicesData.forEach(s => {
-            sContainer.innerHTML += `
-                <div class="card ${s.color}">
-                    <div>
-                        <div class="card-icon">${s.icon}</div>
-                        <h3>${s.title}</h3>
-                        <p>${s.desc}</p>
-                    </div>
-                    <div>
-                        <button class="btn-card" onclick="runService(${s.id})">ابدأ الآن</button>
-                        <div id="res-srv-${s.id}" class="content-display"></div>
-                    </div>
+        const sGrid = document.getElementById('services-grid');
+        services.forEach(s => {
+            sGrid.innerHTML += `
+                <div class="card">
+                    <h3>${s.title}</h3>
+                    <p>${s.desc}</p>
+                    <button class="btn-action" onclick="runSrv(${s.id})">تشغيل الخدمة</button>
+                    <div id="srv-res-${s.id}" class="content-box"></div>
                 </div>
             `;
         });
 
-        function runService(id) {
-            const srv = servicesData.find(x => x.id === id);
-            const box = document.getElementById(`res-srv-${id}`);
-            // إغلاق أي صناديق أخرى مفتوحة في نفس القسم
-            document.querySelectorAll('#services-list .content-display').forEach(b => { if(b !== box) b.style.display = 'none'; });
+        function runSrv(id) {
+            const item = services.find(x => x.id === id);
+            const box = document.getElementById(`srv-res-${id}`);
             box.style.display = box.style.display === 'block' ? 'none' : 'block';
-            box.innerText = srv.action();
+            box.innerText = item.act();
         }
 
-        // --- بيانات المكتبة (الأحاديث والكتب) ---
-        const booksData = [
-            { id: 1, title: "📖 صحيح مسلم (مقدمة العلم)", desc: "كتاب صحيح مسلم - باب الحث على طلب العلم.", color: "card-red", icon: "📜", fullText: "عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللَّهُ عَنْهُ، أَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ...»" },
-            { id: 2, title: "📘 أساسيات Python الشامل", desc: "دليل المبتدئين للتعامل مع البرمجة والسورس كود.", color: "card-yellow", icon: "🐍", fullText: "المحتوى الكامل:\n1. Print Statement: print('Hello AmirXCA')\n2. Variables: name = 'AmirX'\n3. Loops: for i in range(10): print(i)" },
-            { id: 3, title: "🐧 دليل أوامر Termux & Linux", desc: "جميع أوامر التحكم بالأنظمة ومسارات الملفات.", color: "card-green", icon: "💻", fullText: "الأوامر الأساسية:\n- pkg update && pkg upgrade (تحديث النظام)\n- ls (عرض الملفات)\n- cd (التنقل بين المجلدات)" }
+        // --- 3. المكتبة والأحاديث الشريفة ---
+        const books = [
+            { id: 1, title: "📖 صحيح مسلم (حديث طلب العلم)", desc: "باب الحث على طلب العلم الشرعي والنافع.", text: "عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللَّهُ عَنْهُ، أَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ»." },
+            { id: 2, title: "📘 أساسيات لغة Python", desc: "دليل المبتدئين للتعامل مع البرمجة والسورس كود.", text: "1. المتغيرات: x = 10\n2. الطباعة: print(x)\n3. الشروط: if x > 5: print('كبير')" },
+            { id: 3, title: "🐧 دليل أوامر Termux", desc: "أهم الأوامر الأساسية للتعامل مع البيئة.", text: "ls : عرض الملفات\ncd : التنقل بين المجلدات\nchmod +x : منح صلاحية التنفيذ" }
         ];
 
-        const bContainer = document.getElementById('books-list');
-        booksData.forEach(b => {
-            bContainer.innerHTML += `
-                <div class="card ${b.color}">
-                    <div>
-                        <div class="card-icon">${b.icon}</div>
-                        <h3>${b.title}</h3>
-                        <p>${b.desc}</p>
-                    </div>
-                    <div>
-                        <button class="btn-card" onclick="toggleBook(${b.id})">فتح الكتاب</button>
-                        <div id="book-content-${b.id}" class="content-display">
-                            <p style="white-space: pre-line; color: #1f2937;">${b.fullText}</p>
-                        </div>
+        const bGrid = document.getElementById('books-grid');
+        books.forEach(b => {
+            bGrid.innerHTML += `
+                <div class="card">
+                    <h3>${b.title}</h3>
+                    <p>${b.desc}</p>
+                    <button class="btn-action" onclick="toggleBook(${b.id})">تحميل / فتح الكتاب</button>
+                    <div id="book-res-${b.id}" class="content-box">
+                        <p style="white-space: pre-line;">${b.text}</p>
                     </div>
                 </div>
             `;
         });
 
         function toggleBook(id) {
-            const box = document.getElementById(`book-content-${id}`);
-            // إغلاق أي كتب أخرى مفتوحة
-            document.querySelectorAll('#books-list .content-display').forEach(b => { if(b !== box) b.style.display = 'none'; });
+            const box = document.getElementById(`book-res-${id}`);
             box.style.display = box.style.display === 'block' ? 'none' : 'block';
         }
 
-        // --- محرك اللعبة 3D (تفعيله تلقائياً) ---
+        // --- 4. محرك اللعبة 3D ---
         let scene, camera, renderer, car;
         let speed = 0, carX = 0;
         const keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
 
-        function init3DGame() {
+        function initGame() {
             const container = document.getElementById('game-3d-container');
-            if(!container) return;
-            
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xf3f4f6); /* خلفية فاتحة للعبة لتناسب الموقع الجديد */
+            scene.background = new THREE.Color(0x0a0e17);
 
             camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
             camera.position.set(0, 3, 7);
@@ -290,18 +342,14 @@
             scene.add(light);
             scene.add(new THREE.AmbientLight(0x404040, 1.5));
 
-            const road = new THREE.Mesh(new THREE.PlaneGeometry(16, 400), new THREE.MeshBasicMaterial({ color: 0x9ca3af }));
+            const road = new THREE.Mesh(new THREE.PlaneGeometry(16, 400), new THREE.MeshBasicMaterial({ color: 0x1e293b }));
             road.rotation.x = -Math.PI / 2;
             scene.add(road);
 
             const carGroup = new THREE.Group();
-            const bodyMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.7, 3.6), new THREE.MeshLambertMaterial({ color: 0x6d28d9 })); /* سيارة بنفسجية بنفس لون الهوية */
+            const bodyMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.7, 3.6), new THREE.MeshLambertMaterial({ color: 0x00f2ff }));
             bodyMesh.position.y = 0.5;
             carGroup.add(bodyMesh);
-
-            const topMesh = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.5, 1.8), new THREE.MeshLambertMaterial({ color: 0x111111 }));
-            topMesh.position.set(0, 1, -0.2);
-            carGroup.add(topMesh);
 
             car = carGroup;
             scene.add(car);
@@ -309,12 +357,11 @@
             window.addEventListener('keydown', e => { if(keys.hasOwnProperty(e.key)) keys[e.key] = true; });
             window.addEventListener('keyup', e => { if(keys.hasOwnProperty(e.key)) keys[e.key] = false; });
 
-            animate3D();
+            animate();
         }
 
-        function animate3D() {
-            requestAnimationFrame(animate3D);
-
+        function animate() {
+            requestAnimationFrame(animate);
             if (keys.ArrowUp) speed = Math.min(speed + 0.02, 0.8);
             else if (keys.ArrowDown) speed = Math.max(speed - 0.02, -0.3);
             else speed *= 0.95;
@@ -332,8 +379,7 @@
             renderer.render(scene, camera);
         }
 
-        // تشغيل اللعبة عند التحميل
-        window.onload = init3DGame;
+        window.onload = initGame;
     </script>
 </body>
 </html>
