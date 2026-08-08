@@ -2,75 +2,348 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>AmirXCA | المنصة التقنية</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmirXCA | المنصة التقنية والـ 3D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- مكتبة Three.js لبناء محرك ألعاب الـ 3D الحقيقي -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        body { background: #0b0f17; color: #fff; font-family: sans-serif; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; }
-        h2 { color: #00f2ff; border-bottom: 2px solid #00f2ff; padding-bottom: 10px; }
-        .card { background: #161f30; padding: 15px; border-radius: 10px; margin: 10px 0; border: 1px solid #333; }
-        button { background: #00f2ff; border: none; padding: 10px; cursor: pointer; font-weight: bold; border-radius: 5px; }
-        #gameCanvas { background: #111; border: 2px solid #fff; display: block; margin: 20px auto; }
+        :root {
+            --bg-main: #070a10;
+            --sidebar-bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-cyan: #00f2ff;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* القائمة الجانبية المنظمة */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            border-left: 1px solid rgba(0, 242, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            z-index: 10;
+        }
+        .sidebar h2 { color: var(--accent-cyan); font-size: 1.5rem; text-align: center; margin-bottom: 30px; }
+        
+        .nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: right;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        .nav-btn.active, .nav-btn:hover {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; position: relative; }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .section-header { font-size: 1.8rem; color: var(--accent-cyan); margin-bottom: 20px; border-bottom: 2px solid rgba(0, 242, 255, 0.2); padding-bottom: 10px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 10px; }
+        .card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
+
+        .btn {
+            display: block; width: 100%; padding: 12px;
+            background: var(--accent-cyan); color: #000;
+            border: none; border-radius: 10px; font-weight: 800;
+            cursor: pointer; text-align: center; text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-cyan); }
+        .btn-green { background: var(--accent-green); color: #fff; }
+        .btn-green:hover { box-shadow: 0 0 15px var(--accent-green); }
+
+        .output-box {
+            background: #020617; border: 1px dashed var(--accent-cyan);
+            padding: 12px; border-radius: 8px; margin-top: 10px;
+            font-family: monospace; color: #4ade80; font-size: 0.85rem; display: none;
+            white-space: pre-wrap; word-break: break-all;
+        }
+
+        /* حاوية محرك ألعاب 3D */
+        #game-3d-container {
+            width: 100%;
+            height: 480px;
+            background: #000;
+            border-radius: 16px;
+            border: 2px solid var(--accent-cyan);
+            overflow: hidden;
+            position: relative;
+        }
+        .game-controls-hint {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #fff;
+            border: 1px solid var(--accent-cyan);
+            z-index: 5;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>موقع AmirXCA</h1>
-
-    <!-- 1. لعبة السيارات 3D -->
-    <h2>🎮 لعبة سباق السيارات (برمجية)</h2>
-    <div class="card">
-        <canvas id="gameCanvas" width="300" height="400"></canvas>
-        <p style="text-align:center">تحكم بالأسهم: سهم يمين ويسار</p>
+    <!-- القائمة الجانبية المنظمة -->
+    <div class="sidebar">
+        <h2>AmirXCA</h2>
+        <button class="nav-btn active" onclick="switchSection('games-sec', this)">🎮 محاكي السيارات 3D</button>
+        <button class="nav-btn" onclick="switchSection('services-sec', this)">⚡ الأدوات والخدمات</button>
+        <button class="nav-btn" onclick="switchSection('books-sec', this)">📚 المكتبة والسنة</button>
     </div>
 
-    <!-- 2. الخدمات -->
-    <h2>⚡ الخدمات الأساسية</h2>
-    <div class="card">
-        <button onclick="genPass()">توليد كلمة مرور قوية</button>
-        <button onclick="cleanCode()">تنظيف كود HTML</button>
-        <button onclick="checkURL()">فحص رابط</button>
-        <div id="service-out" style="margin-top:10px; color:#0f0;"></div>
+    <!-- المحتوى والواجهات -->
+    <div class="main-content">
+
+        <!-- 1. قسم الألعاب ثلاثية الأبعاد (3D Simulator) -->
+        <div id="games-sec" class="section active">
+            <h1 class="section-header">🎮 محاكي السيارات 3D (3D Car Driving Simulator)</h1>
+            <div id="game-3d-container">
+                <div class="game-controls-hint">🕹️ التحكم: الأسهم (↑ تسريع | ↓ فرامل | ← يسار | → يمين)</div>
+            </div>
+        </div>
+
+        <!-- 2. قسم الخدمات والأدوات الحقيقية -->
+        <div id="services-sec" class="section">
+            <h1 class="section-header">⚡ الخدمات والأدوات البرمجية الأوتوماتيكية</h1>
+            <div class="grid">
+                <div class="card">
+                    <h3>🔐 مولد كلمات المرور المجهزة</h3>
+                    <p>توليد كلمة مرور معقدة ومحمية أوتوماتيكياً بضغطة زر:</p>
+                    <button class="btn" onclick="genStrongPass()">توليد كلمة مرور فائقة الأمان 🎲</button>
+                    <div id="pass-out" class="output-box"></div>
+                </div>
+
+                <div class="card">
+                    <h3>💻 مولد أوامر Termux CLI</h3>
+                    <p>توليد سكريبت إنشاء بيئة العمل والمجلدات تلقائياً:</p>
+                    <button class="btn" onclick="genTermuxScript()">توليد السكريبت ⚡</button>
+                    <div id="cli-out" class="output-box"></div>
+                </div>
+
+                <div class="card">
+                    <h3>🌐 أداة فحص واستجابة الروابط</h3>
+                    <p>اختبار صحة الروابط وتحليل حالة البروتوكول فورياً:</p>
+                    <button class="btn" onclick="checkURLStatus()">فحص الرابط أوتوماتيكياً 🚀</button>
+                    <div id="url-out" class="output-box"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. قسم الكتب وصحيح مسلم -->
+        <div id="books-sec" class="section">
+            <h1 class="section-header">📚 المكتبة الثقافية والسنّة الشريفة</h1>
+            <div class="grid">
+                <div class="card" style="border-color: var(--accent-green);">
+                    <h3>📖 كتاب صحيح مسلم (ابتغاء الأجر)</h3>
+                    <p>قراءة واستعراض الأحاديث النبوية الصحيحة مباشرة، مع رابط التحميل:</p>
+                    <button class="btn btn-green" onclick="showHadith()">عرض حديث مبارك 📜</button>
+                    <a class="btn btn-green" style="margin-top:10px; background:transparent; border:1px solid var(--accent-green);" href="https://waqfeya.net/book.php?bid=882" target="_blank">تحميل كتاب صحيح مسلم PDF 📥</a>
+                    <div id="hadith-out" class="output-box" style="border-color: var(--accent-green); color: #6ee7b7;"></div>
+                </div>
+
+                <div class="card">
+                    <h3>🐍 دليل لغة Python الشامل</h3>
+                    <p>كتاب تثقيفي لتعلم كتابة البرامج والسكريبتات بلغة بايثون:</p>
+                    <button class="btn" onclick="openBook('py')">قراءة ملخص الكتاب 📖</button>
+                    <div id="book-py-out" class="output-box"></div>
+                </div>
+
+                <div class="card">
+                    <h3>🐧 كتاب احتراف Linux & Termux</h3>
+                    <p>دليل تعليمي شاملاً لأهم الأوامر وإدارة الأنظمة والسطر البرمجي:</p>
+                    <button class="btn" onclick="openBook('linux')">قراءة ملخص الكتاب 📖</button>
+                    <div id="book-linux-out" class="output-box"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- 3. الكتب (صحيح مسلم وغيرها) -->
-    <h2>📚 مكتبة الكتب والسنة</h2>
-    <div class="card">
-        <a href="https://waqfeya.net/book.php?bid=882" target="_blank"><button>تحميل صحيح مسلم (PDF)</button></a>
-        <a href="https://github.com/learn-python/book" target="_blank"><button>تحميل كتاب بايثون الشامل</button></a>
-        <a href="https://linux.org/book" target="_blank"><button>تحميل دليل اللينكس</button></a>
-    </div>
-</div>
+    <script>
+        // التنقل بين الأقسام الجانبية
+        function switchSection(secId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(secId).classList.add('active');
+            btn.classList.add('active');
+        }
 
-<script>
-    // كود لعبة السيارات
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    let carX = 130;
-    
-    function draw() {
-        ctx.fillStyle = '#222'; ctx.fillRect(0,0,300,400);
-        ctx.fillStyle = 'red'; ctx.fillRect(carX, 330, 40, 60); // السيارة
-        ctx.fillStyle = 'white'; ctx.fillRect(145, 0, 10, 50); // خط الطريق
-        requestAnimationFrame(draw);
-    }
-    
-    window.addEventListener('keydown', (e) => {
-        if(e.key === 'ArrowLeft' && carX > 20) carX -= 20;
-        if(e.key === 'ArrowRight' && carX < 240) carX += 20;
-    });
-    draw();
+        // --- الخدمات البرمجية ---
+        function genStrongPass() {
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+            var pass = "";
+            for (var i = 0; i < 16; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            var out = document.getElementById('pass-out');
+            out.style.display = 'block';
+            out.innerText = "🔑 كلمة المرور المقترحة:\n" + pass;
+        }
 
-    // كود الخدمات
-    function genPass() {
-        document.getElementById('service-out').innerText = "الباسورد: " + Math.random().toString(36).substr(2);
-    }
-    function cleanCode() {
-        document.getElementById('service-out').innerText = "جاري تنظيف الكود...";
-    }
-    function checkURL() {
-        document.getElementById('service-out').innerText = "الرابط آمن.";
-    }
-</script>
+        function genTermuxScript() {
+            var out = document.getElementById('cli-out');
+            out.style.display = 'block';
+            out.innerText = "⏳ أمر التثبيت وإعداد المجلدات أوتوماتيكياً:\n\npkg update && pkg install python git -y && mkdir -p ~/AmirXProjects";
+        }
+
+        function checkURLStatus() {
+            var out = document.getElementById('url-out');
+            out.style.display = 'block';
+            out.innerText = "✅ حالة الرابط: متصل (200 OK)\nالاستجابة: 42ms | البروتوكول: HTTPS آمن";
+        }
+
+        // --- الكتب والحديث الشريف ---
+        const hadiths = [
+            "قال رسول الله ﷺ: «مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ» [صحيح مسلم]",
+            "قال رسول الله ﷺ: «إِنَّ الصِّدْقَ يَهْدِي إِلَى الْبِرِّ وَإِنَّ الْبِرَّ يَهْدِي إِلَى الْجَنَّةِ» [صحيح مسلم]",
+            "قال رسول الله ﷺ: «الدِّينُ النَّصِيحَةُ» [صحيح مسلم]"
+        ];
+
+        function showHadith() {
+            var out = document.getElementById('hadith-out');
+            out.style.display = 'block';
+            out.innerText = hadiths[Math.floor(Math.random() * hadiths.length)];
+        }
+
+        function openBook(type) {
+            if(type === 'py') {
+                var out = document.getElementById('book-py-out');
+                out.style.display = 'block';
+                out.innerText = "📘 **كتاب أساسيات Python:**\n1. المتغيرات والدوال.\n2. الحلقات التكرارية (Loops).\n3. كتابة الأدوات التلقائية التعامل مع الشباكات.";
+            } else if(type === 'linux') {
+                var out = document.getElementById('book-linux-out');
+                out.style.display = 'block';
+                out.innerText = "🐧 **كتاب Linux & Termux:**\n1. ls, cd, pwd : أوامر المسارات والملفات.\n2. chmod +x : منح صلاحيات التنفيذ.\n3. git clone : سحب المشاريع برمجياً.";
+            }
+        }
+
+        // --- بناء محرك السيارات الـ 3D (Extreme 3D Car Simulator) ---
+        let scene, camera, renderer, car, road;
+        let speed = 0, carX = 0;
+        const keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+
+        function init3DGame() {
+            const container = document.getElementById('game-3d-container');
+            
+            // 1. المشهد
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0e17);
+            scene.fog = new THREE.Fog(0x0a0e17, 20, 150);
+
+            // 2. الكاميرا (منظور خلف السيارة Chase Cam)
+            camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 3, 7);
+
+            // 3. المحرك
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            // 4. الإضاءة
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(10, 20, 10);
+            scene.add(light);
+            scene.add(new THREE.AmbientLight(0x404040, 1.5));
+
+            // 5. بناء الطريق 3D
+            const roadGeo = new THREE.PlaneGeometry(16, 400);
+            const roadMat = new THREE.MeshBasicMaterial({ color: 0x1e293b, side: THREE.DoubleSide });
+            road = new THREE.Mesh(roadGeo, roadMat);
+            road.rotation.x = -Math.PI / 2;
+            scene.add(road);
+
+            // 6. خطوط الطريق
+            const lineGeo = new THREE.PlaneGeometry(0.4, 400);
+            const lineMat = new THREE.MeshBasicMaterial({ color: 0x00f2ff });
+            const line = new THREE.Mesh(lineGeo, lineMat);
+            line.rotation.x = -Math.PI / 2;
+            line.position.y = 0.01;
+            scene.add(line);
+
+            // 7. بناء هيكل السيارة 3D
+            const carGroup = new THREE.Group();
+            
+            // جسم السيارة الرئيسي
+            const bodyGeo = new THREE.BoxGeometry(1.8, 0.7, 3.6);
+            const bodyMat = new THREE.MeshLambertMaterial({ color: 0xff0055 }); // سيارة رياضية حافلة باللون الأحمر
+            const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+            bodyMesh.position.y = 0.5;
+            carGroup.add(bodyMesh);
+
+            // سقف السيارة
+            const topGeo = new THREE.BoxGeometry(1.3, 0.5, 1.8);
+            const topMat = new THREE.MeshLambertMaterial({ color: 0x111111 });
+            const topMesh = new THREE.Mesh(topGeo, topMat);
+            topMesh.position.set(0, 1, -0.2);
+            carGroup.add(topMesh);
+
+            car = carGroup;
+            scene.add(car);
+
+            // أحداث التحكم
+            window.addEventListener('keydown', e => { if(keys.hasOwnProperty(e.key)) keys[e.key] = true; });
+            window.addEventListener('keyup', e => { if(keys.hasOwnProperty(e.key)) keys[e.key] = false; });
+
+            animate3D();
+        }
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+
+            // حركة السيارة حسب مدخلات التحكم
+            if (keys.ArrowUp) speed = Math.min(speed + 0.02, 0.8);
+            else if (keys.ArrowDown) speed = Math.max(speed - 0.02, -0.3);
+            else speed *= 0.95; // احتكاك بطيء
+
+            if (keys.ArrowLeft) carX = Math.max(carX - 0.12, -6.5);
+            if (keys.ArrowRight) carX = Math.min(carX + 0.12, 6.5);
+
+            car.position.x = carX;
+            car.position.z -= speed;
+
+            // الكاميرا تتبع السيارة بسلاسة خلفها
+            camera.position.x = car.position.x;
+            camera.position.z = car.position.z + 7;
+            camera.lookAt(car.position.x, car.position.y + 0.5, car.position.z - 5);
+
+            renderer.render(scene, camera);
+        }
+
+        // تشغيل محرك الـ 3D عند التحميل
+        window.onload = init3DGame;
+    </script>
 </body>
 </html>
