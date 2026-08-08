@@ -4,297 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AmirXCA Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        :root {
-            --bg-body: #05080e;
-            --card-bg: #0d131f;
-            --accent-main: #00f2ff;
-            --accent-green: #38ef7d;
-            --accent-red: #ef4444;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Fira Code', monospace; }
-        body { background-color: var(--bg-body); color: var(--text-main); padding-bottom: 60px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: monospace; }
+        body { background-color: #05080e; color: #fff; padding: 15px; }
 
         header {
             background: #0b0f17;
-            padding: 12px 20px;
-            border-bottom: 2px solid var(--accent-main);
+            padding: 15px;
+            border-bottom: 2px solid #00f2ff;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
         }
 
-        .logo-title { color: var(--accent-main); font-size: 1.5rem; font-weight: bold; cursor: pointer; }
-        .status-widget { font-size: 0.85rem; color: var(--accent-green); background: rgba(0, 242, 255, 0.05); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(0, 242, 255, 0.2); }
+        .logo { color: #00f2ff; font-size: 1.4rem; font-weight: bold; }
+        .xp { color: #38ef7d; border: 1px solid #00f2ff; padding: 5px 10px; border-radius: 5px; }
 
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .card { background: #0d131f; border: 1px solid #1e293b; border-radius: 8px; padding: 15px; }
+        .card h3 { color: #00f2ff; font-size: 1rem; margin-bottom: 5px; }
+        .card p { color: #94a3b8; font-size: 0.8rem; margin-bottom: 10px; }
 
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-        .tab-btn { background: var(--card-bg); color: var(--text-muted); border: 1px solid #1e293b; padding: 8px 16px; border-radius: 6px; cursor: pointer; white-space: nowrap; font-weight: bold; }
-        .tab-btn.active, .tab-btn:hover { color: var(--accent-main); border-color: var(--accent-main); background: rgba(0,242,255,0.1); }
-
-        .section { display: none; }
-        .section.active { display: block; }
-
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        .card { background: var(--card-bg); border: 1px solid #1e293b; border-radius: 8px; padding: 15px; }
-        .card h3 { color: var(--accent-main); font-size: 1rem; margin-bottom: 8px; }
-        .card p { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px; }
-
-        .tool-input {
+        .inp {
             width: 100%;
             background: #000;
-            border: 1px solid #1e293b;
-            color: var(--accent-green);
-            padding: 8px;
-            border-radius: 4px;
+            border: 1px solid #00f2ff;
+            color: #38ef7d;
+            padding: 10px;
+            border-radius: 5px;
             margin-bottom: 10px;
-            font-size: 0.85rem;
             outline: none;
+            display: block !important;
         }
 
-        .btn-action { 
-            display: block;
-            text-align: center;
-            background: var(--accent-main); 
-            color: #000; 
-            font-weight: bold; 
-            border: none; 
-            padding: 10px 12px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            width: 100%; 
+        .btn {
+            width: 100%;
+            background: #00f2ff;
+            color: #000;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .tool-res {
+        .res {
             margin-top: 10px;
             background: #000;
-            border: 1px dashed var(--accent-main);
-            padding: 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            color: var(--accent-green);
+            border: 1px dashed #38ef7d;
+            color: #38ef7d;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
             display: none;
             white-space: pre-wrap;
-            word-break: break-all;
         }
-
-        #term-box { background: #000; border: 1px solid var(--accent-main); border-radius: 6px; padding: 15px; height: 320px; display: flex; flex-direction: column; }
-        #term-output { flex: 1; overflow-y: auto; color: var(--accent-green); font-size: 0.85rem; white-space: pre-wrap; }
-        .term-input-line { display: flex; gap: 8px; margin-top: 5px; }
-        .term-input { background: transparent; border: none; color: #fff; flex: 1; outline: none; }
-
-        #reader-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05080e; z-index: 300; flex-direction: column; padding: 20px; }
-        .reader-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent-main); padding-bottom: 10px; margin-bottom: 15px; }
-        .reader-body { flex: 1; overflow-y: auto; background: #0d131f; border: 1px solid #1e293b; padding: 20px; border-radius: 8px; line-height: 1.8; color: #e2e8f0; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-title" ondblclick="openSecretAdmin()">⚡ AmirXCA</div>
-        <div class="status-widget">
-            <span>النقاط: <strong id="user-xp" style="color:#fff;">290</strong> XP</span>
-        </div>
+        <div class="logo">⚡ AmirXCA</div>
+        <div class="xp">النقاط: <span id="xp-val">290</span> XP</div>
     </header>
 
-    <div class="container">
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('tools', event)">🛠️ الخدمات والأدوات (30)</button>
-            <button class="tab-btn" onclick="switchTab('terminal', event)">💻 شاشة Termux</button>
-            <button class="tab-btn" onclick="switchTab('games', event)">🎮 الألعاب (3D / 2D)</button>
-            <button class="tab-btn" onclick="switchTab('books', event)">📚 المكتبة والكتب</button>
-            <button class="tab-btn" onclick="switchTab('sadaqah', event)">✨ أجر جاري</button>
-        </div>
-
-        <!-- الخدمات والأدوات الـ 30 -->
-        <div id="sec-tools" class="section active">
-            <div class="grid-container" id="tools-grid"></div>
-        </div>
-
-        <!-- Termux -->
-        <div id="sec-terminal" class="section">
-            <div class="card">
-                <h3>💻 محاكي Termux</h3>
-                <div id="term-box">
-                    <div id="term-output">AmirX OS Terminal [Version 2.0]
-Type 'help' for available commands.</div>
-                    <div class="term-input-line">
-                        <span style="color:var(--accent-main)">amirx@system:~$</span>
-                        <input type="text" id="term-cmd" class="term-input" onkeydown="handleTerm(event)">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- الألعاب -->
-        <div id="sec-games" class="section">
-            <div class="grid-container">
-                <div class="card">
-                    <h3>Cyber Runner 2D</h3>
-                    <button class="btn-action" onclick="run2DGame()">تشغيل 2D</button>
-                    <canvas id="game2DCanvas" style="width:100%; height:140px; background:#000; margin-top:10px; border-radius:4px;"></canvas>
-                </div>
-                <div class="card">
-                    <h3>3D Matrix Engine</h3>
-                    <button class="btn-action" onclick="init3DGame()">تشغيل 3D</button>
-                    <div id="canvas3DContainer" style="width:100%; height:140px; background:#000; margin-top:10px; border-radius:4px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- الكتب -->
-        <div id="sec-books" class="section">
-            <div class="grid-container">
-                <div class="card">
-                    <h3>كتاب صحيح مسلم</h3>
-                    <button class="btn-action" onclick="openReader('صحيح مسلم', 'book_muslim')">قراءة الكتاب</button>
-                </div>
-                <div class="card">
-                    <h3>دليل Python</h3>
-                    <button class="btn-action" onclick="openReader('دليل Python', 'book_py')">قراءة الكتاب</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- أجر جاري -->
-        <div id="sec-sadaqah" class="section">
-            <div class="grid-container">
-                <div class="card">
-                    <h3>📖 المصحف الإلكتروني</h3>
-                    <button class="btn-action" onclick="openReader('المصحف الإلكتروني', 'quran')">فتح المصحف</button>
-                </div>
-                <div class="card">
-                    <h3>🤲 الأذكار</h3>
-                    <button class="btn-action" onclick="openReader('الأذكار', 'azkar')">عرض الأذكار</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- نافذة العرض -->
-    <div id="reader-modal">
-        <div class="reader-head">
-            <h2 id="reader-title" style="color:var(--accent-main)">العنوان</h2>
-            <button onclick="closeReader()" style="background:var(--accent-red); color:#fff; border:none; padding:6px 15px; cursor:pointer; border-radius:4px;">إغلاق</button>
-        </div>
-        <div class="reader-body" id="reader-content"></div>
-    </div>
+    <div class="grid" id="main-grid"></div>
 
     <script>
         let xp = 290;
+        const grid = document.getElementById('main-grid');
 
-        const toolsList = [
-            { id: 1, name: 'Port Scanner', ph: '127.0.0.1' },
-            { id: 2, name: 'IP Intelligence', ph: '8.8.8.8' },
-            { id: 3, name: 'Hash Generator', ph: 'أدخل النص للتشفير...' },
-            { id: 4, name: 'Base64 Encoder', ph: 'أدخل النص للتحويل...' },
-            { id: 5, name: 'SQLi Tester', ph: 'http://example.com/page?id=1' },
-            { id: 6, name: 'XSS Detector', ph: 'http://example.com' },
-            { id: 7, name: 'Subdomain Finder', ph: 'example.com' },
-            { id: 8, name: 'DNS Lookup', ph: 'example.com' },
-            { id: 9, name: 'Packet Sniffer', ph: 'eth0' },
-            { id: 10, name: 'Header Analyzer', ph: 'https://example.com' }
+        const tools = [
+            { id: 1, name: 'Port Scanner', ph: 'أدخل الـ IP (مثال: 127.0.0.1)' },
+            { id: 2, name: 'IP Intelligence', ph: 'أدخل الـ IP للتحليل' },
+            { id: 3, name: 'Hash Generator', ph: 'أدخل النص للتشفير' },
+            { id: 4, name: 'Base64 Encoder', ph: 'أدخل النص للتحويل' },
+            { id: 5, name: 'SQLi Tester', ph: 'أدخل رابط الموقع' },
+            { id: 6, name: 'XSS Detector', ph: 'أدخل الرابط أو الكود' },
+            { id: 7, name: 'Subdomain Finder', ph: 'أدخل النطاق (example.com)' },
+            { id: 8, name: 'DNS Lookup', ph: 'أدخل النطاق' },
+            { id: 9, name: 'Packet Sniffer', ph: 'أدخل الواجهة (eth0)' },
+            { id: 10, name: 'Header Analyzer', ph: 'أدخل رابط الموقع' }
         ];
 
-        const toolsGrid = document.getElementById('tools-grid');
-
-        // إنشاء الـ 30 أداة
-        for(let i=1; i<=30; i++) {
-            let tool = toolsList.find(t => t.id === i) || { id: i, name: `أداة فحص ومعالجة رقم #${i}`, ph: 'أدخل الهدف...' };
-            toolsGrid.innerHTML += `
+        // بناء 30 أداة تفاعلية
+        for (let i = 1; i <= 30; i++) {
+            let t = tools.find(item => item.id === i) || { id: i, name: `أداة معالجة تلقائية #${i}`, ph: 'أدخل الهدف...' };
+            
+            grid.innerHTML += `
                 <div class="card">
-                    <h3>#${tool.id} ${tool.name}</h3>
-                    <p>أداة تنفيذ ومعالجة مباشرة.</p>
-                    <input type="text" id="inp-${tool.id}" class="tool-input" placeholder="${tool.ph}">
-                    <button class="btn-action" onclick="runTool(${tool.id})">تشغيل الخدمة</button>
-                    <div class="tool-res" id="res-${tool.id}"></div>
+                    <h3>#${t.id} ${t.name}</h3>
+                    <p>أداة معالجة وتنفيذ آلي مباشرة.</p>
+                    <input type="text" id="input-${t.id}" class="inp" placeholder="${t.ph}">
+                    <button class="btn" onclick="executeService(${t.id})">تشغيل الخدمة</button>
+                    <div id="output-${t.id}" class="res"></div>
                 </div>
             `;
         }
 
-        function runTool(id) {
+        function executeService(id) {
             xp += 10;
-            document.getElementById('user-xp').innerText = xp;
-            let inp = document.getElementById(`inp-${id}`).value.trim() || '127.0.0.1';
-            let res = document.getElementById(`res-${id}`);
-            res.style.display = 'block';
+            document.getElementById('xp-val').innerText = xp;
+            
+            let val = document.getElementById(`input-${id}`).value.trim();
+            let out = document.getElementById(`output-${id}`);
+            out.style.display = 'block';
 
-            if(id === 1) {
-                res.innerText = `[+] Port Scan for ${inp}:\n- Port 80 (HTTP): OPEN\n- Port 443 (HTTPS): OPEN\n- Port 22 (SSH): CLOSED`;
-            } else if(id === 3) {
-                res.innerText = `[+] Hash Output:\nBase64: ${btoa(inp)}\nMD5 Sim: ${Math.random().toString(36).substring(2)}`;
-            } else if(id === 7) {
-                res.innerText = `[+] Subdomains for ${inp}:\n- api.${inp}\n- admin.${inp}\n- mail.${inp}`;
+            if (!val) val = "127.0.0.1";
+
+            if (id === 1) {
+                out.innerText = `[+] جاري فحص البورتات لـ (${val}):\n- Port 80 (HTTP): OPEN\n- Port 443 (HTTPS): OPEN\n- Port 22 (SSH): CLOSED\n[✓] اكتمل الفحص!`;
+            } else if (id === 2) {
+                out.innerText = `[+] تحليل IP (${val}):\n- الدولة: Local Host\n- المزود: System Network\n- التشفير: Secure`;
+            } else if (id === 3) {
+                out.innerText = `[+] تشفير النص (${val}):\n- Base64: ${btoa(val)}\n- Hash: ${Math.random().toString(36).substring(2)}${Math.random().toString(36).substring(2)}`;
+            } else if (id === 7) {
+                out.innerText = `[+] النطاقات الفرعية لـ (${val}):\n- admin.${val}\n- api.${val}\n- dev.${val}`;
             } else {
-                res.innerText = `[+] تم التنفيذ على Target: ${inp}\n- Status: 200 OK\n- Processing: Done (0.02s)`;
+                out.innerText = `[+] تم تشغيل الخدمة #${id} بنجاح!\n- الهدف: ${val}\n- الاستجابة: 200 OK\n- وقت التنفيذ: 0.01s`;
             }
-        }
-
-        function switchTab(tabName, evt) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            if(evt) evt.target.classList.add('active');
-            document.getElementById('sec-' + tabName).classList.add('active');
-        }
-
-        function openReader(title, type) {
-            document.getElementById('reader-title').innerText = title;
-            let body = document.getElementById('reader-content');
-            if(type === 'book_muslim') body.innerHTML = `<p><b>صحيح مسلم:</b> كتاب الإيمان والحديث الشريف كامل...</p>`;
-            else if(type === 'book_py') body.innerHTML = `<p><b>Python Guide:</b> print('Hello World')</p>`;
-            else if(type === 'quran') body.innerHTML = `<p style="text-align:center;"><b>سورة الفاتحة</b><br>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ...</p>`;
-            else body.innerHTML = `<p><b>الأذكار:</b> أستغفر الله العظيم وأتوب إليه (100 مرة)</p>`;
-            document.getElementById('reader-modal').style.display = 'flex';
-        }
-
-        function closeReader() { document.getElementById('reader-modal').style.display = 'none'; }
-
-        function handleTerm(e) {
-            if(e.key === 'Enter') {
-                let input = document.getElementById('term-cmd');
-                let out = document.getElementById('term-output');
-                out.innerHTML += '\namirx@system:~$ ' + input.value;
-                if(input.value === 'clear') out.innerHTML = 'Cleared.';
-                else out.innerHTML += '\nCommand executed.';
-                input.value = '';
-            }
-        }
-
-        function run2DGame() {
-            let canvas = document.getElementById('game2DCanvas');
-            let ctx = canvas.getContext('2d');
-            let x = 0;
-            setInterval(() => {
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.fillStyle = '#00f2ff';
-                ctx.fillRect(x, 50, 20, 20);
-                x = (x + 2) % canvas.width;
-            }, 20);
-        }
-
-        function init3DGame() {
-            let container = document.getElementById('canvas3DContainer');
-            container.innerHTML = '';
-            let scene = new THREE.Scene();
-            let camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            let renderer = new THREE.WebGLRenderer();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
-            let cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true }));
-            scene.add(cube);
-            camera.position.z = 3;
-            function animate() { requestAnimationFrame(animate); cube.rotation.x += 0.01; cube.rotation.y += 0.01; renderer.render(scene, camera); }
-            animate();
         }
     </script>
 </body>
 </html>
- 
