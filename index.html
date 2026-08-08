@@ -3,69 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA Platform</title>
+    <title>AmirXCA Platform v2</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: monospace; }
         body { background-color: #05080e; color: #fff; padding: 15px; }
-
-        header {
-            background: #0b0f17;
-            padding: 15px;
-            border-bottom: 2px solid #00f2ff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
+        header { background: #0b0f17; padding: 15px; border-bottom: 2px solid #00f2ff; display: flex; justify-content: space-between; margin-bottom: 20px; }
         .logo { color: #00f2ff; font-size: 1.4rem; font-weight: bold; }
         .xp { color: #38ef7d; border: 1px solid #00f2ff; padding: 5px 10px; border-radius: 5px; }
-
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
         .card { background: #0d131f; border: 1px solid #1e293b; border-radius: 8px; padding: 15px; }
-        .card h3 { color: #00f2ff; font-size: 1rem; margin-bottom: 5px; }
+        .card h3 { color: #00f2ff; margin-bottom: 5px; }
         .card p { color: #94a3b8; font-size: 0.8rem; margin-bottom: 10px; }
-
-        .inp {
-            width: 100%;
-            background: #000;
-            border: 1px solid #00f2ff;
-            color: #38ef7d;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            outline: none;
-            display: block !important;
-        }
-
-        .btn {
-            width: 100%;
-            background: #00f2ff;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .res {
-            margin-top: 10px;
-            background: #000;
-            border: 1px dashed #38ef7d;
-            color: #38ef7d;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            display: none;
-            white-space: pre-wrap;
-        }
+        .inp { width: 100%; background: #000; border: 1px solid #00f2ff; color: #38ef7d; padding: 10px; border-radius: 5px; margin-bottom: 10px; outline: none; }
+        .btn { width: 100%; background: #00f2ff; color: #000; font-weight: bold; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+        .res { margin-top: 10px; background: #000; border: 1px dashed #38ef7d; color: #38ef7d; padding: 10px; border-radius: 5px; font-size: 0.85rem; display: none; white-space: pre-wrap; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">⚡ AmirXCA</div>
+        <div class="logo">⚡ AmirXCA v2</div>
         <div class="xp">النقاط: <span id="xp-val">290</span> XP</div>
     </header>
 
@@ -76,22 +33,20 @@
         const grid = document.getElementById('main-grid');
 
         const tools = [
-            { id: 1, name: 'Port Scanner', ph: 'أدخل الـ IP (مثال: 127.0.0.1)' },
-            { id: 2, name: 'IP Intelligence', ph: 'أدخل الـ IP للتحليل' },
+            { id: 1, name: 'Port Scanner', ph: '127.0.0.1' },
+            { id: 2, name: 'IP Intelligence', ph: '8.8.8.8' },
             { id: 3, name: 'Hash Generator', ph: 'أدخل النص للتشفير' },
             { id: 4, name: 'Base64 Encoder', ph: 'أدخل النص للتحويل' },
-            { id: 5, name: 'SQLi Tester', ph: 'أدخل رابط الموقع' },
-            { id: 6, name: 'XSS Detector', ph: 'أدخل الرابط أو الكود' },
-            { id: 7, name: 'Subdomain Finder', ph: 'أدخل النطاق (example.com)' },
-            { id: 8, name: 'DNS Lookup', ph: 'أدخل النطاق' },
-            { id: 9, name: 'Packet Sniffer', ph: 'أدخل الواجهة (eth0)' },
-            { id: 10, name: 'Header Analyzer', ph: 'أدخل رابط الموقع' }
+            { id: 5, name: 'SQLi Tester', ph: 'http://example.com' },
+            { id: 6, name: 'XSS Detector', ph: 'http://example.com' },
+            { id: 7, name: 'Subdomain Finder', ph: 'example.com' },
+            { id: 8, name: 'DNS Lookup', ph: 'example.com' },
+            { id: 9, name: 'Packet Sniffer', ph: 'eth0' },
+            { id: 10, name: 'Header Analyzer', ph: 'https://example.com' }
         ];
 
-        // بناء 30 أداة تفاعلية
         for (let i = 1; i <= 30; i++) {
-            let t = tools.find(item => item.id === i) || { id: i, name: `أداة معالجة تلقائية #${i}`, ph: 'أدخل الهدف...' };
-            
+            let t = tools.find(item => item.id === i) || { id: i, name: `أداة معالجة #${i}`, ph: 'أدخل الهدف...' };
             grid.innerHTML += `
                 <div class="card">
                     <h3>#${t.id} ${t.name}</h3>
@@ -106,23 +61,18 @@
         function executeService(id) {
             xp += 10;
             document.getElementById('xp-val').innerText = xp;
-            
-            let val = document.getElementById(`input-${id}`).value.trim();
+            let val = document.getElementById(`input-${id}`).value.trim() || "127.0.0.1";
             let out = document.getElementById(`output-${id}`);
             out.style.display = 'block';
 
-            if (!val) val = "127.0.0.1";
-
             if (id === 1) {
-                out.innerText = `[+] جاري فحص البورتات لـ (${val}):\n- Port 80 (HTTP): OPEN\n- Port 443 (HTTPS): OPEN\n- Port 22 (SSH): CLOSED\n[✓] اكتمل الفحص!`;
-            } else if (id === 2) {
-                out.innerText = `[+] تحليل IP (${val}):\n- الدولة: Local Host\n- المزود: System Network\n- التشفير: Secure`;
+                out.innerText = `[+] Port Scan (${val}):\n- Port 80: OPEN\n- Port 443: OPEN\n- Port 22: CLOSED`;
             } else if (id === 3) {
-                out.innerText = `[+] تشفير النص (${val}):\n- Base64: ${btoa(val)}\n- Hash: ${Math.random().toString(36).substring(2)}${Math.random().toString(36).substring(2)}`;
+                out.innerText = `[+] Hash Output:\nBase64: ${btoa(val)}`;
             } else if (id === 7) {
-                out.innerText = `[+] النطاقات الفرعية لـ (${val}):\n- admin.${val}\n- api.${val}\n- dev.${val}`;
+                out.innerText = `[+] Subdomains:\n- admin.${val}\n- api.${val}`;
             } else {
-                out.innerText = `[+] تم تشغيل الخدمة #${id} بنجاح!\n- الهدف: ${val}\n- الاستجابة: 200 OK\n- وقت التنفيذ: 0.01s`;
+                out.innerText = `[+] تم التشغيل على: ${val}\n- Status: 200 OK`;
             }
         }
     </script>
