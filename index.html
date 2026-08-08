@@ -3,660 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA System | Nano Editor Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22AmirXCA%20System%22%2C%22short_name%22%3A%22AmirXCA%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2305080e%22%2C%22theme_color%22%3A%22%2300f2ff%22%7D">
-    <meta name="theme-color" content="#00f2ff">
-
+    <title>AmirXCA Enterprise OS</title>
     <style>
-        :root {
-            --bg-body: #05080e;
-            --card-bg: #0d131f;
-            --accent-main: #00f2ff;
-            --accent-green: #38ef7d;
-            --accent-red: #ef4444;
-            --accent-purple: #9d4edd;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: all 0.3s; }
-
-        .admin-banner { background: var(--accent-red); color: #fff; text-align: center; padding: 6px; font-weight: bold; font-size: 0.85rem; display: none; }
-
-        header {
-            background: #0b0f17;
-            padding: 10px 15px;
-            border-bottom: 2px solid var(--accent-main);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .logo-title { color: var(--accent-main); font-size: 1.5rem; font-weight: 800; cursor: pointer; user-select: none; }
-
-        .status-widget {
-            display: flex; gap: 10px; font-size: 0.8rem; color: var(--accent-green);
-            font-family: 'Fira Code', monospace; background: rgba(0, 242, 255, 0.05);
-            padding: 5px 10px; border-radius: 6px; border: 1px solid rgba(0,242,255,0.2);
-        }
-
-        .layout-wrapper { display: flex; flex-direction: column; flex: 1; }
-
-        @media (min-width: 768px) {
-            .layout-wrapper { flex-direction: row; }
-            .sidebar { width: 240px !important; flex-direction: column !important; border-left: 1px solid rgba(0, 242, 255, 0.2); border-bottom: none !important; }
-        }
-
-        .sidebar {
-            width: 100%; background: #080d1a; border-bottom: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 8px; display: flex; flex-direction: row; overflow-x: auto; gap: 8px; white-space: nowrap;
-        }
-
-        .nav-btn {
-            background: transparent; color: var(--text-muted); border: 1px solid transparent;
-            padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: bold;
-            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
-        }
-        .nav-btn:hover, .nav-btn.active {
-            background: rgba(0, 242, 255, 0.15); color: var(--accent-main); border-color: var(--accent-main);
-        }
-
-        .main-content { flex: 1; padding: 15px; width: 100%; overflow-x: hidden; }
-        .tab-section { display: none; }
-        .tab-section.active { display: block; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; padding: 15px; }
-        .btn-action { width: 100%; padding: 10px; background: var(--accent-main); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px; }
-        .input-field { width: 100%; padding: 10px; background: #05080e; border: 1px solid rgba(0,242,255,0.3); color: #fff; border-radius: 6px; margin: 5px 0; outline: none; font-family: 'Fira Code', monospace; }
-
-        /* Terminal & Nano Styling */
-        .terminal-layout { display: flex; flex-direction: column; gap: 12px; }
-        .file-tree { background: #080d1a; border: 1px solid var(--accent-main); border-radius: 8px; padding: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
-        .file-item { cursor: pointer; padding: 4px; color: #38bdf8; display: inline-block; margin-left: 10px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, monospace; user-select: none; }
+        body { background: #030712; color: #f3f4f6; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
         
-        .terminal-container { background: #04070d; border: 1px solid var(--accent-main); border-radius: 8px; overflow: hidden; width: 100%; }
-        .terminal-header { background: #0e1626; padding: 8px 12px; font-family: 'Fira Code', monospace; color: var(--accent-main); font-size: 0.8rem; display: flex; justify-content: space-between; }
-        .terminal-body { padding: 12px; height: 280px; overflow-y: auto; font-family: 'Fira Code', monospace; direction: ltr; text-align: left; color: #38ef7d; font-size: 0.85rem; word-break: break-all; }
-        .terminal-input-line { display: flex; padding: 8px 12px; background: #080d1a; border-top: 1px solid rgba(0, 242, 255, 0.1); direction: ltr; }
-        .terminal-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace; outline: none; margin-left: 5px; font-size: 0.85rem; }
+        /* Top Navigation Bar */
+        #top-bar { height: 40px; background: #0f172a; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 13px; }
+        .logo-title { color: #38bdf8; font-weight: bold; font-family: monospace; }
+        .sys-info { display: flex; gap: 15px; color: #94a3b8; font-size: 12px; }
+        
+        /* Desktop Area */
+        #desktop { flex: 1; position: relative; background: radial-gradient(circle at center, #0f172a 0%, #030712 100%); padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); grid-auto-rows: 90px; gap: 15px; }
+        
+        /* Desktop Icons */
+        .app-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; padding: 5px; transition: 0.2s; }
+        .app-icon:hover { background: rgba(56, 189, 248, 0.1); }
+        .app-icon .icon { font-size: 30px; margin-bottom: 5px; }
+        .app-icon span { font-size: 11px; text-align: center; color: #e2e8f0; }
 
-        /* Nano Editor Modal UI */
-        .nano-editor { display: none; background: #000; border: 1px solid var(--accent-green); border-radius: 8px; overflow: hidden; margin-top: 10px; }
-        .nano-editor.active { display: block; }
-        .nano-header { background: #1f2937; color: #fff; padding: 5px 10px; font-family: 'Fira Code', monospace; font-size: 0.8rem; display: flex; justify-content: space-between; }
-        .nano-area { width: 100%; height: 180px; background: #000; color: #38ef7d; font-family: 'Fira Code', monospace; font-size: 0.85rem; padding: 10px; border: none; outline: none; resize: none; direction: ltr; }
-        .nano-footer { background: #1f2937; color: #94a3b8; padding: 5px 10px; font-family: 'Fira Code', monospace; font-size: 0.75rem; display: flex; justify-content: space-between; gap: 5px; }
+        /* Draggable Window UI */
+        .window { position: absolute; width: 340px; height: 260px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; z-index: 10; }
+        .window-header { background: #1e293b; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; cursor: move; border-bottom: 1px solid #334155; }
+        .window-title { font-size: 12px; font-weight: bold; color: #38bdf8; }
+        .window-controls button { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; margin-left: 5px; }
+        .window-controls button:hover { color: #ef4444; }
+        .window-body { flex: 1; padding: 12px; overflow-y: auto; color: #cbd5e1; font-size: 12px; }
+        
+        /* App Marketplace / Tools Grid inside windows */
+        .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .tool-card { background: #1e293b; padding: 8px; border-radius: 6px; text-align: center; border: 1px solid #334155; }
+        .tool-card button { background: #0284c7; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; margin-top: 5px; cursor: pointer; font-size: 11px; }
 
-        /* Tic Tac Toe */
-        .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; max-width: 180px; margin: 10px auto; }
-        .ttt-cell { width: 55px; height: 55px; background: #05080e; border: 1px solid var(--accent-main); font-size: 1.5rem; font-weight: bold; color: var(--accent-main); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-        /* Admin Modal */
-        .admin-modal {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(5, 8, 14, 0.98); z-index: 9999; padding: 15px; overflow-y: auto;
-        }
-        .admin-modal.active { display: block; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-red); padding-bottom: 8px; margin-bottom: 15px; }
-
-        canvas { border-radius: 8px; width: 100%; height: auto; }
+        /* Bottom Taskbar */
+        #taskbar { height: 45px; background: #0f172a; border-top: 1px solid #1e293b; display: flex; align-items: center; padding: 0 10px; gap: 8px; }
+        .start-btn { background: #0284c7; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div class="admin-banner" id="admin-banner-text">📢 تنبيه من الإدارة: مرحباً بكم في نظام AmirXCA الجديد!</div>
-
-    <header>
-        <h1 class="logo-title" id="site-logo" ondblclick="openAdminPrompt()">AmirXCA System</h1>
-        <div class="status-widget">
-            <span>🟢 Online</span>
-            <span>🕒 <span id="clock-val">00:00:00</span></span>
+    <!-- Top Status Bar -->
+    <div id="top-bar">
+        <div class="logo-title">⚡ AmirXCA Enterprise OS</div>
+        <div class="sys-info">
+            <span>الرتبة: <strong style="color:#38bdf8;">Enterprise Admin</strong></span>
+            <span>النقاط: <strong id="xp-display" style="color:#4ade80;">150</strong> XP</span>
         </div>
-    </header>
-
-    <div class="layout-wrapper">
-        
-        <aside class="sidebar">
-            <button class="nav-btn active" onclick="switchTab('term-tab', this)">💻 Terminal & Nano</button>
-            <button class="nav-btn" onclick="switchTab('tools-tab', this)">🛠️ خدمات المطورين</button>
-            <button class="nav-btn" onclick="switchTab('books-tab', this)">📚 الكتب والمراجع</button>
-            <button class="nav-btn" onclick="switchTab('games-tab', this)">🎮 مركز الألعاب</button>
-            <button class="nav-btn" onclick="switchTab('auth-tab', this)">🔑 الحسابات والأعضاء</button>
-            <button class="nav-btn" onclick="switchTab('downloads-tab', this)">📥 مركز التحميل</button>
-        </aside>
-
-        <main class="main-content">
-
-            <!-- 💻 Terminal & Nano -->
-            <section id="term-tab" class="tab-section active">
-                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">💻 بيئة Terminal ومحرر Nano</h2>
-                <div class="terminal-layout">
-                    <div class="file-tree">
-                        <span style="color:var(--accent-main); font-weight:bold; margin-left:10px;">📁 Files:</span>
-                        <div class="file-item" onclick="openNano('script.py')">📝 nano script.py</div>
-                        <div class="file-item" onclick="openNano('scanner.py')">📝 nano scanner.py</div>
-                        <div class="file-item" onclick="openNano('notes.txt')">📝 nano notes.txt</div>
-                    </div>
-
-                    <div class="terminal-container">
-                        <div class="terminal-header">
-                            <span>AmirX OS v6.5</span>
-                            <span style="color:var(--accent-green);">🤖 Terminal & Nano Ready</span>
-                        </div>
-                        <div class="terminal-body" id="term-out">
-                            <div>مرحباً بك! يمكنك كتابة الأوامر أو فتح المحرر بـ: <span style="color:var(--accent-main);">nano script.py</span></div>
-                        </div>
-                        <div class="terminal-input-line">
-                            <span style="color:var(--accent-main); font-family:'Fira Code';" id="term-prompt">amirx@terminal:~$</span>
-                            <input type="text" class="terminal-input" id="term-in" placeholder="اكتب nano <filename> أو أي أمر...">
-                        </div>
-                    </div>
-
-                    <!-- 📝 محاكي محرر Nano المدمج -->
-                    <div class="nano-editor" id="nanoEditor">
-                        <div class="nano-header">
-                            <span>GNU nano 6.2</span>
-                            <span id="nano-filename" style="color:var(--accent-main);">file.txt</span>
-                            <span>[Modified]</span>
-                        </div>
-                        <textarea class="nano-area" id="nanoContent" placeholder="اكتب كودك أو نصوصك هنا..."></textarea>
-                        <div class="nano-footer">
-                            <button onclick="saveNanoFile()" style="background:var(--accent-green); color:#000; border:none; padding:3px 8px; border-radius:3px; cursor:pointer; font-weight:bold;">^O Save File</button>
-                            <button onclick="closeNanoEditor()" style="background:var(--accent-red); color:#fff; border:none; padding:3px 8px; border-radius:3px; cursor:pointer; font-weight:bold;">^X Exit Nano</button>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- 🛠️ خدمات المطورين والأدوات -->
-            <section id="tools-tab" class="tab-section">
-                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">🛠️ خدمات المطورين والأدوات السيبرانية</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>🌐 محاكي فحص المنافذ (Port Scanner)</h3>
-                        <input type="text" id="scan-ip" class="input-field" placeholder="ادخل عنوان IP (مثال: 192.168.1.1)...">
-                        <button class="btn-action" onclick="runPortScanner()">بدء الفحص السيبراني</button>
-                        <div id="scan-res" style="color:var(--accent-green); font-family:'Fira Code'; font-size:0.8rem; margin-top:8px;"></div>
-                    </div>
-
-                    <div class="card">
-                        <h3>🔑 مولد كلمات المرور المعقدة</h3>
-                        <button class="btn-action" onclick="generatePass()">توليد كلمة مرور فائقة الأمان</button>
-                        <input type="text" id="pass-out" class="input-field" readonly style="color:var(--accent-main);">
-                    </div>
-
-                    <div class="card">
-                        <h3>🔒 مولد الـ Hash التشفيري (SHA-256)</h3>
-                        <input type="text" id="hash-input" class="input-field" placeholder="النص المطلوب تشفيره...">
-                        <button class="btn-action" onclick="generateHash()" style="background:#f59e0b;">تشفير فوراً</button>
-                        <input type="text" id="hash-out" class="input-field" readonly style="color:var(--accent-green); font-size:0.75rem;">
-                    </div>
-
-                    <div class="card">
-                        <h3>💾 محول حجم البيانات</h3>
-                        <input type="number" id="data-val" class="input-field" placeholder="القيمة بـ Megabyte (MB)...">
-                        <button class="btn-action" onclick="convertDataSize()">تحويل الوحدات</button>
-                        <div id="data-res" style="color:var(--accent-main); font-family:'Fira Code'; font-size:0.8rem; margin-top:8px;"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 📚 الكتب والمراجع -->
-            <section id="books-tab" class="tab-section">
-                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">📚 مكتبة المراجع والكتب البرمجية</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>🐍 كتاب أساسيات Python</h3>
-                        <p style="color:var(--text-muted); font-size:0.85rem; margin:8px 0;">دليل شامل لأوامر البرمجة بلغة بايثون والتعامل مع المتغيرات والدوال.</p>
-                        <button class="btn-action" onclick="readBook('python')">قراءة الملخص أوفلاين</button>
-                    </div>
-                    <div class="card">
-                        <h3>💻 دليل أوامر Termux الاحترافي</h3>
-                        <p style="color:var(--text-muted); font-size:0.85rem; margin:8px 0;">أهم الحزم والأوامر الأساسية لإدارة بيئة Linux من الجوال.</p>
-                        <button class="btn-action" onclick="readBook('termux')">قراءة الملخص أوفلاين</button>
-                    </div>
-                    <div class="card">
-                        <h3>🛡️ كورس اختبار الاختراق الأخلاقي</h3>
-                        <p style="color:var(--text-muted); font-size:0.85rem; margin:8px 0;">مفاهيم الشبكات، فحص المنافذ، وحماية الحسابات من الاختراق.</p>
-                        <button class="btn-action" onclick="readBook('security')">قراءة الملخص أوفلاين</button>
-                    </div>
-                </div>
-                <div id="book-viewer" class="card" style="display:none; margin-top:15px; border-color:var(--accent-green);">
-                    <h3 id="book-title" style="color:var(--accent-green);"></h3>
-                    <pre id="book-content" style="white-space:pre-wrap; font-family:'Fira Code'; color:#fff; font-size:0.85rem; margin-top:10px;"></pre>
-                </div>
-            </section>
-
-            <!-- 🎮 مركز الألعاب -->
-            <section id="games-tab" class="tab-section">
-                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">🎮 مركز الألعاب التفاعلية المدمجة</h2>
-                <div class="grid">
-                    <div class="card" style="text-align:center;">
-                        <h3>❌⭕ Tic-Tac-Toe vs Minimax AI</h3>
-                        <div class="ttt-board" id="tttBoard"></div>
-                        <button class="btn-action" onclick="resetTTT()">إعادة اللعب</button>
-                    </div>
-
-                    <div class="card">
-                        <h3>🐍 لعبة الثعبان السيبراني</h3>
-                        <canvas id="snakeCanvas" width="280" height="180" style="background:#000; border:1px solid var(--accent-main); display:block; margin:auto;"></canvas>
-                        <div style="display:flex; justify-content:center; gap:5px; margin-top:8px;">
-                            <button class="btn-action" onclick="changeSnakeDir('UP')" style="width:50px;">⬆️</button>
-                            <button class="btn-action" onclick="changeSnakeDir('DOWN')" style="width:50px;">⬇️</button>
-                            <button class="btn-action" onclick="changeSnakeDir('LEFT')" style="width:50px;">⬅️</button>
-                            <button class="btn-action" onclick="changeSnakeDir('RIGHT')" style="width:50px;">➡️</button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h3>🏃 Cyber Runner 2D</h3>
-                        <canvas id="runnerCanvas" width="280" height="150" style="background:#000; border:1px solid var(--accent-main); display:block; margin:auto;"></canvas>
-                        <button class="btn-action" onclick="jumpRunner()">قفز 🚀</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 🔑 الحسابات والأعضاء -->
-            <section id="auth-tab" class="tab-section">
-                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">🔑 نظام الحسابات للأعضاء</h2>
-                <div class="card">
-                    <div id="login-form">
-                        <h3>تسجيل الدخول / حساب جديد</h3>
-                        <input type="text" id="auth-username" class="input-field" placeholder="اسم المستخدم...">
-                        <input type="password" id="auth-password" class="input-field" placeholder="كلمة المرور...">
-                        <button class="btn-action" onclick="registerUser()">تسجيل حساب جديد</button>
-                        <button class="btn-action" onclick="loginUser()" style="background:#38ef7d; color:#000;">تسجيل الدخول</button>
-                    </div>
-                    <div id="user-logged-in" style="display:none;">
-                        <h3 style="color:var(--accent-green);">مرحباً بك، <span id="user-name-display"></span>!</h3>
-                        <button class="btn-action" onclick="logoutUser()" style="background:#ef4444; color:#fff;">تسجيل الخروج</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 📥 مركز التحميل -->
-            <section id="downloads-tab" class="tab-section">
-                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">📥 مركز التحميل المباشر</h2>
-                <div class="card">
-                    <button class="btn-action" onclick="downloadFile('script.py', filesData['script.py'])">💾 تحميل script.py</button>
-                    <button class="btn-action" onclick="downloadFile('scanner.py', filesData['scanner.py'])" style="background:#f59e0b; color:#000;">🌐 تحميل scanner.py</button>
-                    <button class="btn-action" onclick="downloadFile('notes.txt', filesData['notes.txt'])" style="background:#38ef7d; color:#000;">📄 تحميل notes.txt</button>
-                </div>
-            </section>
-
-        </main>
     </div>
 
-    <!-- 🚨 غرفة التحكم السرية المتقدمة (AmirXX Dashboard) -->
-    <div class="admin-modal" id="adminModal">
-        <div class="admin-header">
-            <h2 style="color:var(--accent-red); font-size:1.1rem;">🚨 غرفة التحكم الشاملة (Root Admin - AmirXX)</h2>
-            <button onclick="closeAdmin()" style="background:var(--accent-red); color:#fff; border:none; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:5px;">إغلاق ×</button>
+    <!-- Desktop Area with App Icons -->
+    <div id="desktop">
+        <div class="app-icon" onclick="openWindow('store-win')">
+            <div class="icon">🛒</div>
+            <span>متجر الخدمات</span>
         </div>
+        <div class="app-icon" onclick="openWindow('term-win')">
+            <div class="icon">💻</div>
+            <span>التيرمنال</span>
+        </div>
+        <div class="app-icon" onclick="openWindow('games-win')">
+            <div class="icon">🎮</div>
+            <span>الألعاب 3D/2D</span>
+        </div>
+        <div class="app-icon" onclick="openWindow('chat-win')">
+            <div class="icon">💬</div>
+            <span>المساعد الذكي</span>
+        </div>
+    </div>
 
-        <div class="grid">
-            <div class="card">
-                <h3 style="color:var(--accent-main);">🎨 تغيير ثيم الموقع</h3>
-                <button class="btn-action" onclick="changeTheme('#00f2ff')" style="background:#00f2ff;">أزرق سيبراني</button>
-                <button class="btn-action" onclick="changeTheme('#38ef7d')" style="background:#38ef7d;">أخضر نيون هكر</button>
-                <button class="btn-action" onclick="changeTheme('#ef4444')" style="background:#ef4444; color:#fff;">أحمر تدميري</button>
-            </div>
-
-            <div class="card">
-                <h3 style="color:#38ef7d;">💾 النسخ الاحتياطي والاسترجاع</h3>
-                <button class="btn-action" onclick="exportBackupJSON()" style="background:#38ef7d; color:#000;">تصدير النسخة الاحتياطية (JSON)</button>
-                <button class="btn-action" onclick="importBackupJSON()" style="background:#f59e0b; color:#000;">استرجاع النسخة الاحتياطية</button>
-            </div>
-
-            <div class="card">
-                <h3 style="color:var(--accent-main);">📊 سجلات النظام والأمان الحية</h3>
-                <div id="admin-logs-view" style="font-family:'Fira Code'; font-size:0.8rem; color:#38ef7d; background:#05080e; padding:8px; border-radius:5px; height:100px; overflow-y:auto;">
-                    [SYSTEM LOGS READY]
+    <!-- Window 1: Services Store -->
+    <div id="store-win" class="window" style="top:60px; right:20px; display:none;">
+        <div class="window-header">
+            <span class="window-title">🛒 متجر الخدمات والأدوات (30+)</span>
+            <div class="window-controls"><button onclick="closeWindow('store-win')">✕</button></div>
+        </div>
+        <div class="window-body">
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <div>Port Scanner</div>
+                    <button onclick="runApp('فحص المنافذ')">تشغيل الخدمة</button>
+                </div>
+                <div class="tool-card">
+                    <div>Hash Generator</div>
+                    <button onclick="runApp('توليد الهاش')">تشغيل الخدمة</button>
+                </div>
+                <div class="tool-card">
+                    <div>Password Gen</div>
+                    <button onclick="runApp('مولد الرموز')">تشغيل الخدمة</button>
+                </div>
+                <div class="tool-card">
+                    <div>IP Analyzer</div>
+                    <button onclick="runApp('تحليل الشبكة')">تشغيل الخدمة</button>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="card">
-                <h3 style="color:#f59e0b;">📢 نشر تنبيه / تغيير مسمى</h3>
-                <input type="text" id="admin-announcement-input" class="input-field" placeholder="اكتب التنبيه العاجل...">
-                <button class="btn-action" onclick="postAnnouncement()">نشر التنبيه</button>
+    <!-- Window 2: Terminal -->
+    <div id="term-win" class="window" style="top:100px; right:60px; display:none;">
+        <div class="window-header">
+            <span class="window-title">💻 بيئة Terminal & Nano</span>
+            <div class="window-controls"><button onclick="closeWindow('term-win')">✕</button></div>
+        </div>
+        <div class="window-body" style="background:#000; font-family:monospace; color:#4ade80;">
+            <div>AmirX OS v7.0 Enterprise [Online]</div>
+            <div>اكتب أي أمر هنا...</div>
+            <textarea style="width:100%; height:120px; background:transparent; border:none; color:#4ade80; outline:none; font-family:monospace; margin-top:10px;" placeholder="// اكتب كودك هنا..."></textarea>
+        </div>
+    </div>
+
+    <!-- Window 3: Games Center -->
+    <div id="games-win" class="window" style="top:140px; right:100px; display:none;">
+        <div class="window-header">
+            <span class="window-title">🎮 مركز الألعاب المدمجة</span>
+            <div class="window-controls"><button onclick="closeWindow('games-win')">✕</button></div>
+        </div>
+        <div class="window-body">
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <div>3D Car Sim</div>
+                    <button onclick="runApp('محاكي السيارات 3D')">بدء اللعب</button>
+                </div>
+                <div class="tool-card">
+                    <div>Cyber Snake</div>
+                    <button onclick="runApp('لعبة الثعبان')">بدء اللعب</button>
+                </div>
             </div>
         </div>
+    </div>
+
+    <!-- Bottom Taskbar -->
+    <div id="taskbar">
+        <button class="start-btn" onclick="alert('نظام AmirXCA جاهز لتنفيذ الخدمات تلقائياً!')">⚡ ابدأ</button>
     </div>
 
     <script>
-        let systemLogs = ["[INIT] AmirXCA Engine initialized."];
-        let filesData = {
-            "script.py": "print('Hello from AmirXCA!')\nimport sys\nprint(sys.version)",
-            "scanner.py": "import socket\nprint('Port Scanner ready')\n# Run scan function",
-            "notes.txt": "نظام AmirXCA متكامل أوفلاين كلياً ومدمج مع محرر Nano."
-        };
-        let currentEditingFile = "";
-
-        function logActivity(text) {
-            const time = new Date().toLocaleTimeString();
-            systemLogs.push(`[${time}] ${text}`);
-            const logBox = document.getElementById('admin-logs-view');
-            if(logBox) logBox.innerHTML = systemLogs.join('<br>');
+        let xp = 150;
+        function giveXP(val) {
+            xp += val;
+            document.getElementById('xp-display').innerText = xp;
+            playBeep();
         }
 
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-            if(tabId === 'games-tab') {
-                if(!window.snakeInited) { initSnake(); window.snakeInited = true; }
-                if(!window.tttInited) { initTTT(); window.tttInited = true; }
-            }
+        function playBeep() {
+            try {
+                let ctx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = ctx.createOscillator();
+                osc.connect(ctx.destination);
+                osc.frequency.value = 580;
+                osc.start();
+                osc.stop(ctx.currentTime + 0.05);
+            } catch(e){}
         }
 
-        /* Nano Editor Functions */
-        function openNano(fileName) {
-            currentEditingFile = fileName;
-            document.getElementById('nano-filename').innerText = "File: " + fileName;
-            document.getElementById('nanoContent').value = filesData[fileName] || "";
-            document.getElementById('nanoEditor').classList.add('active');
-            printTerm(`[Nano Editor]: Opened ${fileName}`, '#00f2ff');
-            logActivity(`Nano opened file: ${fileName}`);
+        function openWindow(id) {
+            document.getElementById(id).style.display = 'flex';
+            giveXP(5);
         }
 
-        function saveNanoFile() {
-            if(!currentEditingFile) return;
-            filesData[currentEditingFile] = document.getElementById('nanoContent').value;
-            printTerm(`[Nano Editor]: File '${currentEditingFile}' saved successfully.`, '#38ef7d');
-            logActivity(`Nano saved file: ${currentEditingFile}`);
-            alert(`تم حفظ الملف ${currentEditingFile} بنجاح!`);
+        function closeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+            playBeep();
         }
 
-        function closeNanoEditor() {
-            document.getElementById('nanoEditor').classList.remove('active');
-            printTerm(`[Nano Editor]: Closed.`, '#ef4444');
-            currentEditingFile = "";
+        function runApp(name) {
+            alert('تم تشغيل أداة [' + name + '] تلقائياً داخل النظام!');
+            giveXP(15);
         }
 
-        function openAdminPrompt() {
-            const pass = prompt('ادخل رمز التحكم السرية:');
-            if (pass === 'AmirXX') {
-                document.getElementById('adminModal').classList.add('active');
-                logActivity("Admin opened AmirXX Control Panel.");
-            } else if (pass !== null) {
-                alert('الرمز غير صحيح!');
-            }
-        }
-        function closeAdmin() { document.getElementById('adminModal').classList.remove('active'); }
+        // جعل النوافذ قابلة للتحريك باللمس/الماوس (Draggable Windows)
+        document.querySelectorAll('.window').forEach(win => {
+            let header = win.querySelector('.window-header');
+            let isDragging = false, offsetXP = 0, offsetYP = 0;
 
-        function changeTheme(color) {
-            document.documentElement.style.setProperty('--accent-main', color);
-            logActivity(`Theme changed to ${color}`);
-            alert('تم تغيير ثيم المنصة!');
-        }
+            header.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetXP = e.clientX - win.offsetLeft;
+                offsetYP = e.clientY - win.offsetTop;
+            });
 
-        function postAnnouncement() {
-            const txt = document.getElementById('admin-announcement-input').value.trim();
-            if(txt) {
-                const banner = document.getElementById('admin-banner-text');
-                banner.innerText = '📢 تنبيه: ' + txt;
-                banner.style.display = 'block';
-                logActivity(`Announcement posted: ${txt}`);
-                alert('تم نشر التنبيه!');
-            }
-        }
-
-        function exportBackupJSON() {
-            const data = { files: filesData, storage: {...localStorage} };
-            downloadFile('amirxca_backup.json', JSON.stringify(data, null, 2));
-            logActivity("Backup JSON exported.");
-        }
-
-        function importBackupJSON() {
-            const jsonStr = prompt("أدخل نص الـ JSON لاسترجاع البيانات:");
-            if(jsonStr) {
-                try {
-                    const parsed = JSON.parse(jsonStr);
-                    if(parsed.files) filesData = parsed.files;
-                    alert('تم استرجاع النسخة الاحتياطية بنجاح!');
-                    logActivity("Backup JSON imported successfully.");
-                } catch(e) {
-                    alert('كود JSON غير صحيح!');
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    win.style.left = (e.clientX - offsetXP) + 'px';
+                    win.style.top = (e.clientY - offsetYP) + 'px';
                 }
-            }
-        }
+            });
 
-        // Terminal Execution
-        const termIn = document.getElementById('term-in');
-        const termOut = document.getElementById('term-out');
-        termIn.addEventListener('keydown', (e) => {
-            if(e.key === 'Enter' && termIn.value.trim()) {
-                const val = termIn.value.trim();
-                printTerm('amirx@terminal:~$ ' + val, '#fff');
-                termIn.value = '';
-                
-                if(val.startsWith('nano ')) {
-                    const fname = val.substring(5).trim();
-                    openNano(fname);
-                } else if(val.startsWith('python ')) {
-                    const code = val.substring(7);
-                    try {
-                        const evalRes = eval(code);
-                        printTerm(`[Python Out]: ${evalRes}`, '#38ef7d');
-                        logActivity(`Python Executed: ${code}`);
-                    } catch(err) {
-                        printTerm(`[Python Error]: ${err.message}`, '#ef4444');
-                    }
-                } else if(val === 'ls') {
-                    printTerm(Object.keys(filesData).join('   '), '#f59e0b');
-                } else if(val === 'clear') {
-                    termOut.innerHTML = '';
-                } else {
-                    printTerm('Command not found: ' + val + '. Try nano script.py', '#ef4444');
-                }
-            }
+            document.addEventListener('mouseup', () => isDragging = false);
         });
-
-        function printTerm(txt, col='#38ef7d') {
-            const d = document.createElement('div'); d.style.color = col; d.innerText = txt;
-            termOut.appendChild(d); termOut.scrollTop = termOut.scrollHeight;
-        }
-
-        // Tic Tac Toe AI
-        let tttBoardState = ["","","","","","","","",""];
-        function initTTT() {
-            const b = document.getElementById('tttBoard');
-            b.innerHTML = '';
-            for(let i=0; i<9; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'ttt-cell';
-                cell.onclick = () => playerTTTMove(i);
-                cell.id = 'ttt-' + i;
-                b.appendChild(cell);
-            }
-        }
-        function playerTTTMove(i) {
-            if(tttBoardState[i] === "") {
-                tttBoardState[i] = "X";
-                renderTTT();
-                if(!checkTTTWin(tttBoardState)) aiTTTMove();
-            }
-        }
-        function aiTTTMove() {
-            let emptyIndices = tttBoardState.map((v, idx) => v === "" ? idx : null).filter(v => v !== null);
-            if(emptyIndices.length > 0) {
-                let choice = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-                tttBoardState[choice] = "O";
-                renderTTT();
-            }
-        }
-        function renderTTT() {
-            for(let i=0; i<9; i++) document.getElementById('ttt-'+i).innerText = tttBoardState[i];
-        }
-        function resetTTT() { tttBoardState = ["","","","","","","","",""]; renderTTT(); }
-        function checkTTTWin(b) {
-            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-            return wins.some(w => b[w[0]] && b[w[0]] === b[w[1]] && b[w[0]] === b[w[2]]);
-        }
-
-        // Tools
-        function runPortScanner() {
-            const ip = document.getElementById('scan-ip').value.trim() || '192.168.1.1';
-            const res = document.getElementById('scan-res');
-            res.innerHTML = `جاري فحص المنافذ لـ ${ip}...<br>`;
-            logActivity(`Port Scan initiated on ${ip}`);
-            setTimeout(() => {
-                res.innerHTML += `<span style="color:#38ef7d;">[+] Port 80 (HTTP): OPEN</span><br>`;
-                res.innerHTML += `<span style="color:#38ef7d;">[+] Port 443 (HTTPS): OPEN</span><br>`;
-                res.innerHTML += `<span style="color:#ef4444;">[-] Port 22 (SSH): CLOSED</span><br>`;
-            }, 800);
-        }
-
-        function generatePass() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
-            let pass = "";
-            for (let i = 0; i < 16; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            document.getElementById('pass-out').value = pass;
-        }
-
-        async function generateHash() {
-            const str = document.getElementById('hash-input').value;
-            if(!str) return alert('اكتب النص أولاً');
-            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-            const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-            document.getElementById('hash-out').value = hash;
-        }
-
-        function convertDataSize() {
-            const mb = parseFloat(document.getElementById('data-val').value);
-            if(isNaN(mb)) return;
-            document.getElementById('data-res').innerHTML = `Bytes: ${(mb * 1024 * 1024).toLocaleString()}<br>KB: ${(mb * 1024).toLocaleString()} KB<br>GB: ${(mb / 1024).toFixed(4)} GB`;
-        }
-
-        const bookData = {
-            python: "🐍 ملخص Python الشامل:\n- Print: print('Hello World')\n- Variables: x = 10, name = 'AmirX'\n- Loops: for i in range(5): print(i)",
-            termux: "💻 دليل أوامر Termux:\n- pkg update && pkg upgrade\n- pkg install nano python git -y\n- nano script.py",
-            security: "🛡️ ملخص الأمن السيبراني:\n- Network Scanning & Cryptography basics."
-        };
-        function readBook(type) {
-            document.getElementById('book-viewer').style.display = 'block';
-            document.getElementById('book-title').innerText = '📖 ' + type.toUpperCase() + ' Reference';
-            document.getElementById('book-content').innerText = bookData[type];
-        }
-
-        // Snake Game
-        let snake, snakeDir, snakeFood, snakeCtx;
-        function initSnake() {
-            const cvs = document.getElementById('snakeCanvas');
-            snakeCtx = cvs.getContext('2d');
-            snake = [{x: 10, y: 10}]; snakeDir = 'RIGHT'; snakeFood = {x: 5, y: 5};
-            setInterval(gameSnakeLoop, 100);
-        }
-        function changeSnakeDir(dir) { snakeDir = dir; }
-        function gameSnakeLoop() {
-            let headX = snake[0].x, headY = snake[0].y;
-            if (snakeDir === 'RIGHT') headX++; else if (snakeDir === 'LEFT') headX--;
-            else if (snakeDir === 'UP') headY--; else if (snakeDir === 'DOWN') headY++;
-            if(headX < 0) headX = 27; if(headX > 27) headX = 0;
-            if(headY < 0) headY = 17; if(headY > 17) headY = 0;
-            snake.unshift({x: headX, y: headY});
-            if(headX === snakeFood.x && headY === snakeFood.y) {
-                snakeFood = {x: Math.floor(Math.random()*27), y: Math.floor(Math.random()*17)};
-            } else { snake.pop(); }
-            snakeCtx.fillStyle = '#000'; snakeCtx.fillRect(0,0,280,180);
-            snakeCtx.fillStyle = '#38ef7d'; snake.forEach(p => snakeCtx.fillRect(p.x*10, p.y*10, 8, 8));
-            snakeCtx.fillStyle = '#ef4444'; snakeCtx.fillRect(snakeFood.x*10, snakeFood.y*10, 8, 8);
-        }
-
-        // Runner Game
-        const canvas = document.getElementById('runnerCanvas'); const ctx = canvas.getContext('2d');
-        let playerY = 120, isJumping = false, obstacleX = 280;
-        function run2DGame() {
-            ctx.clearRect(0,0,280,150);
-            if(isJumping) { playerY-=3; if(playerY<=70) isJumping=false; } else if(playerY<120) playerY+=3;
-            obstacleX-=3; if(obstacleX<-10) obstacleX=280;
-            ctx.fillStyle='#00f2ff'; ctx.fillRect(20, playerY, 15, 15);
-            ctx.fillStyle='#ef4444'; ctx.fillRect(obstacleX, 125, 10, 10);
-            requestAnimationFrame(run2DGame);
-        }
-        function jumpRunner() { if(playerY===120) isJumping=true; }
-        run2DGame();
-
-        function registerUser() {
-            const u = document.getElementById('auth-username').value.trim();
-            const p = document.getElementById('auth-password').value.trim();
-            if(!u || !p) return alert('اكتب البيانات');
-            localStorage.setItem('user_' + u, p);
-            localStorage.setItem('amirx_logged_user', u);
-            alert('تم إنشاء الحساب!'); checkAuthState();
-        }
-        function loginUser() {
-            const u = document.getElementById('auth-username').value.trim();
-            const p = document.getElementById('auth-password').value.trim();
-            if(localStorage.getItem('user_' + u) === p) {
-                localStorage.setItem('amirx_logged_user', u); checkAuthState();
-            } else alert('بيانات خاطئة!');
-        }
-        function logoutUser() { localStorage.removeItem('amirx_logged_user'); checkAuthState(); }
-        function checkAuthState() {
-            const u = localStorage.getItem('amirx_logged_user');
-            if (u) {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('user-logged-in').style.display = 'block';
-                document.getElementById('user-name-display').innerText = u;
-            } else {
-                document.getElementById('login-form').style.display = 'block';
-                document.getElementById('user-logged-in').style.display = 'none';
-            }
-        }
-        checkAuthState();
-
-        function downloadFile(f, t) { const a = document.createElement('a'); a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(t || ''); a.download = f; a.click(); }
-  // نظام الـ XP والمؤثرات الصوتية
-  let userXP = parseInt(localStorage.getItem('amirx_xp_val')) || 100;
-  if(document.getElementById('sys-xp')) document.getElementById('sys-xp').innerText = userXP;
-
-  function giveXP(pts) {
-      userXP += pts;
-      localStorage.setItem('amirx_xp_val', userXP);
-      if(document.getElementById('sys-xp')) document.getElementById('sys-xp').innerText = userXP;
-      playBeepSound();
-  }
-
-  function playBeepSound() {
-      try {
-          let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          let osc = audioCtx.createOscillator();
-          osc.connect(audioCtx.destination);
-          osc.frequency.value = 600;
-          osc.start();
-          osc.stop(audioCtx.currentTime + 0.05);
-      } catch(e){}
-  }
-
-  function toggleAIChat() {
-      playBeepSound();
-      let box = document.getElementById('ai-chat-box');
-      if(box) box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
-  }
-
-  function handleAIPrompt(e) {
-      if (e.key === 'Enter') {
-          let inp = document.getElementById('ai-input');
-          let logs = document.getElementById('ai-logs');
-          if (inp && inp.value.trim() !== '') {
-              logs.innerHTML += '<div><strong>أنت:</strong> ' + inp.value + '</div>';
-              logs.innerHTML += '<div><strong>System:</strong> تم تنفيذ الطلب تلقائياً داخل النظام!</div>';
-              inp.value = '';
-              logs.scrollTop = logs.scrollHeight;
-              giveXP(10);
-          }
-      }
-  }
-
-         setInterval(() => { document.getElementById('clock-val').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
 </html>
