@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmirXCA System | المنصة الشاملة</title>
+    <title>AmirXCA System | Ultimate Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22AmirXCA%20System%22%2C%22short_name%22%3A%22AmirXCA%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2305080e%22%2C%22theme_color%22%3A%22%2300f2ff%22%7D">
@@ -13,7 +13,7 @@
         :root {
             --bg-body: #05080e;
             --card-bg: #0d131f;
-            --accent-cyan: #00f2ff;
+            --accent-main: #00f2ff;
             --accent-green: #38ef7d;
             --accent-red: #ef4444;
             --accent-purple: #9d4edd;
@@ -22,19 +22,22 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: all 0.3s; }
+
+        /* شريط التنبيهات من الأدمن */
+        .admin-banner { background: var(--accent-red); color: #fff; text-align: center; padding: 6px; font-weight: bold; font-size: 0.85rem; display: none; }
 
         header {
             background: #0b0f17;
             padding: 10px 15px;
-            border-bottom: 2px solid var(--accent-cyan);
+            border-bottom: 2px solid var(--accent-main);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
         }
-        .logo-title { color: var(--accent-cyan); font-size: 1.5rem; font-weight: 800; cursor: pointer; user-select: none; }
+        .logo-title { color: var(--accent-main); font-size: 1.5rem; font-weight: 800; cursor: pointer; user-select: none; }
 
         .status-widget {
             display: flex; gap: 10px; font-size: 0.8rem; color: var(--accent-green);
@@ -42,7 +45,6 @@
             padding: 5px 10px; border-radius: 6px; border: 1px solid rgba(0,242,255,0.2);
         }
 
-        /* هيكلة الصفحة التكيفية للجوال والشاشات الكبيرة */
         .layout-wrapper { display: flex; flex-direction: column; flex: 1; }
 
         @media (min-width: 768px) {
@@ -50,7 +52,6 @@
             .sidebar { width: 240px !important; flex-direction: column !important; border-left: 1px solid rgba(0, 242, 255, 0.2); border-bottom: none !important; }
         }
 
-        /* القائمة في الجوال تصير شريط أزرار علوي مريح وسريع */
         .sidebar {
             width: 100%;
             background: #080d1a;
@@ -77,8 +78,8 @@
         }
         .nav-btn:hover, .nav-btn.active {
             background: rgba(0, 242, 255, 0.15);
-            color: var(--accent-cyan);
-            border-color: var(--accent-cyan);
+            color: var(--accent-main);
+            border-color: var(--accent-main);
         }
 
         .main-content { flex: 1; padding: 15px; width: 100%; overflow-x: hidden; }
@@ -87,22 +88,21 @@
 
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .card { background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; padding: 15px; }
-        .btn-action { width: 100%; padding: 10px; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+        .btn-action { width: 100%; padding: 10px; background: var(--accent-main); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px; }
         .input-field { width: 100%; padding: 10px; background: #05080e; border: 1px solid rgba(0,242,255,0.3); color: #fff; border-radius: 6px; margin: 5px 0; outline: none; font-family: 'Fira Code', monospace; }
 
-        /* ترتيب الـ Terminal بشكل واسع في الجوال */
+        /* Terminal & AI Styling */
         .terminal-layout { display: flex; flex-direction: column; gap: 12px; }
-        
-        .file-tree { background: #080d1a; border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        .file-tree { background: #080d1a; border: 1px solid var(--accent-main); border-radius: 8px; padding: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
         .file-item { cursor: pointer; padding: 4px; color: #38bdf8; display: inline-block; margin-left: 10px; }
         
-        .terminal-container { background: #04070d; border: 1px solid var(--accent-cyan); border-radius: 8px; overflow: hidden; width: 100%; }
-        .terminal-header { background: #0e1626; padding: 8px 12px; font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-size: 0.8rem; display: flex; justify-content: space-between; }
+        .terminal-container { background: #04070d; border: 1px solid var(--accent-main); border-radius: 8px; overflow: hidden; width: 100%; }
+        .terminal-header { background: #0e1626; padding: 8px 12px; font-family: 'Fira Code', monospace; color: var(--accent-main); font-size: 0.8rem; display: flex; justify-content: space-between; }
         .terminal-body { padding: 12px; height: 280px; overflow-y: auto; font-family: 'Fira Code', monospace; direction: ltr; text-align: left; color: #38ef7d; font-size: 0.85rem; word-break: break-all; }
         .terminal-input-line { display: flex; padding: 8px 12px; background: #080d1a; border-top: 1px solid rgba(0, 242, 255, 0.1); direction: ltr; }
         .terminal-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace; outline: none; margin-left: 5px; font-size: 0.85rem; }
 
-        /* نافذة غرفة التحكم السرية */
+        /* Admin Modal Overlay */
         .admin-modal {
             display: none; position: fixed; top:0; left:0; width:100%; height:100%;
             background: rgba(5, 8, 14, 0.98); z-index: 9999; padding: 15px; overflow-y: auto;
@@ -115,6 +115,8 @@
 </head>
 <body>
 
+    <div class="admin-banner" id="admin-banner-text">📢 تنبيه من الإدارة: مرحباً بكم في نظام AmirXCA الجديد!</div>
+
     <header>
         <h1 class="logo-title" id="site-logo" ondblclick="openAdminPrompt()">AmirXCA System</h1>
         <div class="status-widget">
@@ -125,46 +127,141 @@
 
     <div class="layout-wrapper">
         
-        <!-- 📌 شريط تنقل أفقي للجوال ويدعم التمرير -->
         <aside class="sidebar">
             <button class="nav-btn active" onclick="switchTab('term-tab', this)">💻 Terminal & AI</button>
-            <button class="nav-btn" onclick="switchTab('auth-tab', this)">🔑 الحسابات والأعضاء</button>
-            <button class="nav-btn" onclick="switchTab('tools-tab', this)">🛠️ أدوات المطورين</button>
+            <button class="nav-btn" onclick="switchTab('tools-tab', this)">🛠️ خدمات المطورين</button>
+            <button class="nav-btn" onclick="switchTab('books-tab', this)">📚 الكتب والمراجع</button>
             <button class="nav-btn" onclick="switchTab('games-tab', this)">🎮 مركز الألعاب</button>
+            <button class="nav-btn" onclick="switchTab('auth-tab', this)">🔑 الحسابات والأعضاء</button>
             <button class="nav-btn" onclick="switchTab('downloads-tab', this)">📥 مركز التحميل</button>
         </aside>
 
-        <!-- 🖥️ المساحة الرئيسية الواسعة للمحتوى -->
         <main class="main-content">
 
-            <!-- قسم Terminal والذكاء الاصطناعي -->
+            <!-- 💻 Terminal & AI -->
             <section id="term-tab" class="tab-section active">
-                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">💻 بيئة Termux المباشرة والذكاء الاصطناعي</h2>
+                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">💻 بيئة Termux المباشرة والذكاء الاصطناعي</h2>
                 <div class="terminal-layout">
                     <div class="file-tree">
-                        <span style="color:var(--accent-cyan); font-weight:bold; margin-left:10px;">📁 Projects:</span>
+                        <span style="color:var(--accent-main); font-weight:bold; margin-left:10px;">📁 Projects:</span>
                         <div class="file-item" onclick="openFile('script.py', 'print(\'Hello from AmirXCA!\')')">📄 script.py</div>
+                        <div class="file-item" onclick="openFile('scanner.py', 'import socket\nprint(\'Port Scanner ready\')')">📄 scanner.py</div>
                         <div class="file-item" onclick="openFile('notes.txt', 'نظام AmirXCA متكامل أوفلاين كلياً.')">📄 notes.txt</div>
                     </div>
                     <div class="terminal-container">
                         <div class="terminal-header">
-                            <span>AmirX OS v5.0</span>
-                            <span style="color:var(--accent-green);">🤖 AmirAI</span>
+                            <span>AmirX OS v6.0</span>
+                            <span style="color:var(--accent-green);">🤖 AmirAI Engine</span>
                         </div>
                         <div class="terminal-body" id="term-out">
-                            <div>مرحباً بك في منصة AmirXCA. اسأل الذكاء الاصطناعي (أمثلة: <span style="color:#00f2ff;">ai python</span> أو اكتب الأوامر المباشرة).</div>
+                            <div>مرحباً بك في منصة AmirXCA. اسأل الذكاء الاصطناعي (أمثلة: <span style="color:var(--accent-main);">ai python</span> أو اكتب الأوامر المباشرة).</div>
                         </div>
                         <div class="terminal-input-line">
-                            <span style="color:var(--accent-cyan); font-family:'Fira Code';" id="term-prompt">amirx@terminal:~$</span>
+                            <span style="color:var(--accent-main); font-family:'Fira Code';" id="term-prompt">amirx@terminal:~$</span>
                             <input type="text" class="terminal-input" id="term-in" placeholder="اكتب أمراً أو (ai ...)">
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- قسم الحسابات -->
+            <!-- 🛠️ خدمات المطورين والأدوات -->
+            <section id="tools-tab" class="tab-section">
+                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">🛠️ خدمات المطورين والأدوات السيبرانية</h2>
+                <div class="grid">
+                    
+                    <!-- 1. محاكي فحص المنافذ Port Scanner -->
+                    <div class="card">
+                        <h3>🌐 محاكي فحص المنافذ (Port Scanner)</h3>
+                        <input type="text" id="scan-ip" class="input-field" placeholder="ادخل عنوان IP (مثال: 192.168.1.1)...">
+                        <button class="btn-action" onclick="runPortScanner()">بدء الفحص السيبراني</button>
+                        <div id="scan-res" style="color:var(--accent-green); font-family:'Fira Code'; font-size:0.8rem; margin-top:8px;"></div>
+                    </div>
+
+                    <!-- 2. مولد كلمات المرور -->
+                    <div class="card">
+                        <h3>🔑 مولد كلمات المرور المعقدة</h3>
+                        <button class="btn-action" onclick="generatePass()">توليد كلمة مرور فائقة الأمان</button>
+                        <input type="text" id="pass-out" class="input-field" readonly style="color:var(--accent-main);">
+                    </div>
+
+                    <!-- 3. مولد الـ Hash التشفيري -->
+                    <div class="card">
+                        <h3>🔒 مولد الـ Hash التشفيري (SHA-256)</h3>
+                        <input type="text" id="hash-input" class="input-field" placeholder="النص المطلوب تشفيره...">
+                        <button class="btn-action" onclick="generateHash()" style="background:#f59e0b;">تشفير فوراً</button>
+                        <input type="text" id="hash-out" class="input-field" readonly style="color:var(--accent-green); font-size:0.75rem;">
+                    </div>
+
+                    <!-- 4. محول وحدات البيانات -->
+                    <div class="card">
+                        <h3>💾 محول حجم البيانات</h3>
+                        <input type="number" id="data-val" class="input-field" placeholder="القيمة بـ Megabyte (MB)...">
+                        <button class="btn-action" onclick="convertDataSize()">تحويل الوحدات</button>
+                        <div id="data-res" style="color:var(--accent-main); font-family:'Fira Code'; font-size:0.8rem; margin-top:8px;"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 📚 الكتب والمراجع -->
+            <section id="books-tab" class="tab-section">
+                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">📚 مكتبة المراجع والكتب البرمجية</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🐍 كتاب أساسيات Python</h3>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin:8px 0;">دليل شامل لأوامر البرمجة بلغة بايثون والتعامل مع المتغيرات والدوال.</p>
+                        <button class="btn-action" onclick="readBook('python')">قراءة الملخص أوفلاين</button>
+                    </div>
+                    <div class="card">
+                        <h3>💻 دليل أوامر Termux الاحترافي</h3>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin:8px 0;">أهم الحزم والأوامر الأساسية لإدارة بيئة Linux من الجوال.</p>
+                        <button class="btn-action" onclick="readBook('termux')">قراءة الملخص أوفلاين</button>
+                    </div>
+                    <div class="card">
+                        <h3>🛡️ كورس اختبار الاختراق الأخلاقي</h3>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin:8px 0;">مفاهيم الشبكات، فحص المنافذ، وحماية الحسابات من الاختراق.</p>
+                        <button class="btn-action" onclick="readBook('security')">قراءة الملخص أوفلاين</button>
+                    </div>
+                </div>
+                <!-- عرض محتوى الكتاب -->
+                <div id="book-viewer" class="card" style="display:none; margin-top:15px; border-color:var(--accent-green);">
+                    <h3 id="book-title" style="color:var(--accent-green);"></h3>
+                    <pre id="book-content" style="white-space:pre-wrap; font-family:'Fira Code'; color:#fff; font-size:0.85rem; margin-top:10px;"></pre>
+                </div>
+            </section>
+
+            <!-- 🎮 مركز الألعاب -->
+            <section id="games-tab" class="tab-section">
+                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">🎮 مركز الألعاب التفاعلية المدمجة</h2>
+                <div class="grid">
+                    <!-- لعبة الثعبان -->
+                    <div class="card">
+                        <h3>🐍 لعبة الثعبان السيبراني (Cyber Snake)</h3>
+                        <canvas id="snakeCanvas" width="280" height="180" style="background:#000; border:1px solid var(--accent-main); display:block; margin:auto;"></canvas>
+                        <div style="display:flex; justify-content:center; gap:5px; margin-top:8px;">
+                            <button class="btn-action" onclick="changeSnakeDir('UP')" style="width:50px;">⬆️</button>
+                            <button class="btn-action" onclick="changeSnakeDir('DOWN')" style="width:50px;">⬇️</button>
+                            <button class="btn-action" onclick="changeSnakeDir('LEFT')" style="width:50px;">⬅️</button>
+                            <button class="btn-action" onclick="changeSnakeDir('RIGHT')" style="width:50px;">➡️</button>
+                        </div>
+                    </div>
+                    <!-- لعبة Cyber Runner -->
+                    <div class="card">
+                        <h3>🏃 Cyber Runner 2D</h3>
+                        <canvas id="runnerCanvas" width="280" height="150" style="background:#000; border:1px solid var(--accent-main); display:block; margin:auto;"></canvas>
+                        <button class="btn-action" onclick="jumpRunner()">قفز 🚀</button>
+                    </div>
+                    <!-- محاكي 3D -->
+                    <div class="card">
+                        <h3>🏎️ محاكي السيارات 3D</h3>
+                        <div id="game-3d-container" style="height:180px;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 🔑 الحسابات والأعضاء -->
             <section id="auth-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">🔑 نظام الحسابات للأعضاء</h2>
+                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">🔑 نظام الحسابات للأعضاء</h2>
                 <div class="card">
                     <div id="login-form">
                         <h3>تسجيل الدخول / حساب جديد</h3>
@@ -180,48 +277,12 @@
                 </div>
             </section>
 
-            <!-- قسم أدوات المطورين -->
-            <section id="tools-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">🛠️ أدوات المطورين والتشفير</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>🔄 محول النصوص (Base64 / Hex)</h3>
-                        <input type="text" id="dev-text" class="input-field" placeholder="النص...">
-                        <button class="btn-action" onclick="convertText('b64')">تشفير Base64</button>
-                        <button class="btn-action" onclick="convertText('hex')" style="background:#f59e0b;">تحويل Hex</button>
-                        <div id="dev-res" style="color:var(--accent-green); margin-top:8px; font-family:'Fira Code'; word-break:break-all;"></div>
-                    </div>
-                    <div class="card">
-                        <h3>⚡ مولد أوامر Termux</h3>
-                        <label><input type="checkbox" value="python"> Python</label><br>
-                        <label><input type="checkbox" value="git"> Git</label><br>
-                        <button class="btn-action" onclick="generateTermuxCmd()">توليد الأمر</button>
-                        <input type="text" id="termux-cmd-out" class="input-field" readonly style="color:var(--accent-cyan);">
-                    </div>
-                </div>
-            </section>
-
-            <!-- قسم الألعاب -->
-            <section id="games-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">🎮 الألعاب التفاعلية</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>🏃 Cyber Runner 2D</h3>
-                        <canvas id="runnerCanvas" width="300" height="150" style="background:#000; border:1px solid var(--accent-cyan);"></canvas>
-                        <button class="btn-action" onclick="jumpRunner()">قفز</button>
-                    </div>
-                    <div class="card">
-                        <h3>🏎️ محاكي السيارات 3D</h3>
-                        <div id="game-3d-container" style="height:180px;"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- قسم مركز التحميل -->
+            <!-- 📥 مركز التحميل -->
             <section id="downloads-tab" class="tab-section">
-                <h2 style="color:var(--accent-cyan); font-size:1.3rem; margin-bottom:10px;">📥 مركز التحميل المباشر</h2>
+                <h2 style="color:var(--accent-main); font-size:1.3rem; margin-bottom:10px;">📥 مركز التحميل المباشر</h2>
                 <div class="card">
                     <button class="btn-action" onclick="downloadFile('script.py', 'print(\'AmirXCA Script\')')">💾 تحميل script.py</button>
+                    <button class="btn-action" onclick="downloadFile('scanner.py', 'import socket\nprint(\'Scanner\')')" style="background:#f59e0b; color:#000;">🌐 تحميل scanner.py</button>
                     <button class="btn-action" onclick="downloadFile('notes.txt', 'AmirXCA Documentation')" style="background:#38ef7d; color:#000;">📄 تحميل notes.txt</button>
                 </div>
             </section>
@@ -229,44 +290,58 @@
         </main>
     </div>
 
-    <!-- 🚨 غرفة التحكم السرية (Admin Dashboard Control Room) -->
+    <!-- 🚨 غرفة التحكم السرية المتقدمة (AmirXX Dashboard) -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-header">
-            <h2 style="color:var(--accent-red); font-size:1.1rem;">🚨 غرفة التحكم الشاملة (AmirXX)</h2>
+            <h2 style="color:var(--accent-red); font-size:1.1rem;">🚨 غرفة التحكم الشاملة (Root Admin - AmirXX)</h2>
             <button onclick="closeAdmin()" style="background:var(--accent-red); color:#fff; border:none; padding:5px 10px; font-weight:bold; cursor:pointer; border-radius:5px;">إغلاق ×</button>
         </div>
 
         <div class="grid">
+            <!-- تغيير الثيم واللون -->
             <div class="card">
-                <h3 style="color:var(--accent-cyan);">✏️ البرمجة الحية وتغيير المسميات</h3>
-                <input type="text" id="admin-logo-text" class="input-field" placeholder="تغيير اسم المنصة الرئيسي...">
-                <button class="btn-action" onclick="changeSiteName()">تحديث اسم المنصة فوراً</button>
+                <h3 style="color:var(--accent-main);">🎨 تغيير ثيم الموقع المباشر</h3>
+                <button class="btn-action" onclick="changeTheme('#00f2ff')" style="background:#00f2ff;">أزرق سيبراني</button>
+                <button class="btn-action" onclick="changeTheme('#38ef7d')" style="background:#38ef7d;">أخضر نيون هكر</button>
+                <button class="btn-action" onclick="changeTheme('#ef4444')" style="background:#ef4444; color:#fff;">أحمر تدميري</button>
             </div>
 
+            <!-- إضافة تنبيه عام -->
+            <div class="card">
+                <h3 style="color:#f59e0b;">📢 نشر تنبيه عاجل للمستخدمين</h3>
+                <input type="text" id="admin-announcement-input" class="input-field" placeholder="اكتب التنبيه العاجل...">
+                <button class="btn-action" onclick="postAnnouncement()">نشر التنبيه أعلى الموقع</button>
+            </div>
+
+            <!-- البرمجة وتغيير اسم الموقع -->
+            <div class="card">
+                <h3 style="color:var(--accent-main);">✏️ تغيير مسمى المنصة</h3>
+                <input type="text" id="admin-logo-text" class="input-field" placeholder="تغيير اسم المنصة...">
+                <button class="btn-action" onclick="changeSiteName()">تحديث الاسم فوراً</button>
+            </div>
+
+            <!-- إدارة الحسابات -->
             <div class="card">
                 <h3 style="color:var(--accent-green);">👥 إدارة الحسابات المسجلة</h3>
                 <div id="admin-users-list" style="max-height:120px; overflow-y:auto; font-family:'Fira Code'; font-size:0.8rem; color:#fff; background:#05080e; padding:8px; border-radius:5px;"></div>
-            </div>
-
-            <div class="card">
-                <h3 style="color:var(--accent-red);">🛡️ الثغرات ومحاولات الاختراق</h3>
-                <div style="font-family:'Fira Code'; font-size:0.8rem; color:var(--accent-red); background:#05080e; padding:8px; border-radius:5px; height:100px; overflow-y:auto;">
-                    <div>[SEC-LOG]: Firewall Active. 0 Vulnerabilities.</div>
-                    <div>[AI-LOG]: AmirAI Engine Operating.</div>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // التنقل بين الأقسام
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
-            if(tabId === 'games-tab' && !window.threeInited) { init3D(); window.threeInited = true; }
+            if(tabId === 'games-tab') {
+                if(!window.snakeInited) { initSnake(); window.snakeInited = true; }
+                if(!window.threeInited) { init3D(); window.threeInited = true; }
+            }
         }
 
+        // 🚨 فتح لوحة التحكم بالرمز AmirXX
         function openAdminPrompt() {
             const pass = prompt('ادخل رمز التحكم السرية:');
             if (pass === 'AmirXX') {
@@ -276,14 +351,26 @@
                 alert('الرمز غير صحيح!');
             }
         }
-
         function closeAdmin() { document.getElementById('adminModal').classList.remove('active'); }
 
+        // ميزات لوحة التحكم
+        function changeTheme(color) {
+            document.documentElement.style.setProperty('--accent-main', color);
+            alert('تم تغيير ثيم المنصة!');
+        }
+        function postAnnouncement() {
+            const txt = document.getElementById('admin-announcement-input').value.trim();
+            if(txt) {
+                const banner = document.getElementById('admin-banner-text');
+                banner.innerText = '📢 تنبيه: ' + txt;
+                banner.style.display = 'block';
+                alert('تم نشر التنبيه بنجاح!');
+            }
+        }
         function changeSiteName() {
             const newName = document.getElementById('admin-logo-text').value.trim();
             if(newName) { document.getElementById('site-logo').innerText = newName; alert('تم تعديل الاسم!'); }
         }
-
         function loadAdminUsers() {
             const container = document.getElementById('admin-users-list');
             container.innerHTML = '';
@@ -293,12 +380,99 @@
                 if (key.startsWith('user_')) {
                     count++;
                     const uname = key.replace('user_', '');
-                    container.innerHTML += `<div>👤 user: <span style="color:var(--accent-cyan);">${uname}</span></div>`;
+                    container.innerHTML += `<div>👤 user: <span style="color:var(--accent-main);">${uname}</span></div>`;
                 }
             }
             if(count === 0) container.innerHTML = 'لا يوجد حسابات مسجلة.';
         }
 
+        // 🛠️ الخدمات والأدوات السيبرانية
+        function runPortScanner() {
+            const ip = document.getElementById('scan-ip').value.trim() || '192.168.1.1';
+            const res = document.getElementById('scan-res');
+            res.innerHTML = `جاري فحص المنافذ لـ ${ip}...<br>`;
+            setTimeout(() => {
+                res.innerHTML += `<span style="color:#38ef7d;">[+] Port 80 (HTTP): OPEN</span><br>`;
+                res.innerHTML += `<span style="color:#38ef7d;">[+] Port 443 (HTTPS): OPEN</span><br>`;
+                res.innerHTML += `<span style="color:#ef4444;">[-] Port 22 (SSH): CLOSED</span><br>`;
+                res.innerHTML += `<span style="color:#f59e0b;">[!] Scanning Completed Successfully.</span>`;
+            }, 1000);
+        }
+
+        function generatePass() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            let pass = "";
+            for (let i = 0; i < 16; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            document.getElementById('pass-out').value = pass;
+        }
+
+        async function generateHash() {
+            const str = document.getElementById('hash-input').value;
+            if(!str) return alert('اكتب النص أولاً');
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+            const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+            document.getElementById('hash-out').value = hash;
+        }
+
+        function convertDataSize() {
+            const mb = parseFloat(document.getElementById('data-val').value);
+            if(isNaN(mb)) return;
+            const res = document.getElementById('data-res');
+            res.innerHTML = `
+                Bytes: ${(mb * 1024 * 1024).toLocaleString()}<br>
+                KB: ${(mb * 1024).toLocaleString()} KB<br>
+                GB: ${(mb / 1024).toFixed(4)} GB
+            `;
+        }
+
+        // 📚 الكتب والمراجع
+        const bookData = {
+            python: "🐍 ملخص Python الشامل:\n- Print: print('Hello World')\n- Variables: x = 10, name = 'AmirX'\n- Loops: for i in range(5): print(i)\n- Functions: def test(): return True",
+            termux: "💻 دليل أوامر Termux:\n- pkg update && pkg upgrade\n- pkg install python git -y\n- ls (عرض الملفات)\n- cd (التنقل بين المجلدات)\n- chmod +x script.py (منح صلاحية التشغيل)",
+            security: "🛡️ ملخص الأمن السيبراني:\n- Network Scanning: فحص الشبكات لجمع المعلومات.\n- Cryptography: تشفير البيانات للتحقق من سلامتها.\n- Firewall Rules: حجب المنافذ غير المصرح بها."
+        };
+        function readBook(type) {
+            document.getElementById('book-viewer').style.display = 'block';
+            document.getElementById('book-title').innerText = '📖 ' + type.toUpperCase() + ' Reference';
+            document.getElementById('book-content').innerText = bookData[type];
+        }
+
+        // 🎮 لعبة الثعبان السيبراني (Snake Game)
+        let snake, snakeDir, snakeFood, snakeCtx;
+        function initSnake() {
+            const cvs = document.getElementById('snakeCanvas');
+            snakeCtx = cvs.getContext('2d');
+            snake = [{x: 10, y: 10}];
+            snakeDir = 'RIGHT';
+            snakeFood = {x: 5, y: 5};
+            setInterval(gameSnakeLoop, 100);
+        }
+        function changeSnakeDir(dir) { snakeDir = dir; }
+        function gameSnakeLoop() {
+            let headX = snake[0].x;
+            let headY = snake[0].y;
+            if (snakeDir === 'RIGHT') headX++;
+            else if (snakeDir === 'LEFT') headX--;
+            else if (snakeDir === 'UP') headY--;
+            else if (snakeDir === 'DOWN') headY++;
+
+            if(headX < 0) headX = 27; if(headX > 27) headX = 0;
+            if(headY < 0) headY = 17; if(headY > 17) headY = 0;
+
+            snake.unshift({x: headX, y: headY});
+            if(headX === snakeFood.x && headY === snakeFood.y) {
+                snakeFood = {Math: Math.floor(Math.random()*27), y: Math.floor(Math.random()*17)};
+            } else { snake.pop(); }
+
+            snakeCtx.fillStyle = '#000';
+            snakeCtx.fillRect(0,0,280,180);
+            snakeCtx.fillStyle = '#38ef7d';
+            snake.forEach(p => snakeCtx.fillRect(p.x*10, p.y*10, 8, 8));
+            snakeCtx.fillStyle = '#ef4444';
+            snakeCtx.fillRect(snakeFood.x*10, snakeFood.y*10, 8, 8);
+        }
+
+        // الحسابات والـ Terminal
         function registerUser() {
             const u = document.getElementById('auth-username').value.trim();
             const p = document.getElementById('auth-password').value.trim();
@@ -308,7 +482,6 @@
             alert('تم إنشاء الحساب!');
             checkAuthState();
         }
-
         function loginUser() {
             const u = document.getElementById('auth-username').value.trim();
             const p = document.getElementById('auth-password').value.trim();
@@ -317,9 +490,7 @@
                 checkAuthState();
             } else alert('بيانات غير صحيحة!');
         }
-
         function logoutUser() { localStorage.removeItem('amirx_logged_user'); checkAuthState(); }
-
         function checkAuthState() {
             const u = localStorage.getItem('amirx_logged_user');
             if (u) {
@@ -341,8 +512,8 @@
                 printTerm('amirx@terminal:~$ ' + val, '#fff');
                 termIn.value = '';
                 if(val.startsWith('ai ')) {
-                    printTerm('[AmirAI]: تم التحليل: "' + val.substring(3) + '". المنصة جاهزة.', '#38ef7d');
-                } else if(val === 'ls') printTerm('script.py  notes.txt', '#f59e0b');
+                    printTerm('[AmirAI]: تم التحليل: "' + val.substring(3) + '". النظام جاهز.', '#38ef7d');
+                } else if(val === 'ls') printTerm('script.py  scanner.py  notes.txt', '#f59e0b');
                 else if(val === 'clear') termOut.innerHTML = '';
                 else printTerm('Command not found: ' + val, '#ef4444');
             }
@@ -353,17 +524,15 @@
         }
 
         function openFile(name, content) { printTerm(`--- ${name} ---`, '#00f2ff'); printTerm(content, '#fff'); }
-        function convertText(t) { const v = document.getElementById('dev-text').value; document.getElementById('dev-res').innerText = t==='b64'?btoa(v||'AmirX'):v.split('').map(c=>c.charCodeAt(0).toString(16)).join(' '); }
-        function generateTermuxCmd() { document.getElementById('termux-cmd-out').value = 'pkg update && pkg install python git -y'; }
         function downloadFile(f, t) { const a = document.createElement('a'); a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(t); a.download = f; a.click(); }
 
-        // 2D Game
+        // 2D Runner
         const canvas = document.getElementById('runnerCanvas'); const ctx = canvas.getContext('2d');
-        let playerY = 120, isJumping = false, obstacleX = 300;
+        let playerY = 120, isJumping = false, obstacleX = 280;
         function run2DGame() {
-            ctx.clearRect(0,0,300,150);
+            ctx.clearRect(0,0,280,150);
             if(isJumping) { playerY-=3; if(playerY<=70) isJumping=false; } else if(playerY<120) playerY+=3;
-            obstacleX-=3; if(obstacleX<-10) obstacleX=300;
+            obstacleX-=3; if(obstacleX<-10) obstacleX=280;
             ctx.fillStyle='#00f2ff'; ctx.fillRect(20, playerY, 15, 15);
             ctx.fillStyle='#ef4444'; ctx.fillRect(obstacleX, 125, 10, 10);
             requestAnimationFrame(run2DGame);
@@ -371,7 +540,7 @@
         function jumpRunner() { if(playerY===120) isJumping=true; }
         run2DGame();
 
-        // 3D Game
+        // 3D Car Game
         function init3D() {
             const container = document.getElementById('game-3d-container');
             const scene = new THREE.Scene();
