@@ -614,8 +614,49 @@
         checkAuthState();
 
         function downloadFile(f, t) { const a = document.createElement('a'); a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(t || ''); a.download = f; a.click(); }
+  // نظام الـ XP والمؤثرات الصوتية
+  let userXP = parseInt(localStorage.getItem('amirx_xp_val')) || 100;
+  if(document.getElementById('sys-xp')) document.getElementById('sys-xp').innerText = userXP;
 
-        setInterval(() => { document.getElementById('clock-val').innerText = new Date().toLocaleTimeString(); }, 1000);
+  function giveXP(pts) {
+      userXP += pts;
+      localStorage.setItem('amirx_xp_val', userXP);
+      if(document.getElementById('sys-xp')) document.getElementById('sys-xp').innerText = userXP;
+      playBeepSound();
+  }
+
+  function playBeepSound() {
+      try {
+          let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          let osc = audioCtx.createOscillator();
+          osc.connect(audioCtx.destination);
+          osc.frequency.value = 600;
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.05);
+      } catch(e){}
+  }
+
+  function toggleAIChat() {
+      playBeepSound();
+      let box = document.getElementById('ai-chat-box');
+      if(box) box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+  }
+
+  function handleAIPrompt(e) {
+      if (e.key === 'Enter') {
+          let inp = document.getElementById('ai-input');
+          let logs = document.getElementById('ai-logs');
+          if (inp && inp.value.trim() !== '') {
+              logs.innerHTML += '<div><strong>أنت:</strong> ' + inp.value + '</div>';
+              logs.innerHTML += '<div><strong>System:</strong> تم تنفيذ الطلب تلقائياً داخل النظام!</div>';
+              inp.value = '';
+              logs.scrollTop = logs.scrollHeight;
+              giveXP(10);
+          }
+      }
+  }
+
+         setInterval(() => { document.getElementById('clock-val').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
 </html>
